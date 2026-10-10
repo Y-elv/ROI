@@ -1401,7 +1401,7 @@ https://maplibre.org/
 **Members:**
 
 - Elvis Mugisha
-- Cyeza Sangano Christal
+- ICyeza Christal
 
 **Competition:** NISR Big Data Hackathon 2026
 
