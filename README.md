@@ -1396,12 +1396,12 @@ https://maplibre.org/
 
 **Project:** Rwanda Opportunity Intelligence
 
-**Team:** [Team Name]
+**Team:** Team Nexolve
 
 **Members:**
 
-- [Member 1]
-- [Member 2]
+- Elvis Mugisha
+- Cyeza Sangano Christal
 
 **Competition:** NISR Big Data Hackathon 2026
 
