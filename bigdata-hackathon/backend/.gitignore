@@ -2,7 +2,13 @@
 node_modules/
 dist/
 .env
-data/
+data/*
+!data/fixtures/
+data/fixtures/*
+!data/fixtures/rwanda-opportunity-demo-30.json
+!data/derived/
+data/derived/*
+!data/derived/nisr-analytics.json
 
 # Python generated files
 __pycache__/
@@ -13,4 +19,3 @@ __pycache__/
 # Virtual environments
 venv/
 .venv/
-

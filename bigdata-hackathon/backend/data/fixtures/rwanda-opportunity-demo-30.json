@@ -1,0 +1,2345 @@
+{
+  "datasetName": "Rwanda Opportunity Intelligence",
+  "datasetVersion": "2.0.0",
+  "purpose": "Opportunity discovery and matching; includes current listings, ongoing programmes, and explicitly marked closed or unconfirmed calls.",
+  "warning": "Records are based on linked official portals and opportunity listings checked on 2026-10-26. A portal/programme record is not necessarily an open application. Check each source before applying; never infer a deadline, salary, fee, or funding amount when it is not stated.",
+  "asOf": "2026-10-26",
+  "coverage": {
+    "country": "Rwanda",
+    "opportunityCount": 45,
+    "sources": [
+      {
+        "name": "KORA Job Portal",
+        "url": "https://www.kora.mifotra.gov.rw/seeker/main"
+      },
+      {
+        "name": "MIFOTRA Recruitment Portal",
+        "url": "https://recruitment.mifotra.gov.rw/"
+      },
+      {
+        "name": "National Internship Programme",
+        "url": "https://www.internship.rw/"
+      },
+      {
+        "name": "KURA Opportunities",
+        "url": "https://kura.rw/opportunities/"
+      },
+      {
+        "name": "Higher Education Council (HEC) Scholarships",
+        "url": "https://www.hec.gov.rw/updates/scholarships"
+      },
+      {
+        "name": "HECMIS",
+        "url": "https://hecmis.hec.gov.rw/"
+      },
+      {
+        "name": "Rwanda Polytechnic Announcements",
+        "url": "https://www.rp.ac.rw/announcement"
+      }
+    ],
+    "districts": [
+      "Nyarugenge",
+      "Gasabo",
+      "Kicukiro",
+      "Nyanza",
+      "Gisagara",
+      "Nyaruguru",
+      "Huye",
+      "Nyamagabe",
+      "Ruhango",
+      "Muhanga",
+      "Kamonyi",
+      "Karongi",
+      "Rutsiro",
+      "Rubavu",
+      "Nyabihu",
+      "Ngororero",
+      "Rusizi",
+      "Nyamasheke",
+      "Rulindo",
+      "Gakenke",
+      "Musanze",
+      "Burera",
+      "Gicumbi",
+      "Rwamagana",
+      "Nyagatare",
+      "Gatsibo",
+      "Kayonza",
+      "Kirehe",
+      "Ngoma",
+      "Bugesera"
+    ],
+    "provinces": [
+      "Kigali City",
+      "Eastern Province",
+      "Northern Province",
+      "Southern Province",
+      "Western Province"
+    ]
+  },
+  "opportunities": [
+    {
+      "id": "rw-opp-001",
+      "type": "job",
+      "title": "Urban and Economic Development Officer",
+      "organization": {
+        "name": "Kirehe District",
+        "kind": "provider_or_employer"
+      },
+      "description": "District-level public-service vacancy. Review the official job profile for qualification, experience and document requirements.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kirehe District, Eastern Province",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "mifotra-recruitment-portal",
+        "name": "MIFOTRA Recruitment Portal",
+        "url": "https://recruitment.mifotra.gov.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://recruitment.mifotra.gov.rw/",
+      "deadline": "2026-10-30",
+      "deadlineStatus": "confirmed",
+      "status": "open",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "No application fee stated on portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Public-service employment opportunity; salary and contract terms are in the job profile."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Must meet the official job profile and public-service recruitment requirements."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listing was checked against the linked source on the dataset preparation date; application status can change."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "public_service",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-002",
+      "type": "job",
+      "title": "Human Capital & Social Development Officer",
+      "organization": {
+        "name": "Kirehe District",
+        "kind": "provider_or_employer"
+      },
+      "description": "District-level role in human capital and social development. Check the official profile for required degree, experience and skills.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kirehe District, Eastern Province",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "mifotra-recruitment-portal",
+        "name": "MIFOTRA Recruitment Portal",
+        "url": "https://recruitment.mifotra.gov.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://recruitment.mifotra.gov.rw/",
+      "deadline": "2026-10-30",
+      "deadlineStatus": "confirmed",
+      "status": "open",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "No application fee stated on portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Public-service employment opportunity; remuneration and terms depend on the official job profile."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Must meet the official job profile and public-service recruitment requirements."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listing was checked against the linked source on the dataset preparation date; application status can change."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "public_service",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-003",
+      "type": "job",
+      "title": "Social and Religious Education Teacher",
+      "organization": {
+        "name": "Rwanda Basic Education Board (REB)",
+        "kind": "government"
+      },
+      "description": "Teaching vacancy listed on the civil-service recruitment portal. Verify subject combination, teaching qualifications and any required registration in the job profile.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; duty station in official advert",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "mifotra-recruitment-portal",
+        "name": "MIFOTRA Recruitment Portal",
+        "url": "https://recruitment.mifotra.gov.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://recruitment.mifotra.gov.rw/",
+      "deadline": "2026-11-02",
+      "deadlineStatus": "confirmed",
+      "status": "open",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "No application fee stated on portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Teaching employment opportunity; salary and contract details are in the advert."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Must meet the official teaching job profile and education requirements."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listing was checked against the linked source on the dataset preparation date; application status can change."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "education",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-004",
+      "type": "job",
+      "title": "Mathematics and Science & Elementary Technology Teacher",
+      "organization": {
+        "name": "Rwanda Basic Education Board (REB)",
+        "kind": "government"
+      },
+      "description": "Teaching vacancy listed on the civil-service recruitment portal. Verify subject requirements, teaching qualifications and duty station.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; duty station in official advert",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "mifotra-recruitment-portal",
+        "name": "MIFOTRA Recruitment Portal",
+        "url": "https://recruitment.mifotra.gov.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://recruitment.mifotra.gov.rw/",
+      "deadline": "2026-11-02",
+      "deadlineStatus": "confirmed",
+      "status": "open",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "No application fee stated on portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Teaching employment opportunity; salary and contract details are in the advert."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Must meet the official teaching job profile and education requirements."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listing was checked against the linked source on the dataset preparation date; application status can change."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "education",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-005",
+      "type": "job",
+      "title": "District-level vacancies: current recruitment search",
+      "organization": {
+        "name": "Various public institutions",
+        "kind": "provider_or_employer"
+      },
+      "description": "Use the live portal to find current district and ministry vacancies, open each job profile, and apply before its individual deadline. This is a discovery record rather than a single post.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Nationwide, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "mifotra-recruitment-portal",
+        "name": "MIFOTRA Recruitment Portal",
+        "url": "https://recruitment.mifotra.gov.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://recruitment.mifotra.gov.rw/",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Free to create an account and apply through the portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Access to public-service vacancies and application status tracking."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Create an account; complete education, languages and references; meet each post's requirements."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Portal listing changes frequently; this record points to the search page and is not a guarantee that a specific post is open."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "public_service",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-006",
+      "type": "job",
+      "title": "KORA Job Matching and Vacancies",
+      "organization": {
+        "name": "KORA / MIFOTRA",
+        "kind": "government"
+      },
+      "description": "Government-verified job portal with CV/profile matching, daily refreshed recommendations, sector filters and job-centre support. Search IT, data, software, remote, agriculture and other sectors.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Nationwide; remote roles may be listed",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "kora-job-portal",
+        "name": "KORA Job Portal",
+        "url": "https://www.kora.mifotra.gov.rw/seeker/main",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.kora.mifotra.gov.rw/seeker/main",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Free to use according to the portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "CV-based job matching; job discovery; access to job-centre guidance."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Create a profile and complete CV; each vacancy has separate criteria."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "A portal/service listing, not one specific vacancy."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "job_discovery",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-007",
+      "type": "internship",
+      "title": "National Professional Internship Programme",
+      "organization": {
+        "name": "Rwanda Development Board / Internship Programme",
+        "kind": "provider_or_employer"
+      },
+      "description": "Professional internship pathway for eligible fresh graduates from higher learning institutions and TVET institutions. The programme connects graduates with host institutions; placements depend on current intake and host demand.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Nationwide, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "national-internship-programme",
+        "name": "National Internship Programme",
+        "url": "https://www.internship.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.internship.rw/",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": "Typically 6 months; verify current programme rules",
+      "costAndFunding": {
+        "cost": "No portal application fee stated. Any stipend or host contribution must be confirmed in the current placement terms.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Practical workplace experience; skills development; exposure to employers. Guidelines describe financial support for eligible internship arrangements."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Generally fresh graduates from the preceding academic year; check the current guidelines and intake."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "General programme entry point, not a single confirmed vacancy."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "graduate_internship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-008",
+      "type": "internship",
+      "title": "National Internship Programme — Host Placement Information",
+      "organization": {
+        "name": "RDB / Internship Programme",
+        "kind": "government"
+      },
+      "description": "Use the programme portal and guidelines to review graduate registration and host-institution processes. Placement dates and availability vary.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Nationwide, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "national-internship-programme-guidelines",
+        "name": "National Internship Programme Guidelines",
+        "url": "https://internship.rw/static/Signed-UpdatedInternshipGuidelines.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://internship.rw/static/Signed-UpdatedInternshipGuidelines.pdf",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": "Placement duration depends on programme terms",
+      "costAndFunding": {
+        "cost": "No portal fee stated; stipend rules depend on internship type and current guidelines.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Professional experience; critical thinking and communication skills; employer exposure."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Eligible Rwandan fresh graduates from HLI or TVET (A1 diploma) pathways, subject to the current guidelines."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listing was checked against the linked source on the dataset preparation date; application status can change."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "internship_guidance",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-009",
+      "type": "internship",
+      "title": "Agribusiness Internship",
+      "organization": {
+        "name": "PROFEMMES TWESEHAMWE",
+        "kind": "provider_or_employer"
+      },
+      "description": "Six-month paid internship working with smallholder farmers on agricultural value chains. Review the detail page for duties, required qualifications, stipend and application instructions.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kigali, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "kura-opportunities",
+        "name": "KURA Opportunities",
+        "url": "https://kura.rw/opportunities/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://kura.rw/opportunities/",
+      "deadline": "2026-11-30",
+      "deadlineStatus": "confirmed",
+      "status": "open",
+      "duration": "6 months",
+      "costAndFunding": {
+        "cost": "No application fee stated in the listing summary; confirm with the provider.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Paid internship; practical experience in agribusiness and agricultural value chains."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check the full listing for qualification, experience and application documents."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listing was checked against the linked source on the dataset preparation date; application status can change."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "agribusiness",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-010",
+      "type": "training",
+      "title": "One Million Coders",
+      "organization": {
+        "name": "Government of Rwanda and Government of the United Arab Emirates",
+        "kind": "provider_or_employer"
+      },
+      "description": "Online programming courses designed to build foundational skills in programming, data science, and Android/Kotlin development. The programme description mentions expert mentors, a community platform and certification after successful completion.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Online; Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "kura-/-one-million-coders",
+        "name": "KURA / One Million Coders",
+        "url": "http://mcoders.minict.gov.rw",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "http://mcoders.minict.gov.rw",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": "6–7 weeks",
+      "costAndFunding": {
+        "cost": "The KURA programme page does not state a fee; verify enrolment terms on the official portal.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Mentor support; learning community; certificate on successful completion."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check current intake eligibility and enrolment conditions on the official programme portal."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "KURA page displayed a future date of 2027-01-08; this is not treated as a confirmed application deadline."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "digital_skills",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-011",
+      "type": "tvet",
+      "title": "Rwanda Polytechnic — Public, Private and Foreign Applicants (AY 2026–2027)",
+      "organization": {
+        "name": "Rwanda Polytechnic",
+        "kind": "government"
+      },
+      "description": "Current academic-year call for public, private and foreign candidates wishing to study at Rwanda Polytechnic. Use the official announcement to open the call document and verify programmes, entry requirements, fees and deadline.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda Polytechnic campuses, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "rwanda-polytechnic-official-announcements",
+        "name": "Rwanda Polytechnic Official Announcements",
+        "url": "https://www.rp.ac.rw/announcement",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.rp.ac.rw/announcement",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Tuition and other costs depend on programme and applicant category; consult the current call document.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Access to accredited technical and vocational higher education programmes."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Requirements vary by programme and applicant category; consult the official call document."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "The 2026–2027 call is listed on the official RP announcements page dated 23 September 2026. The linked announcement page should be checked for the exact closing date and application route."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "tvet_admission",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-012",
+      "type": "tvet",
+      "title": "Rwanda Polytechnic — Public, Private and Foreign Applicants (AY 2024–2025)",
+      "organization": {
+        "name": "Rwanda Polytechnic",
+        "kind": "government"
+      },
+      "description": "Historical call for applications for study at Rwanda Polytechnic in academic year 2024–2025. Included for reference only; it is not a current intake.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda Polytechnic campuses, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "rwanda-polytechnic-official-announcements",
+        "name": "Rwanda Polytechnic Official Announcements",
+        "url": "https://www.rp.ac.rw/announcement",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.rp.ac.rw/announcement",
+      "deadline": "2024-2025 academic-year intake",
+      "deadlineStatus": "historical",
+      "status": "closed",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Programme costs depended on the selected programme and applicant category.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Historical reference for understanding the RP admission-call format."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Not open for new applications; use the latest academic-year call."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "User-supplied link refers to academic year 2024–2025; do not publish as an active opportunity."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "historical_tvet",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-013",
+      "type": "study_loan",
+      "title": "Government Study Loan — January 2027 Intake",
+      "organization": {
+        "name": "Higher Education Council (HEC)",
+        "kind": "government"
+      },
+      "description": "Competitive government study-loan call for Rwandan citizens admitted to recognized foreign higher education institutions, prioritizing programmes in national priority areas not offered locally. The notice states the application period was 1–21 October 2026.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Study abroad; apply from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/CALL_FOR_APPLICATIONS_FOR_GOVERNMENT_STUDY_LOAN_-_JANUARY_2027_INTAKE.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/CALL_FOR_APPLICATIONS_FOR_GOVERNMENT_STUDY_LOAN_-_JANUARY_2027_INTAKE.pdf",
+      "deadline": "2026-10-21",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "A study loan, not an automatic grant; approved amount may differ from amount requested. Terms depend on HEC policy and available government funds.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential government financing for eligible study costs; selection is competitive."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Rwandan citizen; admission to recognized foreign institution; programme in a national priority field; full documentation."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Deadline passed before dataset date. The HEC MIS summary showed 22 October while the signed PDF states applications run 1–21 October; use the signed PDF deadline and flag the discrepancy."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "study_abroad_financing",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-014",
+      "type": "scholarship",
+      "title": "Commonwealth Master’s Scholarship 2027 — UK",
+      "organization": {
+        "name": "HEC / Commonwealth Scholarship Commission",
+        "kind": "government"
+      },
+      "description": "Scholarship call for eligible Rwandan citizens for full-time taught Master’s study in the UK starting September 2027. Both HEC nomination and CSC Central submissions were required.",
+      "location": {
+        "country": "United Kingdom",
+        "province": null,
+        "district": null,
+        "displayLocation": "United Kingdom — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/2026_COMMONWEALTH_SCHOLARSHIPS.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/2026_COMMONWEALTH_SCHOLARSHIPS.pdf",
+      "deadline": "2026-10-20",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": "1 year",
+      "costAndFunding": {
+        "cost": "No CSC application fee. Scholarship package subject to CSC award terms.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Funded postgraduate study in the UK; exact package per official CSC terms."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Rwandan citizen permanently resident in Rwanda; relevant bachelor’s degree at least Upper Second Class or equivalent by September 2027; full-time one-year taught Master’s; meet both application deadlines."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "HEC and CSC deadlines passed on 20 October 2026."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "postgraduate_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-015",
+      "type": "scholarship",
+      "title": "Commonwealth PhD Scholarship 2027 — UK",
+      "organization": {
+        "name": "HEC / Commonwealth Scholarship Commission",
+        "kind": "government"
+      },
+      "description": "Scholarship call for eligible Rwandan citizens for doctoral study in the UK beginning September or October 2027. HEC could nominate up to 16 PhD candidates; nomination did not guarantee final selection.",
+      "location": {
+        "country": "United Kingdom",
+        "province": null,
+        "district": null,
+        "displayLocation": "United Kingdom — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/2026_COMMONWEALTH_SCHOLARSHIPS.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/2026_COMMONWEALTH_SCHOLARSHIPS.pdf",
+      "deadline": "2026-10-20",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": "Typically 4 years per HECMIS summary",
+      "costAndFunding": {
+        "cost": "No CSC application fee. Award package subject to CSC terms.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Funded doctoral study under scholarship conditions."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Rwandan citizen permanently resident in Rwanda; relevant Master’s degree and HEC academic threshold; supervisor support; research proposal; submit through HECMIS and CSC Central."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Deadline passed on 20 October 2026."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "doctoral_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-016",
+      "type": "scholarship",
+      "title": "Algeria–Rwanda Government Scholarships 2026–2027",
+      "organization": {
+        "name": "HEC / Government of Algeria",
+        "kind": "government"
+      },
+      "description": "Bilateral scholarships for Rwandan students for Bachelor’s study in Medical Sciences, Architecture, Urban Planning and Urban Studies, Mathematics and Computer Science, and Science and Technology.",
+      "location": {
+        "country": "Algeria",
+        "province": null,
+        "district": null,
+        "displayLocation": "Algeria — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/PEOPLE_S_DEMOCRATIC_REPUBLIC_OF_ALGERIA_-_RWANDA_GOVERNMENT.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/PEOPLE_S_DEMOCRATIC_REPUBLIC_OF_ALGERIA_-_RWANDA_GOVERNMENT.pdf",
+      "deadline": "2026-09-30",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": "Bachelor’s programme duration varies",
+      "costAndFunding": {
+        "cost": "Scholarship funding details should be checked in the official award terms.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Opportunity for funded undergraduate study abroad, subject to award terms."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Senior Six result slip/certificate with 80% or equivalent in 2026 national examinations; not already enrolled at a local or foreign university; submit documents through HECMIS."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Deadline passed."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "undergraduate_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-017",
+      "type": "scholarship",
+      "title": "Morocco–Rwanda Government Scholarships 2026–2027",
+      "organization": {
+        "name": "HEC / Government of Morocco",
+        "kind": "government"
+      },
+      "description": "Scholarship offer for Diploma, Bachelor’s, Master’s and PhD study at Moroccan public training institutions and universities; programmes are taught in French. The call included TVET diploma pathways for eligible TSS graduates.",
+      "location": {
+        "country": "Morocco",
+        "province": null,
+        "district": null,
+        "displayLocation": "Morocco — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/KINGDOM_OF_MOROCCO_-__GOVERNMENT_OF_RWANDA_SCHOLARSHIPS.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/KINGDOM_OF_MOROCCO_-__GOVERNMENT_OF_RWANDA_SCHOLARSHIPS.pdf",
+      "deadline": "2026-08-29",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Scholarship package details must be confirmed in the award terms.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential funded study in French at public institutions in Morocco."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Requirements varied by level; the call specified academic thresholds and prior STEM-related study for certain diploma/Bachelor routes."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Deadline passed."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "international_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-018",
+      "type": "scholarship",
+      "title": "EAC Scholarship Programme — Cohort 4 (Two-year Master’s)",
+      "organization": {
+        "name": "Inter-University Council for East Africa / EAC Scholarship Programme",
+        "kind": "provider_or_employer"
+      },
+      "description": "Two-year funded Master’s scholarships for eligible EAC nationals to study in an EAC partner state other than their country of citizenship. Fields include mathematics, engineering, informatics, science, technology and business science.",
+      "location": {
+        "country": "EAC partner state outside applicant’s country",
+        "province": null,
+        "district": null,
+        "displayLocation": "EAC partner state outside applicant’s country",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda-/-iucea",
+        "name": "HEC Rwanda / IUCEA",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/DETAILED_CALL_FOR_APPLICATIONS_Cohort_4_EACSP.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/DETAILED_CALL_FOR_APPLICATIONS_Cohort_4_EACSP.pdf",
+      "deadline": "2026-09-10",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": "2 years",
+      "costAndFunding": {
+        "cost": "Fully funded package stated in the call: tuition, return economy ticket, EUR 380 monthly stipend, EUR 200 arrival allowance, EUR 650 study materials, EUR 1,500 research allowance, medical insurance and eligible visa/entry fee.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Up to 120 scholarships; leadership development, mentoring, networking and regional integration activities."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "EAC national under 35; apply for an approved Master’s programme in another EAC partner state; application in English."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Deadline passed 10 September 2026."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "regional_masters_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-019",
+      "type": "scholarship",
+      "title": "JICA–Rwanda Government Scholarship Announcements",
+      "organization": {
+        "name": "HEC / JICA",
+        "kind": "government"
+      },
+      "description": "HEC listed a JICA–Rwanda Government scholarship announcement in September 2026. The exact degree level, eligibility and closing date must be checked in the official notice.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Study abroad; country and institution per call",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/updates/scholarships",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/updates/scholarships",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Funding package not verified in this dataset.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential government-supported study; award terms require verification."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Read the specific JICA call before applying."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "HEC page listed this announcement dated 9 September 2026; direct PDF could not be reliably retrieved in this pass."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "international_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-020",
+      "type": "scholarship",
+      "title": "Kent State University Scholarship Opportunity — September 2026",
+      "organization": {
+        "name": "HEC / Kent State University",
+        "kind": "government"
+      },
+      "description": "HEC listed a Kent State University opportunity in September 2026. Check the original announcement for study level, eligible courses, funding coverage and application route.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "United States — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/updates/scholarships",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/updates/scholarships",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Funding and tuition terms not verified in this dataset.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential international study opportunity; benefits depend on the call."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check current availability and the official eligibility requirements."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listed by HEC on 2 September 2026; current status and deadline require verification."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "international_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-021",
+      "type": "scholarship",
+      "title": "China–Rwanda Scholarship 2026–2027 — Inner Mongolia FR Medical University",
+      "organization": {
+        "name": "HEC / Inner Mongolia FR Medical University",
+        "kind": "government"
+      },
+      "description": "HEC listed a China–Rwanda scholarship opportunity associated with Inner Mongolia FR Medical University for academic year 2026–2027. Confirm programme, language, recognition, costs and award coverage from the official notice.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "China — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/updates/scholarships",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/updates/scholarships",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Funding coverage not verified in this dataset.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential international education opportunity; package depends on official award terms."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check HEC call for eligible programme, academic thresholds and required documents."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listed by HEC on 26 August 2026; deadline not established here."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "international_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-022",
+      "type": "scholarship",
+      "title": "Azerbaijan Scholarship Opportunity",
+      "organization": {
+        "name": "HEC / Government of Azerbaijan",
+        "kind": "government"
+      },
+      "description": "HEC listed a scholarship opportunity for Azerbaijan in August 2026. Consult the detailed call for degree level, subjects, language, nomination route and funding package.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Azerbaijan — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/updates/scholarships",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/updates/scholarships",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Funding details not verified in this dataset.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential international study opportunity; exact benefits need confirmation."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check the full HEC notice and eligibility requirements."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listed by HEC on 10 August 2026; current status and deadline require confirmation."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "international_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-023",
+      "type": "scholarship",
+      "title": "Pakistan Scholarship Opportunity",
+      "organization": {
+        "name": "HEC / Government of Pakistan",
+        "kind": "government"
+      },
+      "description": "HEC listed a scholarship opportunity in Pakistan in July 2026. The official notice should be consulted for eligible levels, fields, funding and application steps.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Pakistan — application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/updates/scholarships",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/updates/scholarships",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Funding details not verified in this dataset.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential international study opportunity; exact benefits need confirmation."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check the official notice for eligibility, programme recognition and required documents."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Listed by HEC on 30 July 2026; current status and deadline require confirmation."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "international_scholarship",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-024",
+      "type": "scholarship",
+      "title": "September 2026 Foreign Study Bursary / Loan Call",
+      "organization": {
+        "name": "Higher Education Council (HEC)",
+        "kind": "government"
+      },
+      "description": "HEC published a bursary/loan call for September 2026. It required admission to a recognized foreign university and documentation of study and living costs. Included as a closed reference for future applicants preparing documentation.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Study abroad; application from Rwanda",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "hec-rwanda",
+        "name": "HEC Rwanda",
+        "url": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/Bursary_Loan_Call_for_application_for_September_2026.pdf",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.hec.gov.rw/fileadmin/user_upload/HEC/Scholarships/Bursary_Loan_Call_for_application_for_September_2026.pdf",
+      "deadline": "2026-05 (see official PDF)",
+      "deadlineStatus": "historical",
+      "status": "closed",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Financial support depended on eligibility, priority fields, documentation and available funds.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential financial support for study costs under the call's conditions."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "The call had specific eligibility rules, including field priorities and admission to a recognized foreign institution."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Historical call; not currently open."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "study_abroad_financing",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-025",
+      "type": "training",
+      "title": "Kigali Smart Skills Hub",
+      "organization": {
+        "name": "Rwanda Polytechnic / ILO / ICT Chamber partners",
+        "kind": "government"
+      },
+      "description": "Digital and technical skills initiative intended to prepare unemployed graduates, TVET leavers, university graduates and dropouts for the digital economy. Target groups include young women and persons with disabilities.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kigali, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "kigali-smart-skills-hub",
+        "name": "Kigali Smart Skills Hub",
+        "url": "https://mis.iprckigali.ac.rw/mis/dualtraining/kigali_skills_hub",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://mis.iprckigali.ac.rw/mis/dualtraining/kigali_skills_hub",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Programme has been advertised as free; confirm the current cohort and any incidental costs with the provider.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Industry-oriented technical and digital skills; employability and self-employment preparation."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Check the active cohort’s age, education, residence and selection conditions."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Programme information is available online, but current intake/deadline was not confirmed."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "digital_training",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-026",
+      "type": "training",
+      "title": "INTANGO TSS — Digital Skills for Employability",
+      "organization": {
+        "name": "INTANGO TSS",
+        "kind": "provider_or_employer"
+      },
+      "description": "Short course listed by the school to support digital skills and employability. Confirm current enrolment, syllabus, duration and delivery mode with the provider.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; provider location per school",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "intango-tss",
+        "name": "INTANGO TSS",
+        "url": "https://intangotss.rw/programs",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://intangotss.rw/programs",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Listed as free on the provider page; reconfirm for the current intake.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Digital and employability skills."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Confirm eligibility and current course availability with the school."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Current intake and deadline not confirmed."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "digital_training",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-027",
+      "type": "training",
+      "title": "INTANGO TSS — Computer Application Short Course",
+      "organization": {
+        "name": "INTANGO TSS",
+        "kind": "provider_or_employer"
+      },
+      "description": "Computer application course listed in the school’s short-course programmes. Verify curriculum, course duration and availability directly with the provider.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; provider location per school",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "intango-tss",
+        "name": "INTANGO TSS",
+        "url": "https://intangotss.rw/programs",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://intangotss.rw/programs",
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Listed as free on the provider page; reconfirm for the current intake.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Foundational computer application skills for office and entry-level ICT tasks."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Confirm current course dates and enrolment requirements."
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Current intake and deadline not confirmed."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": false,
+        "category": "computer_training",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-028",
+      "type": "tvet",
+      "title": "Rwanda Polytechnic TVET and Technical Programmes",
+      "organization": {
+        "name": "Rwanda Polytechnic",
+        "kind": "government"
+      },
+      "description": "Explore current TVET, diploma and technical programmes offered through Rwanda Polytechnic. Programme availability, entry criteria, tuition and application deadlines vary by campus and academic year.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Multiple RP campuses, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "rwanda-polytechnic",
+        "name": "Rwanda Polytechnic",
+        "url": "https://www.rp.ac.rw/announcement",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.rp.ac.rw/announcement",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Costs vary by programme and applicant category; use the current admissions call and fee schedule.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Formal technical and vocational qualifications and practical skills."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Meet the entry requirements for the selected programme; consult the current annual call."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Discovery record, not one specific course or open admission offer."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "tvet_discovery",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-029",
+      "type": "entrepreneurship",
+      "title": "Hanga Growth Programme",
+      "organization": {
+        "name": "ICT Chamber / Hanga Growth Programme",
+        "kind": "provider_or_employer"
+      },
+      "description": "Startup growth support, investment-readiness development and pitch opportunities. Programme calls and pitch events are cohort-specific; funding is not guaranteed.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; programme and event locations vary",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "hanga-growth-programme",
+        "name": "Hanga Growth Programme",
+        "url": "https://hanga.ict.rw/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://hanga.ict.rw/",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "No universal programme fee or grant amount stated; check each cohort's terms.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Potential mentorship, startup development support, pitch exposure and investor connections."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Founder/startup eligibility varies by cohort; check the current call."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "Programme entry point; current cohort deadline not confirmed."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "startup_support",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-opp-030",
+      "type": "entrepreneurship",
+      "title": "Inkomoko Entrepreneur and SME Support",
+      "organization": {
+        "name": "Inkomoko",
+        "kind": "provider_or_employer"
+      },
+      "description": "Business-development support for entrepreneurs and small businesses. Services and eligibility vary by programme and location; applicants should confirm whether a current cohort or support product is available.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kigali and other programme locations, Rwanda",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "inkomoko",
+        "name": "Inkomoko",
+        "url": "https://www.inkomoko.com/",
+        "attribution": "Official source or current listing; see verification state and notes."
+      },
+      "applicationUrl": "https://www.inkomoko.com/",
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Costs or financing terms depend on the specific service; ask the provider before committing.",
+        "costCertainty": "source_stated",
+        "benefits": [
+          "Business coaching, capacity building and possible access-to-finance pathways, depending on programme."
+        ],
+        "fundingCertainty": "source_stated"
+      },
+      "requirements": [
+        "Small-business and entrepreneur eligibility varies by service."
+      ],
+      "verification": {
+        "state": "verified_listing",
+        "lastVerifiedAt": "2026-10-26",
+        "verificationNote": "General programme discovery record, not a guaranteed grant or open application."
+      },
+      "metadata": {
+        "isSynthetic": false,
+        "isLiveOpportunity": true,
+        "category": "business_support",
+        "asOf": "2026-10-26"
+      }
+    },
+    {
+      "id": "rw-example-001",
+      "type": "job",
+      "title": "Experienced Software Engineer",
+      "organization": {
+        "name": "Example Technology Employer",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Experienced professional job'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kigali City, Rwanda",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "experienced_professional_job",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-002",
+      "type": "job",
+      "title": "Graduate / Entry-Level IT Support Officer",
+      "organization": {
+        "name": "Example Services Company",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Graduate / entry-level job'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kigali City, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "graduate___entry-level_job",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    }, {
+      "id": "rw-example-005",
+      "type": "internship",
+      "title": "No-Experience Digital Operations Intern",
+      "organization": {
+        "name": "Fictional Digital Agency",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Internship requiring no prior experience'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Kigali City, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "internship_requiring_no_prior_experience",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-007",
+      "type": "apprenticeship",
+      "title": "Electrical Installation Apprentice",
+      "organization": {
+        "name": "Fictional Technical Workshop",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Apprenticeship'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Huye District, Rwanda",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "apprenticeship",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+    {
+      "id": "rw-example-008",
+      "type": "industrial_placement",
+      "title": "Industrial Placement — Mechanical Engineering",
+      "organization": {
+        "name": "Fictional Manufacturing Plant",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Industrial placement'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; duty station not specified",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "industrial_placement",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-009",
+      "type": "scholarship",
+      "title": "Master's Scholarship for Bachelor's Graduates",
+      "organization": {
+        "name": "Fictional Scholarship Secretariat",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Master's scholarship for a bachelor's holder'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Study location not specified",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "master's_scholarship_for_a_bachelor's_holder",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-010",
+      "type": "education",
+      "title": "Master's Programme with Tuition Funding",
+      "organization": {
+        "name": "Fictional University",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Master's programme with tuition funding'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda or overseas; not specified",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "master's_programme_with_tuition_funding",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+       {
+      "id": "rw-example-013",
+      "type": "tvet",
+      "title": "TVET Admission — Technical Diploma",
+      "organization": {
+        "name": "Fictional TVET Institution",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'TVET admission'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; campus not specified",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "tvet_admission",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+      {
+      "id": "rw-example-014",
+      "type": "training",
+      "title": "Basic Motor Mechanic Training",
+      "organization": {
+        "name": "Fictional Vocational Centre",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Mechanic training'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; centre not specified",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "mechanic_training",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-019",
+      "type": "certification",
+      "title": "Computer and ICT Certification Course",
+      "organization": {
+        "name": "Fictional ICT Training Provider",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Computer/ICT certification'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; delivery mode not specified",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "computer_ict_certification",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-022",
+      "type": "livelihoods",
+      "title": "Imyuga Practical Skills Programme",
+      "organization": {
+        "name": "Fictional Community Skills Initiative",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Imyuga-related programme'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; district not specified",
+        "workMode": "in_person"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "imyuga-related_programme",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+    {
+      "id": "rw-example-024",
+      "type": "business_support",
+      "title": "Business Development Support for Small Enterprises",
+      "organization": {
+        "name": "Fictional SME Support Hub",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Business-development support'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; location not specified",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "synthetic_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "business-development_support",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    }, {
+      "id": "rw-example-026",
+      "type": "scholarship",
+      "title": "Closed Scholarship Call — Historical Example",
+      "organization": {
+        "name": "Fictional Scholarship Provider",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Closed opportunity'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Study destination unknown",
+        "workMode": "remote"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": "2026-06-30",
+      "deadlineStatus": "confirmed",
+      "status": "closed",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "closed_opportunity",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },{
+      "id": "rw-example-027",
+      "type": "job",
+      "title": "Rolling Recruitment Pool — Example",
+      "organization": {
+        "name": "Fictional Employer",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Rolling deadline'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; location not specified",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "rolling_deadline",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    },
+     {
+      "id": "rw-example-127",
+      "type": "job",
+      "title": "Rolling Recruitment Pool — Example",
+      "organization": {
+        "name": "Fictional Employer",
+        "kind": "synthetic"
+      },
+      "description": "Synthetic example for the category 'Rolling deadline'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda; location not specified",
+        "workMode": "hybrid"
+      },
+      "source": {
+        "id": "synthetic-example-source",
+        "name": "Synthetic example — not an official source",
+        "url": null,
+        "attribution": "Invented demonstration record only; not a real opportunity."
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "rolling",
+      "status": "rolling_example",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not verified; no real fee or funding should be inferred.",
+        "costCertainty": "not_verified",
+        "benefits": [
+          "Illustrative only; no actual benefit or funding is promised."
+        ],
+        "fundingCertainty": "not_verified"
+      },
+      "requirements": [
+        "Mandatory requirements are unknown; replace with verified requirements before publication."
+      ],
+      "verification": {
+        "state": "synthetic",
+        "lastVerifiedAt": "2026-10-27",
+        "verificationNote": "Invented example for schema and filter testing only. Do not display as a real opportunity."
+      },
+      "metadata": {
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "rolling_deadline",
+        "asOf": "2026-10-27",
+        "displaySafety": "DO_NOT_DISPLAY_AS_REAL"
+      }
+    }
+
+  ]
+}
