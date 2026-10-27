@@ -3,7 +3,7 @@ import path from "node:path";
 import { validateOpportunity } from "./eligibility";
 import { Opportunity } from "./types";
 
-const CATALOGUE_PATH = path.resolve(__dirname, "../../data/fixtures/rwanda-opportunity-demo-30.json");
+const CATALOGUE_PATH = path.resolve(__dirname, "../../data/fixtures/rwanda-opportunity-demo-v3.json");
 const MAX_CATALOGUE_BYTES = 2 * 1024 * 1024;
 
 export interface CatalogueCoverage {
@@ -65,6 +65,18 @@ export function parseCatalogueDocument(input: unknown): CatalogueDataset {
     }
     return record as Opportunity;
   });
+  if (String(input.datasetVersion).toLocaleLowerCase().startsWith("3")) {
+    for (const [index, opportunity] of opportunities.entries()) {
+      if (!Array.isArray(opportunity.careerFamilies) || !opportunity.suitabilitySignals ||
+        !Array.isArray(opportunity.provenance) || opportunity.provenance.length === 0 ||
+        !opportunity.mandatoryRequirementsDisclosure) {
+        throw new FixtureDataError(`V3 catalogue opportunity ${index + 1} is missing matching signals, provenance, or requirement-disclosure state.`);
+      }
+      if (!opportunity.requirements.every((requirement) => typeof requirement !== "string")) {
+        throw new FixtureDataError(`V3 catalogue opportunity ${index + 1} must classify source requirements explicitly.`);
+      }
+    }
+  }
   const idCounts = new Map<string, number>();
   for (const opportunity of opportunities) {
     idCounts.set(opportunity.id, (idCounts.get(opportunity.id) ?? 0) + 1);
@@ -73,9 +85,15 @@ export function parseCatalogueDocument(input: unknown): CatalogueDataset {
     .filter(([, count]) => count > 1)
     .map(([id]) => id)
     .sort();
+  if (duplicateIds.length > 0) {
+    throw new FixtureDataError(`Canonical catalogue contains duplicate IDs: ${duplicateIds.join(", ")}.`);
+  }
   const declaredOpportunityCount = typeof input.coverage.opportunityCount === "number"
     ? input.coverage.opportunityCount
     : undefined;
+  if (declaredOpportunityCount === undefined || declaredOpportunityCount !== opportunities.length) {
+    throw new FixtureDataError("Canonical catalogue record count does not match coverage.opportunityCount.");
+  }
 
   return {
     info: {
@@ -89,9 +107,7 @@ export function parseCatalogueDocument(input: unknown): CatalogueDataset {
     opportunities,
     duplicateIds,
     declaredOpportunityCount,
-    recordCountMatchesDeclaration: declaredOpportunityCount === undefined
-      ? null
-      : declaredOpportunityCount === opportunities.length,
+    recordCountMatchesDeclaration: true,
   };
 }
 

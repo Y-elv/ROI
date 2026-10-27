@@ -16,6 +16,7 @@ import {
   DEADLINE_STATUSES,
   VERIFICATION_STATES,
   ProficiencyLevel,
+  OpportunityProvenance,
 } from "./types";
 
 const PROFICIENCY_RANK: Record<ProficiencyLevel, number> = {
@@ -28,6 +29,13 @@ const PROFICIENCY_RANK: Record<ProficiencyLevel, number> = {
 const EVIDENCE_KINDS = [
   "self_reported", "self_taught", "document", "project", "portfolio", "work", "assessment", "source_listing", "other",
 ];
+const RWANDA_DISTRICTS = new Set([
+  "Bugesera", "Burera", "Gakenke", "Gasabo", "Gatsibo", "Gicumbi", "Gisagara", "Huye",
+  "Kamonyi", "Karongi", "Kayonza", "Kicukiro", "Kirehe", "Muhanga", "Musanze",
+  "Ngoma", "Ngororero", "Nyabihu", "Nyagatare", "Nyamagabe", "Nyamasheke",
+  "Nyanza", "Nyarugenge", "Nyaruguru", "Rubavu", "Ruhango", "Rulindo", "Rusizi",
+  "Rutsiro", "Rwamagana",
+]);
 
 function normalize(value: string): string {
   return value.trim().toLocaleLowerCase();
@@ -147,6 +155,9 @@ function evaluateCriterion(
       if (profile.workExperienceDisclosure !== "complete") {
         return evaluateFact("unresolved", "Work-history completeness is not confirmed.");
       }
+      if (criterion.relatedArea && experiences.some((experience) => !experience.areas)) {
+        return evaluateFact("unresolved", "The work history is complete, but some roles do not identify their areas, so related experience cannot be confirmed.");
+      }
       const relevant = criterion.relatedArea
         ? experiences.filter((experience) => (experience.areas ?? []).some((area) => normalize(area) === normalize(criterion.relatedArea!)))
         : experiences;
@@ -200,15 +211,66 @@ function evaluateRequirement(
       explanation: requirement.certainty === "unknown"
         ? "The source marks this requirement as unknown."
         : "The source does not state whether this requirement applies.",
+      sourceEvidence: requirement.evidence,
+      profileEvidence: [],
+      actionToResolve: "Confirm whether this criterion applies with the listed opportunity source.",
     };
   }
   const result = evaluateCriterion(profile, requirement.criterion);
+  const profileEvidence = criterionProfileEvidence(profile, requirement.criterion);
   return {
     requirementId: requirement.id,
     description: requirement.description,
     importance: requirement.importance,
     ...result,
+    sourceEvidence: requirement.evidence,
+    profileEvidence,
+    ...(result.status === "unresolved" || result.status === "unmet"
+      ? { actionToResolve: actionForCriterion(requirement.criterion, result.status) }
+      : {}),
   };
+}
+
+function criterionProfileEvidence(profile: UserProfile, criterion: RequirementCriterion): string[] {
+  switch (criterion.kind) {
+    case "minimum_age":
+    case "maximum_age":
+      return profile.age === undefined ? [] : [`Reported age: ${profile.age}`];
+    case "country_eligibility":
+      return countryValues(profile, criterion.basis) ?? [];
+    case "education":
+      return (profile.qualifications ?? []).map((qualification) =>
+        [qualification.level, qualification.fieldOfStudy, qualification.name].filter(Boolean).join(" — "));
+    case "skill":
+      return (profile.skills ?? []).filter((skill) => normalize(skill.name) === normalize(criterion.name))
+        .map((skill) => `${skill.name}${skill.proficiency ? ` (${skill.proficiency})` : ""}`);
+    case "minimum_experience":
+      return (profile.workExperience ?? []).map((experience) =>
+        `${experience.role}: ${experience.years} year(s)${experience.areas?.length ? ` in ${experience.areas.join(", ")}` : ""}`);
+    case "certification":
+      return (profile.certifications ?? []).map((certification) => certification.name);
+    case "profile_fact": {
+      const fact = profile.facts?.[criterion.key];
+      return fact?.certainty === "known" ? [`${criterion.key}: ${String(fact.value)}`] : [];
+    }
+  }
+}
+
+function actionForCriterion(
+  criterion: RequirementCriterion,
+  status: RequirementEvaluationStatus,
+): string {
+  const action = status === "unmet" ? "Address or verify" : "Provide or confirm";
+  switch (criterion.kind) {
+    case "education": return `${action} the accepted qualification and field of study.`;
+    case "skill": return `${action} skill: ${criterion.name}.`;
+    case "minimum_experience": return `${action} relevant experience and duration.`;
+    case "certification": return `${action} certification: ${criterion.name}.`;
+    case "minimum_age":
+    case "maximum_age": return `${action} the age criterion with the opportunity source.`;
+    case "country_eligibility": return `${action} the required country or work-authorization information.`;
+    case "profile_fact": return `${action} the profile information required for this criterion.`;
+  }
 }
 
 export function evaluateEligibility(profile: UserProfile, opportunity: Opportunity): EligibilityResult {
@@ -220,6 +282,9 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
       importance: "unknown" as const,
       status: "unresolved" as const,
       explanation: "The catalogue provides this requirement as prose without structured eligibility criteria.",
+      sourceEvidence: [],
+      profileEvidence: [],
+      actionToResolve: "Check the full listing or ask the source which criteria apply.",
     };
   });
   if (opportunity.metadata?.isSynthetic === true) {
@@ -327,8 +392,8 @@ function validRequirement(value: unknown, index: number, errors: string[]): bool
     errors.push(`requirements[${index}].description is required.`);
     valid = false;
   }
-  if (value.importance !== "mandatory" && value.importance !== "preferred") {
-    errors.push(`requirements[${index}].importance must be mandatory or preferred.`);
+  if (value.importance !== "mandatory" && value.importance !== "preferred" && value.importance !== "unknown") {
+    errors.push(`requirements[${index}].importance must be mandatory, preferred, or unknown.`);
     valid = false;
   }
   if (value.certainty !== "known" && value.certainty !== "unknown" && value.certainty !== "not_stated") {
@@ -349,6 +414,38 @@ function validRequirement(value: unknown, index: number, errors: string[]): bool
     valid = false;
   }
   return valid;
+}
+
+function validSuitabilitySignals(value: unknown): boolean {
+  if (!isRecord(value)) return false;
+  const skills = value.skills;
+  const interests = value.interests;
+  return (skills === undefined || (Array.isArray(skills) && skills.every((skill) =>
+    isRecord(skill) && isNonEmptyString(skill.name) &&
+    (skill.minimumProficiency === undefined || isProficiency(skill.minimumProficiency)) &&
+    (skill.purpose === undefined || ["required", "preferred", "learning_outcome", "related"].includes(String(skill.purpose))) &&
+    Array.isArray(skill.evidence) && skill.evidence.length > 0 && isEvidenceArray(skill.evidence)))) &&
+    (interests === undefined || (Array.isArray(interests) && interests.every((interest) =>
+      isRecord(interest) && isNonEmptyString(interest.value) &&
+      Array.isArray(interest.evidence) && interest.evidence.length > 0 && isEvidenceArray(interest.evidence))));
+}
+
+function validCareerFamilies(value: unknown): boolean {
+  return Array.isArray(value) && value.every((signal) =>
+    isRecord(signal) &&
+    isNonEmptyString(signal.family) &&
+    Array.isArray(signal.terms) && signal.terms.length > 0 && signal.terms.every(isNonEmptyString) &&
+    (signal.confidence === "source_stated" || signal.confidence === "taxonomy_inferred") &&
+    Array.isArray(signal.evidence) && signal.evidence.length > 0 && isEvidenceArray(signal.evidence));
+}
+
+function validProvenance(value: unknown): value is OpportunityProvenance[] {
+  return Array.isArray(value) && value.every((entry) =>
+    isRecord(entry) &&
+    isNonEmptyString(entry.field) &&
+    isNonEmptyString(entry.sourceId) &&
+    ["known", "source_stated", "taxonomy_inferred", "unknown"].includes(String(entry.certainty)) &&
+    Array.isArray(entry.evidence) && entry.evidence.length > 0 && isEvidenceArray(entry.evidence));
 }
 
 export function validateOpportunity(input: unknown): OpportunityValidationResult {
@@ -402,15 +499,36 @@ export function validateOpportunity(input: unknown): OpportunityValidationResult
     }
   }
   if (input.location !== undefined && input.location !== null) {
-    if (!isRecord(input.location)) errors.push("location must be an object or null.");
-    else {
+    if (!isRecord(input.location)) {
+      errors.push("location must be an object or null.");
+    } else {
       for (const field of ["country", "province", "district", "displayLocation", "workMode"]) {
         const value = input.location[field];
         if (value !== undefined && value !== null && typeof value !== "string") {
           errors.push(`location.${field} must be a string or null.`);
         }
       }
+      if (typeof input.location.district === "string" && !RWANDA_DISTRICTS.has(input.location.district)) {
+        errors.push("location.district must be a recognized Rwanda district.");
+      }
+      if (typeof input.location.workMode === "string" &&
+        !["onsite", "in_person", "hybrid", "remote", "unspecified"].includes(input.location.workMode)) {
+        errors.push("location.workMode is not a supported work mode.");
+      }
     }
+  }
+  if (input.suitabilitySignals !== undefined && input.suitabilitySignals !== null &&
+    !validSuitabilitySignals(input.suitabilitySignals)) {
+    errors.push("suitabilitySignals must contain structured, evidenced skill and interest signals.");
+  }
+  if (input.careerFamilies !== undefined && !validCareerFamilies(input.careerFamilies)) {
+    errors.push("careerFamilies must contain structured, evidenced family signals.");
+  }
+  if (input.provenance !== undefined && !validProvenance(input.provenance)) {
+    errors.push("provenance must contain source-backed field references.");
+  }
+  if (input.mandatoryRequirementsDisclosure !== undefined && !isDisclosure(input.mandatoryRequirementsDisclosure)) {
+    errors.push("mandatoryRequirementsDisclosure must be complete, partial, or unknown.");
   }
   if (!isRecord(input.verification) ||
     !VERIFICATION_STATES.includes(input.verification.state as (typeof VERIFICATION_STATES)[number])) {

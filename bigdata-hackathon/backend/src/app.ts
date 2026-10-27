@@ -104,7 +104,7 @@ const swaggerSpec = swaggerJsdoc({
               properties: {
                 id: { type: "string" },
                 description: { type: "string" },
-                importance: { type: "string", enum: ["mandatory", "preferred"] },
+                importance: { type: "string", enum: ["mandatory", "preferred", "unknown"] },
                 certainty: { type: "string", enum: ["known", "unknown", "not_stated"] },
                 criterion: { type: "object" },
                 evidence: { type: "array", items: { $ref: "#/components/schemas/OpportunityEvidence" } },
@@ -154,6 +154,10 @@ const swaggerSpec = swaggerJsdoc({
               },
             },
             requirements: { type: "array", items: { $ref: "#/components/schemas/OpportunityRequirement" } },
+            suitabilitySignals: { type: "object", nullable: true },
+            careerFamilies: { type: "array", items: { type: "object" } },
+            provenance: { type: "array", items: { type: "object" } },
+            mandatoryRequirementsDisclosure: { type: "string", enum: ["complete", "partial", "unknown"] },
             verification: {
               type: "object", required: ["state"], additionalProperties: true,
               properties: {
@@ -169,7 +173,6 @@ const swaggerSpec = swaggerJsdoc({
                 category: { type: "string" }, asOf: { type: "string", format: "date", nullable: true },
               },
             },
-            suitabilitySignals: { type: "object", nullable: true },
           },
         },
         CatalogueSummary: {
@@ -208,6 +211,8 @@ const swaggerSpec = swaggerJsdoc({
               skills: { type: "number", minimum: 0 }, interests: { type: "number", minimum: 0 },
               locationAndWorkMode: { type: "number", minimum: 0 }, opportunityType: { type: "number", minimum: 0 },
               profileAlignment: { type: "number", minimum: 0 },
+              careerAlignment: { type: "number", minimum: 0 }, education: { type: "number", minimum: 0 },
+              experience: { type: "number", minimum: 0 },
             } },
           },
         },
@@ -218,6 +223,9 @@ const swaggerSpec = swaggerJsdoc({
             requirementId: { type: "string" }, description: { type: "string" },
             importance: { type: "string", enum: ["mandatory", "preferred", "unknown"] },
             status: { type: "string", enum: ["satisfied", "unmet", "unresolved"] }, explanation: { type: "string" },
+            sourceEvidence: { type: "array", items: { $ref: "#/components/schemas/OpportunityEvidence" } },
+            profileEvidence: { type: "array", items: { type: "string" } },
+            actionToResolve: { type: "string" },
           },
         },
         EligibilityResult: {
@@ -234,7 +242,7 @@ const swaggerSpec = swaggerJsdoc({
           type: "object",
           required: ["factor", "weight", "score", "explanation", "matchedEvidence", "nonMatchingEvidence", "unresolvedEvidence"],
           properties: {
-            factor: { type: "string", enum: ["skills", "interests", "locationAndWorkMode", "opportunityType", "profileAlignment"] },
+            factor: { type: "string", enum: ["skills", "interests", "locationAndWorkMode", "opportunityType", "profileAlignment", "careerAlignment", "education", "experience"] },
             weight: { type: "number" }, score: { type: "number", nullable: true, minimum: 0, maximum: 100 },
             explanation: { type: "string" }, matchedEvidence: { type: "array", items: { type: "string" } },
             nonMatchingEvidence: { type: "array", items: { type: "string" } },
@@ -243,14 +251,21 @@ const swaggerSpec = swaggerJsdoc({
         },
         RecommendationResult: {
           type: "object",
-          required: ["opportunityId", "title", "organization", "opportunity", "eligibility", "suitability"],
+          required: ["opportunityId", "title", "organization", "opportunity", "eligibility", "guidance", "suitability"],
           properties: {
             opportunityId: { type: "string" }, title: { type: "string" }, organization: { type: "string" },
             applicationUrl: { type: "string", format: "uri", nullable: true },
             opportunity: { $ref: "#/components/schemas/Opportunity" },
             eligibility: { $ref: "#/components/schemas/EligibilityResult" },
+            guidance: { type: "object", required: ["action", "reasons", "gaps", "nextStep", "targetOutcome", "supportingOpportunityIds", "uncertainty"], properties: {
+              action: { type: "string", enum: ["consider_applying", "apply_with_gaps", "build_experience_first", "build_skills_first", "pursue_training_or_certification", "explore_further_study", "insufficient_information"] },
+              reasons: { type: "array", items: { type: "string" } }, gaps: { type: "array", items: { type: "string" } },
+              nextStep: { type: "string" }, targetOutcome: { type: "string" },
+              supportingOpportunityIds: { type: "array", items: { type: "string" } }, uncertainty: { type: "array", items: { type: "string" } },
+            } },
             suitability: { type: "object", required: ["score", "scoreMeaning", "evidenceCoveragePercent", "components"], properties: {
-              score: { type: "number", nullable: true, minimum: 0, maximum: 100 }, scoreMeaning: { type: "string" },
+              score: { type: "number", nullable: true, minimum: 0, maximum: 100, description: "Conservative weighted suitability score; unavailable evidence earns no positive points but is marked unknown, not a mismatch." },
+              scoreMeaning: { type: "string" },
               evidenceCoveragePercent: { type: "number", minimum: 0, maximum: 100 },
               components: { type: "array", items: { $ref: "#/components/schemas/SuitabilityComponent" } },
             } },

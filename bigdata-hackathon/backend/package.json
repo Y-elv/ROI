@@ -7,7 +7,7 @@
     "dev": "nodemon --watch src --ext ts --exec tsx src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "tsx --test src/analytics/nisrRoutes.test.ts && python tools/test_nisr_analytics.py",
+    "test": "tsx --test src/opportunities/matching.test.ts src/opportunities/fixtureRepository.test.ts src/opportunities/opportunityRoutes.test.ts src/analytics/nisrRoutes.test.ts && python tools/test_nisr_analytics.py",
     "analytics:build": "python tools/build_nisr_analytics.py"
   },
   "keywords": [],

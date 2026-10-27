@@ -6,6 +6,7 @@ data/*
 !data/fixtures/
 data/fixtures/*
 !data/fixtures/rwanda-opportunity-demo-30.json
+!data/fixtures/rwanda-opportunity-demo-v3.json
 !data/derived/
 data/derived/*
 !data/derived/nisr-analytics.json

@@ -588,7 +588,10 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     if (body.weights !== undefined) {
       if (!isRecord(body.weights)) errors.push("weights must be an object.");
       else {
-        const supported = ["skills", "interests", "locationAndWorkMode", "opportunityType", "profileAlignment"];
+        const supported = [
+          "skills", "interests", "locationAndWorkMode", "opportunityType", "profileAlignment",
+          "careerAlignment", "education", "experience",
+        ];
         for (const [key, value] of Object.entries(body.weights)) {
           if (!supported.includes(key)) errors.push(`weights.${key} is not a supported factor.`);
           if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {

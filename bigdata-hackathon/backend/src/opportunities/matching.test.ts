@@ -93,6 +93,24 @@ test("an unresolved mandatory requirement returns unknown", () => {
   assert.equal(result.unresolved[0].status, "unresolved");
 });
 
+test("missing experience-area details remain unresolved rather than becoming an unmet requirement", () => {
+  const requirement: OpportunityRequirement = {
+    id: "agriculture-experience",
+    description: "At least two years of agricultural experience.",
+    importance: "mandatory",
+    certainty: "known",
+    criterion: { kind: "minimum_experience", years: 2, relatedArea: "agriculture" },
+    evidence: [fixtureEvidence],
+  };
+  const result = evaluateEligibility({
+    workExperience: [{ role: "Project Officer", years: 3 }],
+    workExperienceDisclosure: "complete",
+  }, fixtureOpportunity({}, [requirement]));
+  assert.equal(result.outcome, "unknown");
+  assert.equal(result.unmet.length, 0);
+  assert.match(result.unresolved[0].explanation, /areas/i);
+});
+
 test("one unmet mandatory requirement takes precedence over other unknown requirements", () => {
   const result = evaluateEligibility({ ...profileWithQualifications, age: 20 }, fixtureOpportunity({}, [
     {
@@ -126,7 +144,7 @@ test("a profile with no skills or interests remains rankable without a fabricate
   const result = matchOpportunity({}, fixtureOpportunity());
   assert.equal(result.suitability.score, null);
   assert.equal(result.eligibility.outcome, "eligible");
-  assert.equal(result.suitability.components.length, 5);
+  assert.equal(result.suitability.components.length, 8);
 });
 
 test("partial profile information remains unresolved rather than being treated as failure", () => {
@@ -136,7 +154,7 @@ test("partial profile information remains unresolved rather than being treated a
   assert.match(result.unresolved[0].explanation, /not listed/i);
 });
 
-test("suitability exposes weighted components and score meaning", () => {
+test("suitability exposes weighted components and penalizes sparse evidence coverage", () => {
   const opportunity = fixtureOpportunity({}, [
     { ...pythonRequirement, importance: "preferred" },
   ]);
@@ -148,10 +166,20 @@ test("suitability exposes weighted components and score meaning", () => {
     preferredOpportunityTypes: ["internship"],
   };
   const result = matchOpportunity(profile, opportunity);
-  assert.equal(result.suitability.score, 100);
+  assert.equal(result.suitability.score, 45);
   assert.equal(result.suitability.components.find((component) => component.factor === "skills")?.weight, DEFAULT_MATCHING_WEIGHTS.skills);
   assert.equal(result.suitability.components.find((component) => component.factor === "skills")?.score, 100);
+  assert.equal(result.suitability.evidenceCoveragePercent, 45);
+  assert.match(result.suitability.scoreMeaning, /unavailable evidence earns no positive points/i);
   assert.match(result.suitability.scoreMeaning, /not a probability/i);
+});
+
+test("career-family overlap does not incorrectly count as a matching technical skill", () => {
+  const opportunity = fixtureOpportunity({
+    suitabilitySignals: { skills: [{ name: "Python", evidence: [fixtureEvidence] }] },
+  });
+  const result = matchOpportunity({ skills: [{ name: "programming" }], skillDisclosure: "complete" }, opportunity);
+  assert.equal(result.suitability.components.find((component) => component.factor === "skills")?.score, 0);
 });
 
 test("identical inputs produce deterministic ranking with stable ID tie-breaks", () => {
@@ -178,7 +206,7 @@ test("eligibility remains separate from a high suitability score", () => {
     preferredOpportunityTypes: ["internship"],
   }, opportunity);
   assert.equal(result.eligibility.outcome, "ineligible");
-  assert.equal(result.suitability.score, 100);
+  assert.equal(result.suitability.score, 35);
 });
 
 test("invalid or incomplete opportunity data is rejected", () => {
@@ -201,7 +229,7 @@ test("matching weights are configurable and invalid totals are rejected", () => 
     locationAndWorkMode: 0,
     opportunityType: 2,
   });
-  assert.equal(result.suitability.score, 100);
+  assert.equal(result.suitability.score, 80.97);
   assert.throws(() => matchOpportunity({}, fixtureOpportunity(), {
     skills: 0,
     interests: 0,

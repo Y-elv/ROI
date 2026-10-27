@@ -33,7 +33,7 @@ export type RequirementImportance = "mandatory" | "preferred" | "unknown";
 export type EligibilityOutcome = "eligible" | "ineligible" | "unknown";
 export type DisclosureState = "complete" | "partial" | "unknown";
 export type ProficiencyLevel = "beginner" | "intermediate" | "advanced" | "expert";
-export type WorkMode = "onsite" | "in_person" | "hybrid" | "remote" | "unspecified" | string;
+export type WorkMode = "onsite" | "in_person" | "hybrid" | "remote" | "unspecified";
 
 export interface EvidenceReference {
   kind: "self_reported" | "self_taught" | "document" | "project" | "portfolio" | "work" | "assessment" | "source_listing" | "other";
@@ -152,8 +152,17 @@ export interface OpportunityInterestSignal {
   evidence: EvidenceReference[];
 }
 
+export interface CareerFamilySignal {
+  family: string;
+  terms: string[];
+  confidence: "source_stated" | "taxonomy_inferred";
+  evidence: EvidenceReference[];
+}
+
 export interface OpportunitySuitabilitySignals {
-  skills?: OpportunitySkillSignal[];
+  skills?: Array<OpportunitySkillSignal & {
+    purpose?: "required" | "preferred" | "learning_outcome" | "related";
+  }>;
   interests?: OpportunityInterestSignal[];
 }
 
@@ -180,6 +189,13 @@ export interface OpportunitySource {
   [key: string]: unknown;
 }
 
+export interface OpportunityProvenance {
+  field: string;
+  sourceId: string;
+  certainty: "known" | "source_stated" | "taxonomy_inferred" | "unknown";
+  evidence: EvidenceReference[];
+}
+
 export interface Opportunity {
   id: string;
   type: OpportunityType;
@@ -195,6 +211,9 @@ export interface Opportunity {
   duration?: string | null;
   costAndFunding: CostAndFunding;
   suitabilitySignals?: OpportunitySuitabilitySignals;
+  careerFamilies?: CareerFamilySignal[];
+  provenance?: OpportunityProvenance[];
+  mandatoryRequirementsDisclosure?: DisclosureState;
   location?: OpportunityLocation;
   verification: {
     state: VerificationState;
@@ -220,6 +239,9 @@ export interface RequirementEvaluation {
   importance: RequirementImportance;
   status: RequirementEvaluationStatus;
   explanation: string;
+  sourceEvidence?: EvidenceReference[];
+  profileEvidence?: string[];
+  actionToResolve?: string;
 }
 
 export interface EligibilityResult {
@@ -231,7 +253,15 @@ export interface EligibilityResult {
   preferred: RequirementEvaluation[];
 }
 
-export type SuitabilityFactor = "skills" | "interests" | "locationAndWorkMode" | "opportunityType" | "profileAlignment";
+export type SuitabilityFactor =
+  | "skills"
+  | "interests"
+  | "locationAndWorkMode"
+  | "opportunityType"
+  | "profileAlignment"
+  | "careerAlignment"
+  | "education"
+  | "experience";
 
 export interface MatchingWeights {
   skills: number;
@@ -239,6 +269,9 @@ export interface MatchingWeights {
   locationAndWorkMode: number;
   opportunityType: number;
   profileAlignment?: number;
+  careerAlignment?: number;
+  education?: number;
+  experience?: number;
 }
 
 export interface SuitabilityComponent {
@@ -258,6 +291,22 @@ export interface RecommendationResult {
   applicationUrl?: string | null;
   opportunity: Opportunity;
   eligibility: EligibilityResult;
+  guidance: {
+    action:
+      | "consider_applying"
+      | "apply_with_gaps"
+      | "build_experience_first"
+      | "build_skills_first"
+      | "pursue_training_or_certification"
+      | "explore_further_study"
+      | "insufficient_information";
+    reasons: string[];
+    gaps: string[];
+    nextStep: string;
+    targetOutcome: string;
+    supportingOpportunityIds: string[];
+    uncertainty: string[];
+  };
   suitability: {
     score: number | null;
     scoreMeaning: string;

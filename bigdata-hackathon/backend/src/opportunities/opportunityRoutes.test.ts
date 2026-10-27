@@ -16,7 +16,7 @@ async function withServer(callback: (baseUrl: string) => Promise<void>): Promise
   }
 }
 
-test("catalogue list preserves canonical records and reports count discrepancy", async () => {
+test("catalogue list preserves canonical V3 records and reports consistent counts", async () => {
   await withServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/opportunities?limit=100`);
     const body = await response.json() as {
@@ -29,12 +29,12 @@ test("catalogue list preserves canonical records and reports count discrepancy",
     };
     assert.equal(response.status, 200);
     assert.equal(body.success, true);
-    assert.equal(body.data.pagination.total, 45);
-    assert.equal(body.data.opportunities.length, 45);
-    assert.equal(body.data.source.records, 45);
-    assert.equal(body.data.source.declaredRecords, 30);
-    assert.equal(body.data.source.recordCountMatchesDeclaration, false);
-    assert.deepEqual(body.data.source.duplicateIds, ["rw-example-027"]);
+    assert.equal(body.data.pagination.total, 44);
+    assert.equal(body.data.opportunities.length, 44);
+    assert.equal(body.data.source.records, 44);
+    assert.equal(body.data.source.declaredRecords, 44);
+    assert.equal(body.data.source.recordCountMatchesDeclaration, true);
+    assert.deepEqual(body.data.source.duplicateIds, []);
     assert.ok(body.data.opportunities.some((item) => item.type === "tvet"));
     assert.ok(body.data.opportunities.some((item) => item.requirements.length > 0));
   });
@@ -55,12 +55,14 @@ test("canonical list filters support catalogue types and status values", async (
   });
 });
 
-test("detail route rejects duplicate IDs instead of choosing one arbitrarily", async () => {
+test("detail route resolves the retained synthetic record and rejects missing duplicate ID", async () => {
   await withServer(async (baseUrl) => {
-    const duplicate = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-027`);
-    const duplicateBody = await duplicate.json() as { error: { code: string } };
-    assert.equal(duplicate.status, 409);
-    assert.equal(duplicateBody.error.code, "OPPORTUNITY_ID_AMBIGUOUS");
+    const retained = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-027`);
+    const retainedBody = await retained.json() as { data: { opportunity: { id: string } } };
+    assert.equal(retained.status, 200);
+    assert.equal(retainedBody.data.opportunity.id, "rw-example-027");
+    const removedDuplicate = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-127`);
+    assert.equal(removedDuplicate.status, 404);
 
     const unique = await fetch(`${baseUrl}/api/v1/opportunities/rw-opp-001`);
     const uniqueBody = await unique.json() as {
@@ -79,14 +81,123 @@ test("eligibility endpoint selects catalogue record and treats prose requirement
       body: JSON.stringify({ profile: {}, opportunityId: "rw-opp-001" }),
     });
     const body = await response.json() as {
-      data: { eligibility: { outcome: string; unresolved: Array<{ importance: string }> }; opportunity: { id: string } };
+      data: { eligibility: { outcome: string; unresolved: Array<{ importance: string; sourceEvidence?: unknown[]; actionToResolve?: string }> }; opportunity: { id: string } };
     };
     assert.equal(response.status, 200);
     assert.equal(body.data.opportunity.id, "rw-opp-001");
     assert.equal(body.data.eligibility.outcome, "unknown");
     assert.ok(body.data.eligibility.unresolved.some((entry) => entry.importance === "unknown"));
+    assert.ok(body.data.eligibility.unresolved.some((entry) =>
+      entry.sourceEvidence?.length && entry.actionToResolve));
   });
 });
+
+  test("software and data profile ranks the source-backed coding programme above unrelated records", async () => {
+    await withServer(async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/api/v1/opportunities/match`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ profile: {
+          careerGoals: ["software development", "data analysis"],
+          skills: [
+            { name: "programming", proficiency: "beginner" },
+            { name: "data science", proficiency: "beginner" },
+            { name: "Android", proficiency: "beginner" },
+            { name: "Kotlin", proficiency: "beginner" },
+          ],
+          skillDisclosure: "complete",
+          preferredOpportunityTypes: ["training"],
+        } }),
+      });
+      const body = await response.json() as { data: Array<{ opportunityId: string; suitability: { score: number | null } }> };
+      assert.equal(response.status, 200);
+      assert.equal(body.data[0]?.opportunityId, "rw-opp-010");
+      assert.ok((body.data[0]?.suitability.score ?? 0) > 0);
+    });
+  });
+
+  test("agriculture profile exposes the real agribusiness internship", async () => {
+    await withServer(async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/api/v1/opportunities/match`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ profile: {
+          careerGoals: ["agriculture", "agribusiness"],
+          skills: [{ name: "agribusiness", proficiency: "beginner" }],
+          skillDisclosure: "complete",
+          preferredOpportunityTypes: ["internship"],
+        } }),
+      });
+      const body = await response.json() as { data: Array<{ opportunityId: string }> };
+      assert.equal(response.status, 200);
+      assert.equal(body.data[0]?.opportunityId, "rw-opp-009");
+    });
+  });
+
+  test("healthcare profile clearly has no aligned job in the current catalogue", async () => {
+    await withServer(async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/api/v1/opportunities/match`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ type: "job", includeNeedsConfirmation: true, profile: {
+          careerGoals: ["healthcare", "nursing"],
+        } }),
+      });
+      const body = await response.json() as {
+        data: Array<{
+          opportunity: { type: string };
+          suitability: { components: Array<{ factor: string; score: number | null }> };
+        }>;
+      };
+      assert.equal(response.status, 200);
+      assert.equal(body.data.filter((result) =>
+        result.suitability.components.find((component) => component.factor === "careerAlignment")?.score &&
+        result.suitability.components.find((component) => component.factor === "careerAlignment")!.score! > 0).length, 0);
+    });
+  });
+
+  test("entrepreneurship profile identifies both real business-support records", async () => {
+    await withServer(async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/api/v1/opportunities/match`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ profile: {
+          careerGoals: ["entrepreneurship", "business development"],
+          interests: ["startup", "small business"],
+          interestDisclosure: "complete",
+        } }),
+      });
+      const body = await response.json() as { data: Array<{ opportunityId: string }> };
+      assert.equal(response.status, 200);
+      const ids = body.data.map((result) => result.opportunityId);
+      assert.ok(ids.includes("rw-opp-029"));
+      assert.ok(ids.includes("rw-opp-030"));
+    });
+  });
+
+  test("graduate profile finds real internship pathways and includes explanatory guidance", async () => {
+    await withServer(async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/api/v1/opportunities/match`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ profile: {
+          careerGoals: ["graduate career development"],
+          qualifications: [{ name: "Bachelor's degree", level: "bachelor", fieldOfStudy: "business" }],
+          qualificationDisclosure: "complete",
+          workExperience: [],
+          workExperienceDisclosure: "complete",
+          preferredOpportunityTypes: ["internship", "training"],
+        } }),
+      });
+      const body = await response.json() as {
+        data: Array<{ opportunityId: string; guidance: { action: string; nextStep: string; supportingOpportunityIds: string[] } }>;
+      };
+      assert.equal(response.status, 200);
+      const ids = body.data.map((result) => result.opportunityId);
+      assert.ok(ids.includes("rw-opp-007") || ids.includes("rw-opp-008"));
+      assert.ok(body.data.every((result) => result.guidance.nextStep.length > 0));
+    });
+  });
 
 test("matching excludes synthetic, closed, and needs-confirmation entries by default", async () => {
   await withServer(async (baseUrl) => {
