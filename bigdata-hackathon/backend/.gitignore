@@ -1,0 +1,16 @@
+
+node_modules/
+dist/
+.env
+data/
+
+# Python generated files
+__pycache__/
+*.py[cod]
+
+
+
+# Virtual environments
+venv/
+.venv/
+
