@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "r-o-i-d48c6"
+  },
+  "targets": {
+    "r-o-i-d48c6": {
+      "hosting": {
+        "roi-rwanda": [
+          "roi-rwanda"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
