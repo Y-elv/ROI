@@ -58,6 +58,9 @@ export interface Opportunity {
     district?: string | null;
     displayLocation?: string | null;
     workMode?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    coordinateType?: "district_reference" | null;
   };
   verification: {
     state: "verified_listing" | "needs_confirmation" | "synthetic";

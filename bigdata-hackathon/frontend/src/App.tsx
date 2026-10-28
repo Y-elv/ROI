@@ -51,6 +51,16 @@ import {
   type Recommendation,
   type UserProfile,
 } from "./types";
+import {
+  distanceToOpportunity,
+  districtsForProvince,
+  formatOpportunityLocation,
+  isValidCoordinates,
+  locationMatchesFilters,
+  RWANDA_PROVINCES,
+  sortByDistance,
+  type Coordinates,
+} from "./location";
 import { AppProvider, useAppState } from "./context";
 import type { Language } from "./translations";
 
@@ -240,6 +250,15 @@ function OpportunitiesPage() {
     setFilters((current) => ({ ...current, [key]: value, page: 1 }));
   }
 
+  function updateProvince(province: string) {
+    setFilters((current) => ({
+      ...current,
+      province,
+      district: current.district && !districtsForProvince(province).includes(current.district) ? "" : current.district,
+      page: 1,
+    }));
+  }
+
   return (
     <div className="content-page">
       <PageIntro eyebrow="OPPORTUNITY DIRECTORY" title="Explore your options." description="Browse jobs, training, scholarships and more. Each listing keeps its source and confirmation status visible." />
@@ -249,8 +268,8 @@ function OpportunitiesPage() {
           <label>Opportunity type<select value={filters.type} onChange={(event) => updateFilter("type", event.target.value as OpportunityType | "")}><option value="">All types</option>{opportunityTypes.map((type) => <option key={type} value={type}>{humanize(type)}</option>)}</select></label>
           <label>Status<select value={filters.status} onChange={(event) => updateFilter("status", event.target.value)}><option value="">All statuses</option>{["open", "rolling", "closed", "needs_confirmation", "rolling_example", "synthetic_example"].map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
           <label>Deadline<select value={filters.deadlineStatus} onChange={(event) => updateFilter("deadlineStatus", event.target.value)}><option value="">Any deadline status</option>{["confirmed", "rolling", "not_confirmed", "historical"].map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
-          <label>Province<input value={filters.province} onChange={(event) => updateFilter("province", event.target.value)} placeholder="e.g. Eastern Province" maxLength={100} /></label>
-          <label>District<input value={filters.district} onChange={(event) => updateFilter("district", event.target.value)} placeholder="e.g. Kirehe" maxLength={100} /></label>
+          <label>Province<select value={filters.province} onChange={(event) => updateProvince(event.target.value)}><option value="">All provinces</option>{RWANDA_PROVINCES.map((province) => <option key={province} value={province}>{province}</option>)}</select></label>
+          <label>District<select value={filters.district} onChange={(event) => updateFilter("district", event.target.value)}><option value="">All districts</option>{districtsForProvince(filters.province).map((district) => <option key={district} value={district}>{district}</option>)}</select></label>
           <label>Category<input value={filters.category} onChange={(event) => updateFilter("category", event.target.value)} placeholder="Catalogue category" maxLength={100} /></label>
           <label>Record kind<select value={filters.isSynthetic} onChange={(event) => updateFilter("isSynthetic", event.target.value)}><option value="">All record kinds</option><option value="false">Non-synthetic records</option><option value="true">Synthetic demo records</option></select></label>
           <label>Live listing<select value={filters.isLiveOpportunity} onChange={(event) => updateFilter("isLiveOpportunity", event.target.value)}><option value="">Any live status</option><option value="true">Marked live</option><option value="false">Not marked live</option></select></label>
@@ -286,7 +305,7 @@ function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
       <div className="card-topline"><span className="type-pill">{humanize(opportunity.type)}</span><StatusBadge opportunity={opportunity} /></div>
       <Link className="opportunity-title" to={`/opportunities/${encodeURIComponent(opportunity.id)}`}>{opportunity.title}</Link>
       <div className="organization">{opportunity.organization.name}</div>
-      {opportunity.location?.displayLocation && <div className="location-line"><MapPin size={14} /> {opportunity.location.displayLocation}</div>}
+      <div className="location-line"><MapPin size={14} /> {formatOpportunityLocation(opportunity.location)}</div>
       {opportunity.description && <p className="card-description">{opportunity.description}</p>}
       <div className="card-meta">
         <span><b>Deadline</b>{deadlineText(opportunity)}</span>
@@ -322,7 +341,7 @@ function OpportunityDetailPage() {
         <div className="card-topline"><span className="type-pill">{humanize(opportunity.type)}</span><StatusBadge opportunity={opportunity} /></div>
         <h1>{opportunity.title}</h1>
         <p className="detail-org">{opportunity.organization.name}{opportunity.organization.kind ? ` · ${humanize(opportunity.organization.kind)}` : ""}</p>
-        {opportunity.location?.displayLocation && <p className="location-line"><MapPin size={15} /> {opportunity.location.displayLocation}</p>}
+        <p className="location-line"><MapPin size={15} /> {formatOpportunityLocation(opportunity.location)}</p>
         <div className="detail-actions">
           {opportunity.applicationUrl && <a className="button button-dark" href={opportunity.applicationUrl} target="_blank" rel="noreferrer">Visit application link <ArrowUpRight size={16} /></a>}
           {recommendation && !isInPlan && <button className="button button-outline" type="button" onClick={() => addToPlan(recommendation)}><CheckCircle2 size={16} /> Add to action plan</button>}
@@ -376,12 +395,23 @@ function EligibilityPanel({ result }: { result: EligibilityResult }) {
   );
 }
 
+type NearbyState =
+  | { status: "idle" }
+  | { status: "requesting" }
+  | { status: "ready"; origin: Coordinates }
+  | { status: "error"; message: string }
+  | { status: "no-coordinates" };
+
 function GuidancePage() {
   const { profile, setProfile, setRecommendations, recommendations, addToPlan, plan, t } = useAppState();
   const mutation = useMutation({ mutationFn: getMatches });
   const [form, setForm] = useState(() => initialProfileForm(profile));
   const [selectedTypes, setSelectedTypes] = useState<OpportunityType[]>(profile?.preferredOpportunityTypes ?? []);
   const [stepIndex, setStepIndex] = useState(0);
+  const [selectedMatchProvince, setSelectedMatchProvince] = useState("");
+  const [selectedMatchDistrict, setSelectedMatchDistrict] = useState("");
+  const [sortMode, setSortMode] = useState<"profile" | "nearest">("profile");
+  const [nearbyState, setNearbyState] = useState<NearbyState>({ status: "idle" });
   const steps = [
     { title: "step1Title", description: "step1Description" },
     { title: "step2Title", description: "step2Description" },
@@ -407,8 +437,56 @@ function GuidancePage() {
   }
 
   const matches = mutation.data?.data ?? recommendations;
+  const filteredMatches = matches.filter(({ opportunity }) =>
+    locationMatchesFilters(opportunity.location, selectedMatchProvince, selectedMatchDistrict));
+  const visibleMatches = sortMode === "nearest" && nearbyState.status === "ready"
+    ? sortByDistance(filteredMatches, (recommendation) => recommendation.opportunity.location, nearbyState.origin)
+    : filteredMatches;
   const inPlan = new Set(plan.map((item) => item.recommendation.opportunityId));
   const progressPercent = ((stepIndex + 1) / steps.length) * 100;
+
+  function updateMatchProvince(province: string) {
+    setSelectedMatchProvince(province);
+    setSelectedMatchDistrict((current) =>
+      current && !districtsForProvince(province).includes(current) ? "" : current);
+  }
+
+  function findNearbyOpportunities() {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      setNearbyState({ status: "error", message: "This browser does not support location access. You can still filter by province and district." });
+      setSortMode("profile");
+      return;
+    }
+
+    setNearbyState({ status: "requesting" });
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const origin = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+        if (!isValidCoordinates(origin)) {
+          setNearbyState({ status: "error", message: "Your device returned invalid coordinates. Try again or use the province and district filters." });
+          setSortMode("profile");
+          return;
+        }
+        if (!matches.some((recommendation) => distanceToOpportunity(recommendation.opportunity.location, origin))) {
+          setNearbyState({ status: "no-coordinates" });
+          setSortMode("profile");
+          return;
+        }
+        setNearbyState({ status: "ready", origin });
+        setSortMode("nearest");
+      },
+      (error) => {
+        const message = error.code === 1
+          ? "Location permission was denied. You can retry or filter by province and district."
+          : error.code === 3
+            ? "The location request timed out. Try again or use the province and district filters."
+            : "Your device could not determine your location. Try again or use the province and district filters.";
+        setNearbyState({ status: "error", message });
+        setSortMode("profile");
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 },
+    );
+  }
 
   return (
     <div className="content-page">
@@ -475,8 +553,50 @@ function GuidancePage() {
       {(matches.length > 0 || mutation.isSuccess) && (
         <section className="matches-section">
           <div className="section-heading"><div><span className="eyebrow">{t("matchesEyebrow")}</span><h2>{matches.length ? t("matchesTitle") : t("noMatchesTitle")}</h2></div><p>{t("matchesNote")}</p></div>
+          {profile?.interests?.length ? <p className="profile-interests"><strong>Your stated interests:</strong> {profile.interests.join(", ")}</p> : null}
+          <div className="match-location-filter">
+            <label>Province
+              <select value={selectedMatchProvince} onChange={(event) => updateMatchProvince(event.target.value)}>
+                <option value="">All provinces</option>
+                {RWANDA_PROVINCES.map((province) => <option key={province} value={province}>{province}</option>)}
+              </select>
+            </label>
+            <label>District
+              <select value={selectedMatchDistrict} onChange={(event) => setSelectedMatchDistrict(event.target.value)}>
+                <option value="">All districts</option>
+                {districtsForProvince(selectedMatchProvince).map((district) => <option key={district} value={district}>{district}</option>)}
+              </select>
+            </label>
+            <div className="nearby-actions">
+              <button className="button button-outline button-small" type="button" onClick={findNearbyOpportunities} disabled={nearbyState.status === "requesting"}>
+                <MapPin size={14} /> {nearbyState.status === "requesting" ? "Finding your location…" : "Find opportunities near me"}
+              </button>
+              {nearbyState.status === "ready" && <label className="sort-select">Sort results
+                <select value={sortMode} onChange={(event) => setSortMode(event.target.value === "nearest" ? "nearest" : "profile")}>
+                  <option value="profile">Best profile match</option>
+                  <option value="nearest">Nearest to me</option>
+                </select>
+              </label>}
+              {nearbyState.status === "ready" && <button className="text-button" type="button" onClick={() => {
+                setNearbyState({ status: "idle" });
+                setSortMode("profile");
+              }}>Clear my location</button>}
+              {(selectedMatchProvince || selectedMatchDistrict) && <button className="text-button" type="button" onClick={() => {
+                setSelectedMatchProvince("");
+                setSelectedMatchDistrict("");
+              }}>Clear location filters</button>}
+            </div>
+            <span>Click “Find opportunities near me” to request browser location; coordinates stay in this page session and are not sent to ROI’s API. District selections filter results separately.</span>
+          </div>
+          {nearbyState.status === "ready" && <p className="nearby-feedback" role="status">Distances are approximate straight-line distances from district reference points, not exact venues or road distances. Your coordinates are used for this page session and are not sent to ROI’s API.</p>}
+          {nearbyState.status === "error" && <p className="nearby-feedback nearby-error" role="alert">{nearbyState.message}</p>}
+          {nearbyState.status === "no-coordinates" && <p className="nearby-feedback" role="status">Your location was obtained, but none of these profile matches has usable opportunity coordinates. Profile ranking and province/district filters are still available.</p>}
           {matches.length === 0 && <EmptyState title={t("noMatchesTitle")} text={t("noMatchesText")} />}
-          <div className="match-list">{matches.map((result) => <RecommendationCard key={result.opportunityId} recommendation={result} onAdd={() => addToPlan(result)} inPlan={inPlan.has(result.opportunityId)} />)}</div>
+          {matches.length > 0 && visibleMatches.length === 0 && <EmptyState title="No profile matches in this location" text="The selected province and district narrow the returned profile matches. Clear the location filters to review all matches." action={<button className="button button-outline" type="button" onClick={() => {
+            setSelectedMatchProvince("");
+            setSelectedMatchDistrict("");
+          }}>Show all profile matches</button>} />}
+          <div className="match-list">{visibleMatches.map((result) => <RecommendationCard key={result.opportunityId} recommendation={result} onAdd={() => addToPlan(result)} inPlan={inPlan.has(result.opportunityId)} nearbyOrigin={nearbyState.status === "ready" ? nearbyState.origin : undefined} />)}</div>
         </section>
       )}
     </div>
@@ -554,16 +674,51 @@ function createProfile(form: ProfileForm, preferredOpportunityTypes: Opportunity
   return profile;
 }
 
-function RecommendationCard({ recommendation, onAdd, inPlan }: { recommendation: Recommendation; onAdd: () => void; inPlan: boolean }) {
+function RecommendationCard({
+  recommendation,
+  onAdd,
+  inPlan,
+  nearbyOrigin,
+}: {
+  recommendation: Recommendation;
+  onAdd: () => void;
+  inPlan: boolean;
+  nearbyOrigin?: Coordinates;
+}) {
   const { opportunity } = recommendation;
+  const skillEvidence = recommendation.suitability.components.find((component) => component.factor === "skills");
+  const interestEvidence = recommendation.suitability.components.find((component) => component.factor === "interests");
+  const distance = nearbyOrigin ? distanceToOpportunity(opportunity.location, nearbyOrigin) : null;
   return (
     <article className="recommendation-card">
       <div className="recommendation-main">
         <div className="card-topline"><span className="type-pill">{humanize(opportunity.type)}</span><EligibilityBadge outcome={recommendation.eligibility.outcome} /></div>
         <Link className="opportunity-title" to={`/opportunities/${encodeURIComponent(opportunity.id)}`}>{recommendation.title}</Link>
         <div className="organization">{recommendation.organization}</div>
+        <div className="recommendation-location"><MapPin size={13} /> {formatOpportunityLocation(opportunity.location)}</div>
+        {nearbyOrigin && <div className="recommendation-distance">
+          {distance
+            ? distance.precision === "district_reference"
+              ? `Approximately ${distance.kilometers.toFixed(1)} km straight-line distance from district reference point`
+              : `Approximately ${distance.kilometers.toFixed(1)} km straight-line distance; coordinate precision is unspecified`
+            : "Distance unavailable: opportunity coordinates are missing or invalid."}
+        </div>}
+        <div className="recommendation-meta">
+          <span><strong>Deadline:</strong> {deadlineText(opportunity)}</span>
+          {opportunity.applicationUrl && <a href={opportunity.applicationUrl} target="_blank" rel="noreferrer">Application link <ArrowUpRight size={13} /></a>}
+        </div>
         <p>{recommendation.eligibility.explanation}</p>
         {opportunity.metadata?.isSynthetic === true && <span className="record-flag">Synthetic demo record</span>}
+        <details className="score-explanation">
+          <summary>Profile-match score explanation</summary>
+          <p>{recommendation.suitability.scoreMeaning}</p>
+          <p>Evidence coverage: {recommendation.suitability.evidenceCoveragePercent}% of configured scoring weight had comparable evidence.</p>
+        </details>
+        {(skillEvidence || interestEvidence) && <details className="recommendation-evidence">
+          <summary>Skills and interests evidence</summary>
+          {skillEvidence && <EvidenceFactor label="Skill alignment" component={skillEvidence} />}
+          {interestEvidence && <EvidenceFactor label="Interest alignment" component={interestEvidence} />}
+        </details>}
       </div>
       <div className="recommendation-side">
         <span className="score-label">SUITABILITY</span>
@@ -572,6 +727,19 @@ function RecommendationCard({ recommendation, onAdd, inPlan }: { recommendation:
         <div className="recommendation-actions"><Link className="text-link" to={`/opportunities/${encodeURIComponent(opportunity.id)}`}>Review details <ArrowRight size={14} /></Link>{inPlan ? <Link className="button button-small button-outline" to="/action-plan">In action plan <Check size={13} /></Link> : <button className="button button-small button-dark" type="button" onClick={onAdd}>Add to plan <ArrowRight size={13} /></button>}</div>
       </div>
     </article>
+  );
+}
+
+function EvidenceFactor({ label, component }: { label: string; component: Recommendation["suitability"]["components"][number] }) {
+  return (
+    <section className="evidence-factor">
+      <h4>{label}{component.score === null ? "" : ` · ${component.score}%`}</h4>
+      {component.score !== null && <progress max={100} value={component.score} aria-label={`${label}: ${component.score}%`} />}
+      <p>{component.explanation}</p>
+      {component.matchedEvidence.length > 0 && <p><strong>Aligned:</strong> {component.matchedEvidence.join("; ")}</p>}
+      {component.nonMatchingEvidence.length > 0 && <p><strong>Not aligned:</strong> {component.nonMatchingEvidence.join("; ")}</p>}
+      {component.unresolvedEvidence.length > 0 && <p><strong>Unknown:</strong> {component.unresolvedEvidence.join("; ")}</p>}
+    </section>
   );
 }
 

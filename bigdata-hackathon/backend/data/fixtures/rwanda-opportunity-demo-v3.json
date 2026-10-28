@@ -70,7 +70,7 @@
       "Bugesera"
     ],
     "provinces": [
-      "Kigali City",
+      "City of Kigali",
       "Eastern Province",
       "Northern Province",
       "Southern Province",
@@ -91,10 +91,13 @@
       "description": "District-level public-service vacancy. Review the official job profile for qualification, experience and document requirements.",
       "location": {
         "country": "Rwanda",
-        "province": null,
+        "province": "Eastern Province",
         "district": "Kirehe",
         "displayLocation": "Kirehe District, Eastern Province",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -2.2694,
+        "longitude": 30.6517,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -306,6 +309,28 @@
               "uri": "https://recruitment.mifotra.gov.rw/"
             }
           ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Kirehe is mapped to Eastern Province by the supplied Rwanda district-to-province reference."
+            }
+          ]
+        },
+        {
+          "field": "location.coordinates",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Approximate Kirehe District reference coordinates supplied in the project requirements; this is not a verified opportunity venue location."
+            }
+          ]
         }
       ]
     },
@@ -320,10 +345,13 @@
       "description": "District-level role in human capital and social development. Check the official profile for required degree, experience and skills.",
       "location": {
         "country": "Rwanda",
-        "province": null,
+        "province": "Eastern Province",
         "district": "Kirehe",
         "displayLocation": "Kirehe District, Eastern Province",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -2.2694,
+        "longitude": 30.6517,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -533,6 +561,28 @@
               "kind": "other",
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source.",
               "uri": "https://recruitment.mifotra.gov.rw/"
+            }
+          ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Kirehe is mapped to Eastern Province by the supplied Rwanda district-to-province reference."
+            }
+          ]
+        },
+        {
+          "field": "location.coordinates",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Approximate Kirehe District reference coordinates supplied in the project requirements; this is not a verified opportunity venue location."
             }
           ]
         }
@@ -1946,7 +1996,7 @@
       "description": "Six-month paid internship working with smallholder farmers on agricultural value chains. Review the detail page for duties, required qualifications, stipend and application instructions.",
       "location": {
         "country": "Rwanda",
-        "province": null,
+        "province": "City of Kigali",
         "district": null,
         "displayLocation": "Kigali, Rwanda",
         "workMode": "in_person"
@@ -2184,6 +2234,17 @@
               "kind": "other",
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source.",
               "uri": "https://kura.rw/opportunities/"
+            }
+          ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "The listed Kigali location is mapped to City of Kigali province using the supplied Rwanda administrative reference; no district or coordinates are inferred."
             }
           ]
         }
@@ -5534,7 +5595,7 @@
       "description": "Digital and technical skills initiative intended to prepare unemployed graduates, TVET leavers, university graduates and dropouts for the digital economy. Target groups include young women and persons with disabilities.",
       "location": {
         "country": "Rwanda",
-        "province": null,
+        "province": "City of Kigali",
         "district": null,
         "displayLocation": "Kigali, Rwanda",
         "workMode": "in_person"
@@ -5772,6 +5833,17 @@
               "kind": "other",
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source.",
               "uri": "https://mis.iprckigali.ac.rw/mis/dualtraining/kigali_skills_hub"
+            }
+          ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "The listed Kigali location is mapped to City of Kigali province using the supplied Rwanda administrative reference; no district or coordinates are inferred."
             }
           ]
         }
@@ -6956,10 +7028,14 @@
       "description": "Synthetic example for the category 'Experienced professional job'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Kigali City, Rwanda",
-        "workMode": "hybrid"
+        "province": "City of Kigali",
+        "district": "Gasabo",
+        "displayLocation": "Gasabo District, City of Kigali (synthetic demo assignment; district reference point)",
+        "workMode": "hybrid",
+        "sourceDisplayLocation": "Kigali City, Rwanda",
+        "latitude": -1.9056,
+        "longitude": 30.1343,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7133,6 +7209,28 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "The listed Kigali location is mapped to City of Kigali province using the supplied Rwanda administrative reference; no district or coordinates are inferred."
+            }
+          ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Gasabo",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Gasabo, City of Kigali is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Kigali City, Rwanda."
+            }
+          ]
         }
       ]
     },
@@ -7147,10 +7245,14 @@
       "description": "Synthetic example for the category 'Graduate / entry-level job'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Kigali City, Rwanda",
-        "workMode": "in_person"
+        "province": "City of Kigali",
+        "district": "Kicukiro",
+        "displayLocation": "Kicukiro District, City of Kigali (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Kigali City, Rwanda",
+        "latitude": -2.0028,
+        "longitude": 30.1264,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7348,6 +7450,28 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "The listed Kigali location is mapped to City of Kigali province using the supplied Rwanda administrative reference; no district or coordinates are inferred."
+            }
+          ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Kicukiro",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Kicukiro, City of Kigali is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Kigali City, Rwanda."
+            }
+          ]
         }
       ]
     },
@@ -7362,10 +7486,14 @@
       "description": "Synthetic example for the category 'Internship requiring no prior experience'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Kigali City, Rwanda",
-        "workMode": "in_person"
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
+        "displayLocation": "Nyarugenge District, City of Kigali (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Kigali City, Rwanda",
+        "latitude": -1.9851,
+        "longitude": 30.0319,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7539,6 +7667,28 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "The listed Kigali location is mapped to City of Kigali province using the supplied Rwanda administrative reference; no district or coordinates are inferred."
+            }
+          ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Nyarugenge",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Nyarugenge, City of Kigali is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Kigali City, Rwanda."
+            }
+          ]
         }
       ]
     },
@@ -7553,10 +7703,14 @@
       "description": "Synthetic example for the category 'Apprenticeship'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
+        "province": "Southern Province",
         "district": "Huye",
-        "displayLocation": "Huye District, Rwanda",
-        "workMode": "in_person"
+        "displayLocation": "Huye District, Southern Province (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "latitude": -2.6053,
+        "longitude": 29.7402,
+        "coordinateType": "district_reference",
+        "sourceDisplayLocation": "Huye District, Rwanda"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7730,6 +7884,39 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.province",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Huye is mapped to Southern Province by the supplied Rwanda district-to-province reference."
+            }
+          ]
+        },
+        {
+          "field": "location.coordinates",
+          "sourceId": "rwanda-district-reference-points",
+          "certainty": "source_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Approximate Huye District reference coordinates supplied in the project requirements; this is not a verified opportunity venue location."
+            }
+          ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Huye",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Huye, Southern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Huye District, Rwanda."
+            }
+          ]
         }
       ]
     },
@@ -7744,10 +7931,14 @@
       "description": "Synthetic example for the category 'Industrial placement'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; duty station not specified",
-        "workMode": "in_person"
+        "province": "Northern Province",
+        "district": "Burera",
+        "displayLocation": "Burera District, Northern Province (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Rwanda; duty station not specified",
+        "latitude": -1.439,
+        "longitude": 29.813,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7946,6 +8137,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Burera",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Burera, Northern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; duty station not specified."
+            }
+          ]
         }
       ]
     },
@@ -7960,10 +8162,14 @@
       "description": "Synthetic example for the category 'Master's scholarship for a bachelor's holder'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Study location not specified",
-        "workMode": "remote"
+        "province": "Southern Province",
+        "district": "Gisagara",
+        "displayLocation": "Gisagara District, Southern Province (synthetic demo assignment; district reference point)",
+        "workMode": "remote",
+        "sourceDisplayLocation": "Study location not specified",
+        "latitude": -2.6247,
+        "longitude": 29.845,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8137,6 +8343,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Gisagara",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Gisagara, Southern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Study location not specified."
+            }
+          ]
         }
       ]
     },
@@ -8151,10 +8368,14 @@
       "description": "Synthetic example for the category 'Master's programme with tuition funding'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda or overseas; not specified",
-        "workMode": "in_person"
+        "province": "Eastern Province",
+        "district": "Bugesera",
+        "displayLocation": "Bugesera District, Eastern Province (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Rwanda or overseas; not specified",
+        "latitude": -2.2225,
+        "longitude": 30.1706,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8328,6 +8549,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Bugesera",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Bugesera, Eastern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda or overseas; not specified."
+            }
+          ]
         }
       ]
     },
@@ -8342,10 +8574,14 @@
       "description": "Synthetic example for the category 'TVET admission'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; campus not specified",
-        "workMode": "in_person"
+        "province": "Western Province",
+        "district": "Karongi",
+        "displayLocation": "Karongi District, Western Province (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Rwanda; campus not specified",
+        "latitude": -2.1583,
+        "longitude": 29.3986,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8543,6 +8779,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Karongi",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Karongi, Western Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; campus not specified."
+            }
+          ]
         }
       ]
     },
@@ -8557,10 +8804,14 @@
       "description": "Synthetic example for the category 'Mechanic training'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; centre not specified",
-        "workMode": "in_person"
+        "province": "City of Kigali",
+        "district": "Kicukiro",
+        "displayLocation": "Kicukiro District, City of Kigali (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Rwanda; centre not specified",
+        "latitude": -2.0028,
+        "longitude": 30.1264,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8781,6 +9032,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Kicukiro",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Kicukiro, City of Kigali is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; centre not specified."
+            }
+          ]
         }
       ]
     },
@@ -8795,10 +9057,14 @@
       "description": "Synthetic example for the category 'Computer/ICT certification'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; delivery mode not specified",
-        "workMode": "in_person"
+        "province": "Northern Province",
+        "district": "Gakenke",
+        "displayLocation": "Gakenke District, Northern Province (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Rwanda; delivery mode not specified",
+        "latitude": -1.7001,
+        "longitude": 29.7825,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9029,6 +9295,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Gakenke",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Gakenke, Northern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; delivery mode not specified."
+            }
+          ]
         }
       ]
     },
@@ -9043,10 +9320,14 @@
       "description": "Synthetic example for the category 'Imyuga-related programme'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; district not specified",
-        "workMode": "in_person"
+        "province": "Southern Province",
+        "district": "Kamonyi",
+        "displayLocation": "Kamonyi District, Southern Province (synthetic demo assignment; district reference point)",
+        "workMode": "in_person",
+        "sourceDisplayLocation": "Rwanda; district not specified",
+        "latitude": -1.9961,
+        "longitude": 29.9171,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9220,6 +9501,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Kamonyi",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Kamonyi, Southern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; district not specified."
+            }
+          ]
         }
       ]
     },
@@ -9234,10 +9526,14 @@
       "description": "Synthetic example for the category 'Business-development support'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; location not specified",
-        "workMode": "hybrid"
+        "province": "Eastern Province",
+        "district": "Gatsibo",
+        "displayLocation": "Gatsibo District, Eastern Province (synthetic demo assignment; district reference point)",
+        "workMode": "hybrid",
+        "sourceDisplayLocation": "Rwanda; location not specified",
+        "latitude": -1.5997,
+        "longitude": 30.4578,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9447,6 +9743,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Gatsibo",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Gatsibo, Eastern Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; location not specified."
+            }
+          ]
         }
       ]
     },
@@ -9461,10 +9768,14 @@
       "description": "Synthetic example for the category 'Closed opportunity'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Study destination unknown",
-        "workMode": "remote"
+        "province": "Western Province",
+        "district": "Ngororero",
+        "displayLocation": "Ngororero District, Western Province (synthetic demo assignment; district reference point)",
+        "workMode": "remote",
+        "sourceDisplayLocation": "Study destination unknown",
+        "latitude": -1.8656,
+        "longitude": 29.6242,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9638,6 +9949,17 @@
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
             }
           ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Ngororero",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Ngororero, Western Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Study destination unknown."
+            }
+          ]
         }
       ]
     },
@@ -9652,10 +9974,14 @@
       "description": "Synthetic example for the category 'Rolling deadline'. This is invented sample data, not an actual vacancy, scholarship, course or programme.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
-        "displayLocation": "Rwanda; location not specified",
-        "workMode": "hybrid"
+        "province": "Western Province",
+        "district": "Rubavu",
+        "displayLocation": "Rubavu District, Western Province (synthetic demo assignment; district reference point)",
+        "workMode": "hybrid",
+        "sourceDisplayLocation": "Rwanda; location not specified",
+        "latitude": -1.6935,
+        "longitude": 29.2599,
+        "coordinateType": "district_reference"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9827,6 +10153,17 @@
             {
               "kind": "other",
               "description": "Retained from the V2 catalogue; this migration did not independently verify the external source."
+            }
+          ]
+        },
+        {
+          "field": "location.syntheticDemoAssignment.Rubavu",
+          "sourceId": "synthetic-example-source",
+          "certainty": "unknown",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Rubavu, Western Province is a deterministic synthetic demo-only district assignment. These coordinates are a district reference point, not the opportunity venue or a source-verified location. Original display location: Rwanda; location not specified."
             }
           ]
         }
