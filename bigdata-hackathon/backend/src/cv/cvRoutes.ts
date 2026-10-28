@@ -416,17 +416,9 @@ export function createCvRouter(): Router {
     try {
       const aiEnhanced = Boolean(getAiConfiguration());
       const improved = aiEnhanced ? await enhanceCv(cv, language) : cv;
-      res.json({
-        success: true,
-        data: {
-          cv: improved,
-          aiEnhanced,
-          ...(!aiEnhanced ? { message: "AI_API_KEY is not configured; your original wording was kept unchanged." } : {}),
-        },
-      });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "Unable to improve CV content.";
-      console.error("[CV] AI improvement failed:", message);
+      res.json({ success: true, data: { cv: improved, aiEnhanced } });
+    } catch {
+      console.error("[CV] AI improvement failed.");
       errorResponse(res, 502, "CV_AI_FAILED", "AI improvement failed. Your original CV answers are unchanged; retry or export without AI.");
     }
   });
@@ -472,8 +464,8 @@ export function createCvRouter(): Router {
       res.setHeader("Content-Disposition", `attachment; filename="ROI-CV-${name}.docx"`);
       res.setHeader("Cache-Control", "no-store");
       res.status(200).send(buffer);
-    } catch (error) {
-      console.error("[CV] DOCX generation failed:", error);
+    } catch {
+      console.error("[CV] DOCX generation failed.");
       errorResponse(res, 500, "CV_DOCX_FAILED", "Unable to generate the Word document.");
     }
   });

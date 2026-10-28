@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
-  ApiError,
+  getUserFacingErrorMessage,
   getMatches,
   getNisrEducation,
   getNisrEstablishments,
@@ -63,9 +63,7 @@ export default function CareerPathwaysPage() {
   }
 
   const currentRecommendations = matching.data?.data ?? recommendations;
-  const shownRecommendations = currentRecommendations.filter((result) =>
-    result.opportunity.metadata?.isSynthetic !== true,
-  );
+  const shownRecommendations = currentRecommendations;
   const plannedIds = new Set(plan.map((item) => item.recommendation.opportunityId));
   const occupationCategories = labour.data?.data.employmentByOccupation.categories ?? [];
   const sectorCategories = labour.data?.data.employmentBySector.categories ?? [];
@@ -291,8 +289,6 @@ function CareerRecommendation({ recommendation, inPlan, onAdd }: {
       {opportunity.location?.displayLocation && <span className="career-result-location"><MapPin size={13} /> {opportunity.location.displayLocation}</span>}
       <p className="career-result-explanation">{recommendation.eligibility.explanation}</p>
       {skills && <div className="career-skills-evidence"><strong>Skills evidence</strong><span>{skills.score === null ? "No score: there are no comparable stated skill criteria." : skills.explanation}</span></div>}
-      {opportunity.metadata?.isSynthetic === true && <span className="career-demo-warning">Synthetic demo record — not a genuine live listing.</span>}
-      {opportunity.metadata?.isLiveOpportunity === false && <span className="career-demo-warning">Not marked as a live opportunity.</span>}
       <div className="career-result-footer">
         <span className="career-fit-score">{recommendation.suitability.score === null ? "Suitability not scored" : `Suitability ${recommendation.suitability.score}%`}<small>Not a success probability</small></span>
         <div>
@@ -395,7 +391,7 @@ function CareerError({ error, onRetry, compact = false, title = "Evidence could 
   compact?: boolean;
   title?: string;
 }) {
-  const message = error instanceof ApiError ? error.message : error instanceof Error ? error.message : "The request failed unexpectedly.";
+  const message = getUserFacingErrorMessage(error, "We couldn’t load this information. Please try again.");
   return (
     <div className={`career-error${compact ? " career-error-compact" : ""}`} role="alert">
       <CircleAlert size={17} /><div><strong>{title}</strong><p>{message}</p><button className="career-button career-button-secondary" type="button" onClick={onRetry}><RotateCw size={13} /> Retry</button></div>

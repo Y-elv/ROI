@@ -16,7 +16,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useAppState } from "../context";
-import { downloadCvDocument, improveCv } from "../api";
+import { downloadCvDocument, getUserFacingErrorMessage, improveCv } from "../api";
 import type {
   CvCertification,
   CvData,
@@ -81,7 +81,6 @@ export default function CvBuilderPage() {
   const [loaded, setLoaded] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saveError, setSaveError] = useState("");
-  const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [aiEnhanced, setAiEnhanced] = useState<boolean | undefined>();
   const [busy, setBusy] = useState<"generate" | "download" | null>(null);
@@ -117,7 +116,6 @@ export default function CvBuilderPage() {
     setCv(update);
     setSaved(false);
     setAiEnhanced(undefined);
-    setNotice("");
     setError("");
   }
 
@@ -173,15 +171,13 @@ export default function CvBuilderPage() {
     }
     setBusy("generate");
     setError("");
-    setNotice("");
     try {
       const response = await improveCv(cv, language as CvLanguageCode);
       setCv(response.data.cv);
       setAiEnhanced(response.data.aiEnhanced);
-      setNotice(response.data.message ?? "");
       setSaved(false);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : t("cvGenerateError"));
+      setError(getUserFacingErrorMessage(requestError, t("cvGenerateError")));
     } finally {
       setBusy(null);
     }
@@ -201,7 +197,7 @@ export default function CvBuilderPage() {
       link.remove();
       URL.revokeObjectURL(url);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : t("cvDownloadError"));
+      setError(getUserFacingErrorMessage(requestError, t("cvDownloadError")));
     } finally {
       setBusy(null);
     }
@@ -210,7 +206,6 @@ export default function CvBuilderPage() {
   function editSection(index: number) {
     setStep(index);
     setAiEnhanced(undefined);
-    setNotice("");
   }
 
   const conversationalHistory = steps.slice(0, step).map((item) => ({
@@ -371,7 +366,6 @@ export default function CvBuilderPage() {
                   cv={cv}
                   t={t}
                   aiEnhanced={aiEnhanced}
-                  notice={notice}
                   onEdit={editSection}
                   onGenerate={generateCv}
                   onDownload={downloadCv}
@@ -520,11 +514,10 @@ function PreviewEntry({ title, subtitle, dates, details }: { title: string; subt
   </div>;
 }
 
-function CvReview({ cv, t, aiEnhanced, notice, onEdit, onGenerate, onDownload, onSave, saved, busy }: {
+function CvReview({ cv, t, aiEnhanced, onEdit, onGenerate, onDownload, onSave, saved, busy }: {
   cv: CvData;
   t: (key: TranslationKey, values?: Record<string, string | number>) => string;
   aiEnhanced: boolean | undefined;
-  notice: string;
   onEdit: (step: number) => void;
   onGenerate: () => void;
   onDownload: () => void;
@@ -537,7 +530,7 @@ function CvReview({ cv, t, aiEnhanced, notice, onEdit, onGenerate, onDownload, o
       <Sparkles size={18} />
       <div><h3>{t("cvReviewTitle")}</h3><p>{t("cvReviewHint")}</p></div>
     </div>
-    {aiEnhanced !== undefined && <p className={`cv-ai-status${aiEnhanced ? " enhanced" : " fallback"}`} role="status">{t(aiEnhanced ? "cvAIEnhanced" : "cvAIFallback")}{notice ? ` ${notice}` : ""}</p>}
+    {aiEnhanced === true && <p className="cv-ai-status enhanced" role="status">{t("cvAIEnhanced")}</p>}
     <div className="cv-review-actions">
       <button className="cv-button cv-button-secondary" type="button" onClick={onSave}>{saved ? <Check size={15} /> : null}{saved ? t("cvSaved") : t("cvSaveProgress")}</button>
       <button className="cv-button cv-button-primary" type="button" onClick={onGenerate} disabled={busy !== null || !cv.fullName.trim()}>

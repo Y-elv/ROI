@@ -28,6 +28,15 @@ export class ApiError extends Error {
   }
 }
 
+export function getUserFacingErrorMessage(error: unknown, fallback: string): string {
+  if (!(error instanceof ApiError)) return fallback;
+  if (error.status === 0) return "Unable to connect right now. Check your connection and try again.";
+  if (error.status === 404) return "This item could not be found. It may no longer be available.";
+  if (error.status === 429) return "Too many requests. Wait a moment and try again.";
+  if (error.status === 503) return "This service is temporarily unavailable. Please try again later.";
+  return fallback;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response;
   try {
@@ -41,10 +50,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     });
   } catch (error) {
     if (error instanceof TypeError) {
-      throw new ApiError(
-        `Could not connect to the API at ${apiBase}. Check the service status and browser network or CORS errors, then retry.`,
-        0,
-      );
+      throw new ApiError("Unable to connect.", 0);
     }
     throw error;
   }
@@ -54,7 +60,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     body = await response.json();
   } catch {
     if (response.ok) {
-      throw new ApiError("The API returned a response that was not valid JSON.", response.status);
+      throw new ApiError("Unexpected API response.", response.status);
     }
   }
   if (!response.ok) {
@@ -62,12 +68,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       error?: { code?: string; message?: string; details?: string[] };
       message?: string;
     } | undefined;
-    throw new ApiError(
-      errorBody?.error?.message || errorBody?.message || `Request failed with status ${response.status}.`,
-      response.status,
-      errorBody?.error?.code,
-      errorBody?.error?.details,
-    );
+    throw new ApiError("The request failed.", response.status, errorBody?.error?.code);
   }
   return body as T;
 }
@@ -81,8 +82,6 @@ export interface OpportunityFilters {
   province: string;
   district: string;
   category: string;
-  isSynthetic: string;
-  isLiveOpportunity: string;
 }
 
 export async function getOpportunities(filters: OpportunityFilters): Promise<OpportunityPage> {
@@ -131,24 +130,12 @@ export async function downloadCvDocument(cv: CvData, language: CvLanguageCode): 
     });
   } catch (error) {
     if (error instanceof TypeError) {
-      throw new ApiError(`Could not connect to the API at ${apiBase}. Check the service status and browser network or CORS errors, then retry.`, 0);
+      throw new ApiError("Unable to connect.", 0);
     }
     throw error;
   }
   if (!response.ok) {
-    let message = `Request failed with status ${response.status}.`;
-    try {
-      const errorBody: unknown = await response.json();
-      if (typeof errorBody === "object" && errorBody !== null && "error" in errorBody) {
-        const apiError = errorBody.error;
-        if (typeof apiError === "object" && apiError !== null && "message" in apiError && typeof apiError.message === "string") {
-          message = apiError.message;
-        }
-      }
-    } catch {
-      message = `Request failed with status ${response.status}.`;
-    }
-    throw new ApiError(message, response.status);
+    throw new ApiError("The request failed.", response.status);
   }
   return response.blob();
 }

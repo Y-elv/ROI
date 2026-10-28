@@ -235,6 +235,18 @@ function matchesCatalogueFilters(
   return true;
 }
 
+function publicOpportunity(opportunity: Opportunity): Opportunity {
+  const metadata = opportunity.metadata ? { ...opportunity.metadata } : undefined;
+  if (metadata) {
+    delete metadata.isSynthetic;
+    delete metadata.isLiveOpportunity;
+  }
+  return {
+    ...opportunity,
+    metadata,
+  };
+}
+
 /**
  * @openapi
  * /api/v1/opportunities:
@@ -407,7 +419,7 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
   router.get("/", async (req: Request, res: Response) => {
     const allowed = [
       "page", "limit", "type", "status", "deadlineStatus", "province", "district",
-      "category", "isSynthetic", "isLiveOpportunity",
+      "category",
     ];
     const errors = queryValidation(req, allowed);
     const page = parsePageNumber(queryString(req, "page"), 1, "page", errors);
@@ -418,8 +430,6 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     const province = queryString(req, "province");
     const district = queryString(req, "district");
     const category = queryString(req, "category");
-    const isSynthetic = parseBooleanQuery(queryString(req, "isSynthetic"), "isSynthetic", errors);
-    const isLiveOpportunity = parseBooleanQuery(queryString(req, "isLiveOpportunity"), "isLiveOpportunity", errors);
     if (limit < 1 || limit > MAX_PAGE_SIZE) errors.push(`limit must be between 1 and ${MAX_PAGE_SIZE}.`);
     if (page < 1) errors.push("page must be at least 1.");
     if (type && !OPPORTUNITY_TYPES.includes(type as OpportunityType)) errors.push("type is not a supported opportunity type.");
@@ -435,19 +445,18 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     try {
       const dataset = await repository.load();
       const filtered = dataset.opportunities.filter((opportunity) =>
+        opportunity.metadata?.isSynthetic !== true &&
         (!type || opportunity.type === type) &&
         (!status || opportunity.status === status) &&
         (!deadlineStatus || opportunity.deadlineStatus === deadlineStatus) &&
         (!province || opportunity.location?.province?.toLocaleLowerCase() === province.toLocaleLowerCase()) &&
         (!district || opportunity.location?.district?.toLocaleLowerCase() === district.toLocaleLowerCase()) &&
-        (!category || opportunity.metadata?.category?.toLocaleLowerCase() === category.toLocaleLowerCase()) &&
-        (isSynthetic === undefined || opportunity.metadata?.isSynthetic === isSynthetic) &&
-        (isLiveOpportunity === undefined || opportunity.metadata?.isLiveOpportunity === isLiveOpportunity));
+        (!category || opportunity.metadata?.category?.toLocaleLowerCase() === category.toLocaleLowerCase()));
       const start = (page - 1) * limit;
       res.status(200).json({
         success: true,
         data: {
-          opportunities: filtered.slice(start, start + limit),
+          opportunities: filtered.slice(start, start + limit).map(publicOpportunity),
           pagination: { page, limit, total: filtered.length, totalPages: Math.ceil(filtered.length / limit) },
           source: catalogueSummary(dataset),
         },
@@ -491,7 +500,8 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     }
     try {
       const dataset = await repository.load();
-      const matches = dataset.opportunities.filter((opportunity) => opportunity.id === req.params.id);
+      const matches = dataset.opportunities.filter((opportunity) =>
+        opportunity.id === req.params.id && opportunity.metadata?.isSynthetic !== true);
       if (matches.length > 1) {
         res.status(409).json({
           success: false,
@@ -505,7 +515,7 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
       }
       res.status(200).json({
         success: true,
-        data: { opportunity: matches[0], source: catalogueSummary(dataset) },
+        data: { opportunity: publicOpportunity(matches[0]), source: catalogueSummary(dataset) },
       });
     } catch (error) {
       if (error instanceof FixtureDataError) sendCatalogueUnavailable(res);
@@ -529,7 +539,8 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     }
     try {
       const dataset = await repository.load();
-      const matches = dataset.opportunities.filter((opportunity) => opportunity.id === body.opportunityId);
+      const matches = dataset.opportunities.filter((opportunity) =>
+        opportunity.id === body.opportunityId && opportunity.metadata?.isSynthetic !== true);
       if (matches.length > 1) {
         res.status(409).json({
           success: false,
@@ -547,7 +558,7 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
         data: {
           opportunityId: opportunity.id,
           eligibility: evaluateEligibility(profile, opportunity),
-          opportunity,
+          opportunity: publicOpportunity(opportunity),
           source: catalogueSummary(dataset),
         },
       });
@@ -618,7 +629,10 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
           includeClosed,
           includeNeedsConfirmation,
         }));
-      const data = rankOpportunities(profile, selected, weights);
+      const data = rankOpportunities(profile, selected, weights).map((recommendation) => ({
+        ...recommendation,
+        opportunity: publicOpportunity(recommendation.opportunity),
+      }));
       res.status(200).json({ success: true, data, source: catalogueSummary(dataset) });
     } catch (error) {
       if (error instanceof FixtureDataError) sendCatalogueUnavailable(res);

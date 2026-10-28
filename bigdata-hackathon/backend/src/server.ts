@@ -9,30 +9,13 @@ const PORT = Number(process.env.PORT) || 5000;
 
 async function startServer(): Promise<void> {
   try {
-    console.log("========================================");
-    console.log(" Rwanda Opportunity Intelligence");
-    console.log(" Backend starting...");
-    console.log("========================================");
-
     await connectDB();
 
     app.listen(PORT, () => {
-      console.log(`[SERVER] Running on port ${PORT}`);
-      console.log(`[SERVER] Local URL: http://localhost:${PORT}`);
-      console.log(
-        `[SERVER] Health check: http://localhost:${PORT}/api/v1/health`
-      );
-      console.log("[SERVER] Startup completed successfully.");
+      console.info("[SERVER] Startup completed successfully.");
     });
-  } catch (error) {
-    console.error("[STARTUP ERROR] Backend failed to start.");
-
-    if (error instanceof Error) {
-      console.error("[STARTUP ERROR] Reason:", error.message);
-    } else {
-      console.error(error);
-    }
-
+  } catch {
+    console.error("[SERVER] Startup failed.");
     process.exit(1);
   }
 }

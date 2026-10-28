@@ -39,8 +39,8 @@ import {
 import CareerPathwaysPage from "./pages/CareerPathwaysPage";
 import CvBuilderPage from "./pages/CvBuilderPage";
 import {
-  ApiError,
   checkEligibility,
+  getUserFacingErrorMessage,
   getMatches,
   getOpportunities,
   getOpportunity,
@@ -273,8 +273,6 @@ const emptyFilters: OpportunityFilters = {
   province: "",
   district: "",
   category: "",
-  isSynthetic: "",
-  isLiveOpportunity: "",
 };
 
 function OpportunitiesPage() {
@@ -305,13 +303,11 @@ function OpportunitiesPage() {
         <div className="filter-panel-title"><span><Search size={17} /> Find an opportunity</span><span className="filter-hint">Filters use fields available in the catalogue</span></div>
         <div className="filter-grid">
           <label>Opportunity type<select value={filters.type} onChange={(event) => updateFilter("type", event.target.value as OpportunityType | "")}><option value="">All types</option>{opportunityTypes.map((type) => <option key={type} value={type}>{humanize(type)}</option>)}</select></label>
-          <label>Status<select value={filters.status} onChange={(event) => updateFilter("status", event.target.value)}><option value="">All statuses</option>{["open", "rolling", "closed", "needs_confirmation", "rolling_example", "synthetic_example"].map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
+          <label>Status<select value={filters.status} onChange={(event) => updateFilter("status", event.target.value)}><option value="">All statuses</option>{["open", "rolling", "closed", "needs_confirmation"].map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
           <label>Deadline<select value={filters.deadlineStatus} onChange={(event) => updateFilter("deadlineStatus", event.target.value)}><option value="">Any deadline status</option>{["confirmed", "rolling", "not_confirmed", "historical"].map((item) => <option key={item} value={item}>{humanize(item)}</option>)}</select></label>
           <label>Province<select value={filters.province} onChange={(event) => updateProvince(event.target.value)}><option value="">All provinces</option>{RWANDA_PROVINCES.map((province) => <option key={province} value={province}>{province}</option>)}</select></label>
           <label>District<select value={filters.district} onChange={(event) => updateFilter("district", event.target.value)}><option value="">All districts</option>{districtsForProvince(filters.province).map((district) => <option key={district} value={district}>{district}</option>)}</select></label>
           <label>Category<input value={filters.category} onChange={(event) => updateFilter("category", event.target.value)} placeholder="Catalogue category" maxLength={100} /></label>
-          <label>Record kind<select value={filters.isSynthetic} onChange={(event) => updateFilter("isSynthetic", event.target.value)}><option value="">All record kinds</option><option value="false">Non-synthetic records</option><option value="true">Synthetic demo records</option></select></label>
-          <label>Live listing<select value={filters.isLiveOpportunity} onChange={(event) => updateFilter("isLiveOpportunity", event.target.value)}><option value="">Any live status</option><option value="true">Marked live</option><option value="false">Not marked live</option></select></label>
         </div>
         <button className="text-button clear-filters" type="button" onClick={() => setFilters(emptyFilters)}>Clear filters <RotateCw size={13} /></button>
       </section>
@@ -351,8 +347,6 @@ function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
         <span><b>Source</b>{opportunity.source.name}</span>
       </div>
       <div className="card-footer">
-        {opportunity.metadata?.isSynthetic === true && <span className="record-flag">Synthetic demo record</span>}
-        {opportunity.metadata?.isLiveOpportunity === false && <span className="record-flag muted-flag">Not marked live</span>}
         <Link to={`/opportunities/${encodeURIComponent(opportunity.id)}`} className="card-link">View details <ArrowRight size={15} /></Link>
       </div>
     </article>
@@ -387,8 +381,6 @@ function OpportunityDetailPage() {
           {isInPlan && <Link className="button button-outline" to="/action-plan"><Check size={16} /> In your action plan</Link>}
         </div>
       </section>
-      {opportunity.metadata?.isSynthetic === true && <div className="notice notice-warn"><CircleAlert size={18} /><p><strong>Synthetic demo record.</strong> This is not a genuine live listing. Do not rely on it as an available opportunity.</p></div>}
-      {opportunity.metadata?.isLiveOpportunity === false && <div className="notice notice-neutral"><CircleAlert size={18} /><p>This record is not marked as a live opportunity. Confirm availability directly with the source.</p></div>}
       <div className="detail-layout">
         <div className="detail-main">
           <section className="detail-section"><h2>About this opportunity</h2><p>{opportunity.description || "A description was not provided in this catalogue record."}</p></section>
@@ -671,7 +663,6 @@ function RecommendationCard({
           {opportunity.applicationUrl && <a href={opportunity.applicationUrl} target="_blank" rel="noreferrer">Application link <ArrowUpRight size={13} /></a>}
         </div>
         <p>{recommendation.eligibility.explanation}</p>
-        {opportunity.metadata?.isSynthetic === true && <span className="record-flag">Synthetic demo record</span>}
         <details className="score-explanation">
           <summary>Profile-match score explanation</summary>
           <p>{recommendation.suitability.scoreMeaning}</p>
@@ -739,9 +730,10 @@ function PageIntro({ eyebrow, title, description }: { eyebrow: string; title: st
 }
 
 function StatusBadge({ opportunity }: { opportunity: Opportunity }) {
-  const synthetic = opportunity.metadata?.isSynthetic === true || opportunity.verification.state === "synthetic";
-  const label = synthetic ? "Synthetic" : opportunity.status === "needs_confirmation" || opportunity.verification.state === "needs_confirmation" ? "Needs confirmation" : humanize(opportunity.status);
-  const tone = synthetic ? "badge-synthetic" : opportunity.status === "open" || opportunity.status === "rolling" ? "badge-open" : opportunity.status === "closed" ? "badge-closed" : "badge-review";
+  const label = opportunity.status === "needs_confirmation" || opportunity.verification.state === "needs_confirmation"
+    ? "Needs confirmation"
+    : humanize(opportunity.status);
+  const tone = opportunity.status === "open" || opportunity.status === "rolling" ? "badge-open" : opportunity.status === "closed" ? "badge-closed" : "badge-review";
   return <span className={`status-badge ${tone}`}>{label}</span>;
 }
 
@@ -754,11 +746,10 @@ function LoadingState({ text }: { text: string }) {
 }
 
 function ErrorState({ error, onRetry, compact = false }: { error: unknown; onRetry: () => void; compact?: boolean }) {
-  const message = error instanceof ApiError ? error.message : error instanceof Error ? error.message : "The request failed unexpectedly.";
-  const code = error instanceof ApiError ? error.code : undefined;
+  const message = getUserFacingErrorMessage(error, "We couldn’t load this information. Please try again.");
   return (
     <div className={`error-state${compact ? " error-compact" : ""}`} role="alert">
-      <span className="error-icon"><CircleAlert size={19} /></span><div><strong>{code || "Couldn’t load this information"}</strong><p>{message}</p><button className="button button-outline button-small" type="button" onClick={onRetry}><RotateCw size={14} /> Retry</button></div>
+      <span className="error-icon"><CircleAlert size={19} /></span><div><strong>Couldn’t load this information</strong><p>{message}</p><button className="button button-outline button-small" type="button" onClick={onRetry}><RotateCw size={14} /> Retry</button></div>
     </div>
   );
 }

@@ -10,7 +10,16 @@ import { createOpportunityRouter } from "./opportunities/opportunityRoutes";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  "https://roi-rwanda.web.app",
+  "http://localhost:5173",
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  optionsSuccessStatus: 204,
+}));
 app.use(express.json({ limit: "100kb" }));
 
 const swaggerSpec = swaggerJsdoc({
@@ -170,7 +179,6 @@ const swaggerSpec = swaggerJsdoc({
             metadata: {
               type: "object", nullable: true, additionalProperties: true,
               properties: {
-                isSynthetic: { type: "boolean" }, isLiveOpportunity: { type: "boolean" },
                 category: { type: "string" }, asOf: { type: "string", format: "date", nullable: true },
               },
             },
@@ -470,7 +478,7 @@ app.use(
         });
         return;
       }
-      console.error("[ERROR] Request failed:", err.message);
+      console.error("[ERROR] Request failed.");
 
       res.status(status >= 400 && status < 600 ? status : 500).json({
       success: false,

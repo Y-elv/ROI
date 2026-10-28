@@ -16,27 +16,31 @@ async function withServer(callback: (baseUrl: string) => Promise<void>): Promise
   }
 }
 
-test("catalogue list preserves canonical V3 records and reports consistent counts", async () => {
+test("public catalogue lists only non-synthetic records without internal metadata", async () => {
   await withServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/opportunities?limit=100`);
     const body = await response.json() as {
       success: boolean;
       data: {
-        opportunities: Array<{ id: string; type: string; status: string; requirements: unknown[] }>;
-        pagination: { total: number };
+        opportunities: Array<{ id: string; type: string; status: string; requirements: unknown[]; metadata?: Record<string, unknown> }>;
+        pagination: { total: number; totalPages: number };
         source: { records: number; declaredRecords: number; recordCountMatchesDeclaration: boolean; duplicateIds: string[] };
       };
     };
     assert.equal(response.status, 200);
     assert.equal(body.success, true);
-    assert.equal(body.data.pagination.total, 44);
-    assert.equal(body.data.opportunities.length, 44);
+    assert.equal(body.data.pagination.total, 30);
+    assert.equal(body.data.pagination.totalPages, 1);
+    assert.equal(body.data.opportunities.length, 30);
     assert.equal(body.data.source.records, 44);
     assert.equal(body.data.source.declaredRecords, 44);
     assert.equal(body.data.source.recordCountMatchesDeclaration, true);
     assert.deepEqual(body.data.source.duplicateIds, []);
     assert.ok(body.data.opportunities.some((item) => item.type === "tvet"));
     assert.ok(body.data.opportunities.some((item) => item.requirements.length > 0));
+    assert.ok(body.data.opportunities.every((item) =>
+      !Object.hasOwn(item.metadata ?? {}, "isSynthetic") &&
+      !Object.hasOwn(item.metadata ?? {}, "isLiveOpportunity")));
   });
 });
 
@@ -55,21 +59,21 @@ test("canonical list filters support catalogue types and status values", async (
   });
 });
 
-test("detail route resolves the retained synthetic record and rejects missing duplicate ID", async () => {
+test("detail route hides synthetic records and returns public records without internal metadata", async () => {
   await withServer(async (baseUrl) => {
     const retained = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-027`);
-    const retainedBody = await retained.json() as { data: { opportunity: { id: string } } };
-    assert.equal(retained.status, 200);
-    assert.equal(retainedBody.data.opportunity.id, "rw-example-027");
+    assert.equal(retained.status, 404);
     const removedDuplicate = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-127`);
     assert.equal(removedDuplicate.status, 404);
 
     const unique = await fetch(`${baseUrl}/api/v1/opportunities/rw-opp-001`);
     const uniqueBody = await unique.json() as {
-      data: { opportunity: { id: string; location: { displayLocation: string } } };
+      data: { opportunity: { id: string; location: { displayLocation: string }; metadata?: Record<string, unknown> } };
     };
     assert.equal(unique.status, 200);
     assert.equal(uniqueBody.data.opportunity.location.displayLocation, "Kirehe District, Eastern Province");
+    assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "isSynthetic"), false);
+    assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "isLiveOpportunity"), false);
   });
 });
 
@@ -219,16 +223,19 @@ test("matching excludes synthetic, closed, and needs-confirmation entries by def
   });
 });
 
-test("explicit inclusion flags can expose synthetic and closed catalogue entries", async () => {
+test("synthetic matching remains supported without exposing internal metadata", async () => {
   await withServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/opportunities/match`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ profile: {}, includeSynthetic: true, includeClosed: true, includeNeedsConfirmation: true }),
     });
-    const body = await response.json() as { data: Array<{ opportunity: { metadata: { isSynthetic: boolean } } }> };
+    const body = await response.json() as { data: Array<{ opportunity: { status: string; metadata?: Record<string, unknown> } }> };
     assert.equal(response.status, 200);
-    assert.ok(body.data.some((entry) => entry.opportunity.metadata.isSynthetic));
+    assert.ok(body.data.some((entry) => entry.opportunity.status === "synthetic_example"));
+    assert.ok(body.data.every((entry) =>
+      !Object.hasOwn(entry.opportunity.metadata ?? {}, "isSynthetic") &&
+      !Object.hasOwn(entry.opportunity.metadata ?? {}, "isLiveOpportunity")));
   });
 });
 

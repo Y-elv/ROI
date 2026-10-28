@@ -71,6 +71,5 @@ export interface CvImproveResponse {
   data: {
     cv: CvData;
     aiEnhanced: boolean;
-    message?: string;
   };
 }

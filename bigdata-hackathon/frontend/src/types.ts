@@ -15,13 +15,7 @@ export const opportunityTypes = [
 ] as const;
 
 export type OpportunityType = (typeof opportunityTypes)[number];
-export type OpportunityStatus =
-  | "open"
-  | "closed"
-  | "rolling"
-  | "needs_confirmation"
-  | "rolling_example"
-  | "synthetic_example";
+export type OpportunityStatus = "open" | "closed" | "rolling" | "needs_confirmation";
 export type DeadlineStatus = "confirmed" | "historical" | "not_confirmed" | "rolling";
 export type EligibilityOutcome = "eligible" | "ineligible" | "unknown";
 
@@ -68,8 +62,6 @@ export interface Opportunity {
     verificationNote?: string | null;
   };
   metadata?: {
-    isSynthetic?: boolean;
-    isLiveOpportunity?: boolean;
     category?: string;
     asOf?: string | null;
   };
