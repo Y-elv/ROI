@@ -42,6 +42,44 @@ Opportunities
 
 The objective is to help users understand **where they fit in the labour market, what gaps exist, and which pathways can help them move toward relevant opportunities**.
 
+## Current implementation and demo-data notice
+
+The current application is a React/Vite frontend in `bigdata-hackathon/frontend` and an Express/TypeScript API in `bigdata-hackathon/backend`. The API reads its opportunity catalogue only from `bigdata-hackathon/backend/data/fixtures/rwanda-opportunity-demo-v3.json`; its declared and actual record counts must agree for catalogue, match, and eligibility routes to work.
+
+The catalogue currently contains **48 records**. All 48 are available from the opportunity directory and detail pages. Synthetic examples are clearly labeled **DEMO ONLY** in the UI and are not treated as verified live vacancies. Match recommendations continue to exclude synthetic records by default. Four fictional eligibility examples exist specifically to demonstrate known skill requirements, red skill-gap bars, and an explicitly fictional spreadsheet-learning suggestion. Never use their invented criteria or the suggestion as real recruitment or training guidance. Internal fields such as `isSynthetic`, `isLiveOpportunity`, and `displaySafety` are not sent to or rendered by the frontend.
+
+### Eligibility flow
+
+Create a profile under **Guidance** and save it in the browser's local storage. Open an opportunity and select **Check my eligibility**. The API compares the supplied profile with structured catalogue requirements and returns an outcome, requirement counts, satisfied/unmet/unresolved criteria, skill gaps, and evidence-backed related learning suggestions. Red bars visualize proficiency differences only for known mandatory skill requirements; they are not a probability of success. Missing or unclassified source information remains unknown rather than being treated as an unmet requirement. The fictional examples show a prominent warning in their listing, detail page, and eligibility results.
+
+### Opportunity API
+
+- `GET /api/v1/opportunities` — paginated catalogue (48 records total).
+- `GET /api/v1/opportunities/:id` — opportunity detail.
+- `POST /api/v1/opportunities/match` — profile-based matching against eligible catalogue entries.
+- `POST /api/v1/opportunities/eligibility` — body: `{ "profile": { ... }, "opportunityId": "..." }`.
+
+The demo API used by the hosted frontend is `https://roi-7qfn.onrender.com`. Deploy the backend and frontend changes before expecting the hosted application to reflect this repository state; a successful local test does not confirm that Render has redeployed.
+
+### Run and verify this implementation
+
+From `bigdata-hackathon/backend`:
+
+```bash
+npm test
+npm run build
+```
+
+From `bigdata-hackathon/frontend`:
+
+```bash
+npm run build
+```
+
+### Video demonstration
+
+Link pending — no video URL has been provided yet.
+
 ---
 
 # 🎯 Problem
