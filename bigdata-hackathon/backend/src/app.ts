@@ -128,9 +128,13 @@ const swaggerSpec = swaggerJsdoc({
         },
         Opportunity: {
           type: "object",
-          required: ["id", "type", "title", "organization", "source", "status", "deadlineStatus", "requirements", "costAndFunding", "verification"],
+          required: ["id", "type", "title", "organization", "source", "status", "deadlineStatus", "requirements", "costAndFunding", "verification", "demonstrationData"],
           additionalProperties: true,
           properties: {
+            demonstrationData: {
+              type: "boolean",
+              description: "True for fictional or synthetic examples. These records are labeled in the UI and must not be treated as real offers.",
+            },
             id: { type: "string", example: "rw-opp-001" },
             type: { $ref: "#/components/schemas/OpportunityType" },
             title: { type: "string", example: "Urban and Economic Development Officer" },
@@ -255,6 +259,7 @@ const swaggerSpec = swaggerJsdoc({
         EligibilityAssessment: {
           type: "object",
           required: [
+            "demonstrationData",
             "mandatoryRequirements",
             "unclassifiedRequirements",
             "preferredRequirements",
@@ -264,6 +269,10 @@ const swaggerSpec = swaggerJsdoc({
           ],
           description: "Summary counts concern catalogue-declared mandatory requirements; skill gaps exclude unknown, preferred, and unclassified criteria.",
           properties: {
+            demonstrationData: {
+              type: "boolean",
+              description: "True for fictional eligibility-demo records; their assessment is for UI testing only.",
+            },
             mandatoryRequirements: {
               type: "object",
               required: ["total", "satisfied", "unmet", "unresolved"],
@@ -284,7 +293,7 @@ const swaggerSpec = swaggerJsdoc({
             skillsNeedingConfirmation: { type: "array", items: { $ref: "#/components/schemas/SkillRequirementAssessment" } },
             relatedDevelopmentOpportunities: {
               type: "array",
-              description: "Verified, non-synthetic, open/rolling training records with an evidenced learning outcome matching a known mandatory skill gap.",
+              description: "Verified, non-synthetic, open/rolling training records with an evidenced learning outcome matching a known mandatory skill gap, plus explicitly labeled fictional eligibility-demo suggestions.",
               items: { $ref: "#/components/schemas/SkillDevelopmentOpportunity" },
             },
           },

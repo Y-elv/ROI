@@ -16,28 +16,29 @@ async function withServer(callback: (baseUrl: string) => Promise<void>): Promise
   }
 }
 
-test("public catalogue lists only non-synthetic records without internal metadata", async () => {
+test("public catalogue lists all 48 records and sanitizes internal metadata", async () => {
   await withServer(async (baseUrl) => {
     const response = await fetch(`${baseUrl}/api/v1/opportunities?limit=100`);
     const body = await response.json() as {
       success: boolean;
       data: {
-        opportunities: Array<{ id: string; type: string; status: string; requirements: unknown[]; metadata?: Record<string, unknown> }>;
+        opportunities: Array<{ id: string; type: string; title: string; status: string; requirements: unknown[]; metadata?: Record<string, unknown> }>;
         pagination: { total: number; totalPages: number };
         source: { records: number; declaredRecords: number; recordCountMatchesDeclaration: boolean; duplicateIds: string[] };
       };
     };
     assert.equal(response.status, 200);
     assert.equal(body.success, true);
-    assert.equal(body.data.pagination.total, 30);
+    assert.equal(body.data.pagination.total, 48);
     assert.equal(body.data.pagination.totalPages, 1);
-    assert.equal(body.data.opportunities.length, 30);
-    assert.equal(body.data.source.records, 44);
-    assert.equal(body.data.source.declaredRecords, 44);
+    assert.equal(body.data.opportunities.length, 48);
+    assert.equal(body.data.source.records, 48);
+    assert.equal(body.data.source.declaredRecords, 48);
     assert.equal(body.data.source.recordCountMatchesDeclaration, true);
     assert.deepEqual(body.data.source.duplicateIds, []);
     assert.ok(body.data.opportunities.some((item) => item.type === "tvet"));
     assert.ok(body.data.opportunities.some((item) => item.requirements.length > 0));
+    assert.equal(body.data.opportunities.filter((item) => item.title.startsWith("DEMO ONLY")).length, 4);
     assert.ok(body.data.opportunities.every((item) =>
       !Object.hasOwn(item.metadata ?? {}, "isSynthetic") &&
       !Object.hasOwn(item.metadata ?? {}, "isLiveOpportunity") &&
@@ -71,7 +72,7 @@ test("catalogue list accepts documented synthetic and live-opportunity filters",
     const syntheticResponse = await fetch(`${baseUrl}/api/v1/opportunities?isSynthetic=true`);
     const syntheticBody = await syntheticResponse.json() as { data: { opportunities: unknown[] } };
     assert.equal(syntheticResponse.status, 200);
-    assert.equal(syntheticBody.data.opportunities.length, 0);
+    assert.equal(syntheticBody.data.opportunities.length, 18);
 
     const liveResponse = await fetch(`${baseUrl}/api/v1/opportunities?isLiveOpportunity=true`);
     const liveBody = await liveResponse.json() as {
@@ -86,22 +87,28 @@ test("catalogue list accepts documented synthetic and live-opportunity filters",
   });
 });
 
-test("detail route hides synthetic records and returns public records without internal metadata", async () => {
+test("detail route returns synthetic records with demo markers but no internal metadata", async () => {
   await withServer(async (baseUrl) => {
     const retained = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-027`);
-    assert.equal(retained.status, 404);
+    assert.equal(retained.status, 200);
     const removedDuplicate = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-127`);
     assert.equal(removedDuplicate.status, 404);
 
+    const demo = await fetch(`${baseUrl}/api/v1/opportunities/roi-rwanda-public-service-data-officer-demo`);
+    const demoBody = await demo.json() as { data: { opportunity: { demonstrationData: boolean; metadata?: Record<string, unknown> } } };
+    assert.equal(demo.status, 200);
+    assert.equal(demoBody.data.opportunity.demonstrationData, true);
+
     const unique = await fetch(`${baseUrl}/api/v1/opportunities/rw-opp-001`);
     const uniqueBody = await unique.json() as {
-      data: { opportunity: { id: string; location: { displayLocation: string }; metadata?: Record<string, unknown> } };
+      data: { opportunity: { id: string; demonstrationData: boolean; location: { displayLocation: string }; metadata?: Record<string, unknown> } };
     };
     assert.equal(unique.status, 200);
     assert.equal(uniqueBody.data.opportunity.location.displayLocation, "Kirehe District, Eastern Province");
     assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "isSynthetic"), false);
     assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "isLiveOpportunity"), false);
     assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "displaySafety"), false);
+    assert.equal(uniqueBody.data.opportunity.demonstrationData, false);
   });
 });
 
@@ -111,6 +118,40 @@ test("eligibility endpoint selects catalogue record and treats prose requirement
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ profile: {}, opportunityId: "rw-opp-001" }),
+    });
+
+    test("eligibility demo produces skill gaps and a matched demo training suggestion", async () => {
+      await withServer(async (baseUrl) => {
+        const response = await fetch(`${baseUrl}/api/v1/opportunities/eligibility`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            opportunityId: "roi-rwanda-public-service-data-officer-demo",
+            profile: { skillDisclosure: "complete", skills: [] },
+          }),
+        });
+        const body = await response.json() as {
+          data: { eligibility: { outcome: string; explanation: string; assessment: {
+            demonstrationData: boolean;
+            mandatoryRequirements: { total: number; unmet: number };
+            skillGaps: Array<{ name: string; requiredProficiency?: string }>;
+            relatedDevelopmentOpportunities: Array<{ title: string; matchedSkills: Array<{ name: string }> }>;
+          } } };
+        };
+        assert.equal(response.status, 200);
+        assert.equal(body.data.eligibility.outcome, "ineligible");
+        assert.match(body.data.eligibility.explanation, /DEMO ONLY/);
+        assert.equal(body.data.eligibility.assessment.demonstrationData, true);
+        assert.equal(body.data.eligibility.assessment.mandatoryRequirements.total, 2);
+        assert.equal(body.data.eligibility.assessment.mandatoryRequirements.unmet, 2);
+        assert.deepEqual(body.data.eligibility.assessment.skillGaps.map((gap) => gap.name), [
+          "Spreadsheet analysis",
+          "Report writing",
+        ]);
+        assert.ok(body.data.eligibility.assessment.relatedDevelopmentOpportunities.some((entry) =>
+          entry.title.startsWith("DEMO ONLY") &&
+          entry.matchedSkills.some((skill) => skill.name === "Spreadsheet analysis")));
+      });
     });
     const body = await response.json() as {
       data: {

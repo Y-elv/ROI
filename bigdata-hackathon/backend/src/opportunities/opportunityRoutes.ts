@@ -111,6 +111,10 @@ function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+function isEligibilityDemoRecord(opportunity: Opportunity): boolean {
+  return opportunity.metadata?.recordPurpose === "eligibility_demo";
+}
+
 function validateProfile(input: unknown): string[] {
   if (!isRecord(input)) return ["profile must be an object."];
   const errors: string[] = [];
@@ -226,7 +230,7 @@ function matchesCatalogueFilters(
 ): boolean {
   if (filters.type && opportunity.type !== filters.type) return false;
   if (filters.category && opportunity.metadata?.category?.toLocaleLowerCase() !== filters.category.toLocaleLowerCase()) return false;
-  if (!filters.includeSynthetic && opportunity.metadata?.isSynthetic === true) return false;
+  if (!filters.includeSynthetic && opportunity.metadata?.isSynthetic === true && !isEligibilityDemoRecord(opportunity)) return false;
   if (!filters.includeClosed && (opportunity.status === "closed" || opportunity.deadlineStatus === "historical")) return false;
   if (!filters.includeNeedsConfirmation &&
     (opportunity.status === "needs_confirmation" || opportunity.verification.state === "needs_confirmation")) return false;
@@ -244,6 +248,7 @@ function publicOpportunity(opportunity: Opportunity): Opportunity {
     : undefined;
   return {
     ...opportunity,
+    demonstrationData: opportunity.metadata?.isSynthetic === true,
     metadata,
   };
 }
@@ -448,7 +453,6 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     try {
       const dataset = await repository.load();
       const filtered = dataset.opportunities.filter((opportunity) =>
-        opportunity.metadata?.isSynthetic !== true &&
         (isSynthetic === undefined || opportunity.metadata?.isSynthetic === isSynthetic) &&
         (isLiveOpportunity === undefined || opportunity.metadata?.isLiveOpportunity === isLiveOpportunity) &&
         (!type || opportunity.type === type) &&
@@ -506,7 +510,7 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     try {
       const dataset = await repository.load();
       const matches = dataset.opportunities.filter((opportunity) =>
-        opportunity.id === req.params.id && opportunity.metadata?.isSynthetic !== true);
+        opportunity.id === req.params.id);
       if (matches.length > 1) {
         res.status(409).json({
           success: false,
@@ -545,7 +549,7 @@ export function createOpportunityRouter(repository: CatalogueRepository = canoni
     try {
       const dataset = await repository.load();
       const matches = dataset.opportunities.filter((opportunity) =>
-        opportunity.id === body.opportunityId && opportunity.metadata?.isSynthetic !== true);
+        opportunity.id === body.opportunityId);
       if (matches.length > 1) {
         res.status(409).json({
           success: false,

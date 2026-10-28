@@ -24,10 +24,10 @@ test("repository loads every canonical record without normalizing away source fi
   const raw = await readCanonicalDocument();
   const dataset = await createCatalogueRepository().load();
   const opportunities = raw.opportunities as unknown[];
-  assert.equal(dataset.opportunities.length, 44);
+  assert.equal(dataset.opportunities.length, 48);
   assert.deepEqual(dataset.opportunities, opportunities);
   assert.deepEqual(dataset.info.coverage, raw.coverage);
-  assert.equal(dataset.declaredOpportunityCount, 44);
+  assert.equal(dataset.declaredOpportunityCount, 48);
   assert.equal(dataset.recordCountMatchesDeclaration, true);
   assert.deepEqual(dataset.duplicateIds, []);
 });
@@ -62,15 +62,38 @@ test("catalogue preserves the single verified synthetic example and rejects dupl
   assert.throws(() => parseCatalogueDocument(incorrectCount), /record count does not match/i);
 });
 
+test("the four eligibility demonstration records have explicitly structured skill criteria", async () => {
+  const dataset = await createCatalogueRepository().load();
+  const demos = dataset.opportunities.filter((entry) => entry.metadata?.recordPurpose === "eligibility_demo");
+  assert.equal(demos.length, 4);
+  assert.ok(demos.every((entry) =>
+    entry.title.startsWith("DEMO ONLY") &&
+    entry.description?.startsWith("FICTIONAL DEMO RECORD") &&
+    entry.metadata?.isSynthetic === true &&
+    entry.metadata?.isLiveOpportunity === false));
+  assert.ok(demos.some((entry) => entry.requirements.some((requirement) =>
+    typeof requirement !== "string" &&
+    requirement.certainty === "known" &&
+    requirement.importance === "mandatory" &&
+    requirement.criterion.kind === "skill")));
+  const training = demos.find((entry) => entry.type === "training");
+  assert.ok(training?.suitabilitySignals?.skills?.some((signal) =>
+    signal.purpose === "learning_outcome" &&
+    signal.name === "Spreadsheet analysis" &&
+    signal.evidence.length > 0));
+});
+
 test("malformed catalogue structures and records fail explicitly", async () => {
   assert.throws(() => parseCatalogueDocument({}), FixtureDataError);
   const document = await readCanonicalDocument() as {
+    datasetVersion?: unknown;
     opportunities: Array<Record<string, unknown>>;
   };
   const malformed = structuredClone(document);
   malformed.opportunities[0].type = "unsupported_type";
   assert.throws(() => parseCatalogueDocument(malformed), /type is not a supported catalogue value/);
   const missingProvenance = structuredClone(document);
+  missingProvenance.datasetVersion = "3.0.0";
   delete missingProvenance.opportunities[0].provenance;
   assert.throws(() => parseCatalogueDocument(missingProvenance), /missing matching signals, provenance/i);
 });

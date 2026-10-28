@@ -6,7 +6,7 @@
   "asOf": "2026-10-28",
   "coverage": {
     "country": "Rwanda",
-    "opportunityCount": 44,
+    "opportunityCount": 48,
     "sources": [
       {
         "name": "KORA Job Portal",
@@ -10303,26 +10303,26 @@
       ]
     },
     {
-      "id": "roi-rwanda-public-service-data-officer-draft",
+      "id": "roi-rwanda-public-service-data-officer-demo",
       "type": "job",
-      "title": "Public Service Data Officer",
+      "title": "DEMO ONLY — Public Service Data Officer",
       "organization": {
-        "name": "Public-sector employer (to be confirmed)",
+        "name": "DEMO ONLY — Fictional public-sector employer",
         "kind": "unconfirmed"
       },
-      "description": "Draft opportunity profile for a public-sector data role involving spreadsheet analysis, data handling, and reporting. Employer, vacancy availability, duties, and application details require confirmation from an official source.",
+      "description": "FICTIONAL DEMO RECORD — Use only to test the eligibility UI and skill-gap chart. This is not a real vacancy; its invented criteria are not official hiring requirements.",
       "location": {
         "country": "Rwanda",
         "province": "City of Kigali",
         "district": "Gasabo",
-        "displayLocation": "Gasabo District, City of Kigali (proposed location; confirm with employer)",
+        "displayLocation": "DEMO ONLY — Gasabo District, City of Kigali",
         "workMode": "onsite",
         "locationAssignmentStatus": "needs_confirmation"
       },
       "source": {
-        "id": null,
-        "name": "Official source not yet provided",
-        "url": null
+        "id": "roi-local-eligibility-demo",
+        "name": "DEMO ONLY — Fictional test data",
+        "url": "https://example.invalid/roi-eligibility-demo"
       },
       "applicationUrl": null,
       "deadline": null,
@@ -10337,33 +10337,47 @@
       "requirements": [
         {
           "id": "spreadsheet-analysis",
-          "description": "Spreadsheet analysis may be relevant to this role; confirm the required proficiency level with the employer.",
-          "importance": "unknown",
-          "certainty": "not_stated",
+          "description": "DEMO ONLY — Intermediate spreadsheet analysis (invented criterion for UI testing; not an official requirement).",
+          "importance": "mandatory",
+          "certainty": "known",
           "criterion": {
             "kind": "skill",
-            "name": "Spreadsheet analysis"
+            "name": "Spreadsheet analysis",
+            "minimumProficiency": "intermediate"
           },
-          "evidence": []
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Fictional test criterion. No employer or official source supplied this requirement.",
+              "uri": "https://example.invalid/roi-eligibility-demo/criteria"
+            }
+          ]
         },
         {
           "id": "report-writing",
-          "description": "Report writing may be relevant to this role; confirm the required proficiency level with the employer.",
-          "importance": "unknown",
-          "certainty": "not_stated",
+          "description": "DEMO ONLY — Beginner report writing (invented criterion for UI testing; not an official requirement).",
+          "importance": "mandatory",
+          "certainty": "known",
           "criterion": {
             "kind": "skill",
-            "name": "Report writing"
+            "name": "Report writing",
+            "minimumProficiency": "beginner"
           },
-          "evidence": []
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Fictional test criterion. No employer or official source supplied this requirement.",
+              "uri": "https://example.invalid/roi-eligibility-demo/criteria"
+            }
+          ]
         }
       ],
       "verification": {
         "state": "needs_confirmation",
         "lastVerifiedAt": null,
-        "verificationNote": "Employer identity and location are unverified."
+        "verificationNote": "FICTIONAL DEMO ONLY — Not a real vacancy. Criteria are invented to test eligibility UI."
       },
-      "mandatoryRequirementsDisclosure": "unknown",
+      "mandatoryRequirementsDisclosure": "complete",
       "suitabilitySignals": {
         "skills": []
       },
@@ -10371,30 +10385,32 @@
       "provenance": [
         {
           "field": "record",
-          "sourceId": null,
-          "certainty": "not_stated",
+          "sourceId": "roi-local-eligibility-demo",
+          "certainty": "unknown",
           "evidence": [
             {
               "kind": "other",
-              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+              "description": "Fictional local UI test data. Not sourced from an official employer."
             }
           ]
         }
       ],
       "metadata": {
-        "category": "public_service_data",
-        "recordPurpose": "opportunity_draft"
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "eligibility_demo",
+        "recordPurpose": "eligibility_demo"
       }
     },
     {
-      "id": "roi-rwanda-public-service-training-assistant-draft",
+      "id": "roi-rwanda-public-service-training-assistant-demo",
       "type": "job",
-      "title": "Public Service Training Assistant",
+      "title": "DEMO ONLY — Public Service Training Assistant",
       "organization": {
-        "name": "Public-sector employer (to be confirmed)",
+        "name": "DEMO ONLY — Fictional public-sector employer",
         "kind": "unconfirmed"
       },
-      "description": "Draft opportunity profile for a training support role that may involve preparing learning sessions, assisting facilitators, and communicating information. Employer, duties, vacancy availability, and application details require confirmation from an official source.",
+      "description": "FICTIONAL DEMO RECORD — Use only to test satisfied and unmet eligibility states. This is not a real vacancy and its criteria are invented.",
       "location": {
         "country": "Rwanda",
         "province": null,
@@ -10404,9 +10420,9 @@
         "locationAssignmentStatus": "needs_confirmation"
       },
       "source": {
-        "id": null,
-        "name": "Official source not yet provided",
-        "url": null
+        "id": "roi-local-eligibility-demo",
+        "name": "DEMO ONLY — Fictional test data",
+        "url": "https://example.invalid/roi-eligibility-demo"
       },
       "applicationUrl": null,
       "deadline": null,
@@ -10421,22 +10437,29 @@
       "requirements": [
         {
           "id": "presentation",
-          "description": "Presentation skills may be relevant to this role; confirm whether they are required and at what level.",
-          "importance": "unknown",
-          "certainty": "not_stated",
+          "description": "DEMO ONLY — Advanced presentation (invented criterion for UI testing; not an official requirement).",
+          "importance": "mandatory",
+          "certainty": "known",
           "criterion": {
             "kind": "skill",
-            "name": "Presentation"
+            "name": "Presentation",
+            "minimumProficiency": "advanced"
           },
-          "evidence": []
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Fictional test criterion. No employer or official source supplied this requirement.",
+              "uri": "https://example.invalid/roi-eligibility-demo/criteria"
+            }
+          ]
         }
       ],
       "verification": {
         "state": "needs_confirmation",
         "lastVerifiedAt": null,
-        "verificationNote": "Employer identity, role duties, and location are unverified."
+        "verificationNote": "FICTIONAL DEMO ONLY — Not a real vacancy. Criteria are invented to test eligibility UI."
       },
-      "mandatoryRequirementsDisclosure": "unknown",
+      "mandatoryRequirementsDisclosure": "complete",
       "suitabilitySignals": {
         "skills": []
       },
@@ -10444,30 +10467,32 @@
       "provenance": [
         {
           "field": "record",
-          "sourceId": null,
-          "certainty": "not_stated",
+          "sourceId": "roi-local-eligibility-demo",
+          "certainty": "unknown",
           "evidence": [
             {
               "kind": "other",
-              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+              "description": "Fictional local UI test data. Not sourced from an official employer."
             }
           ]
         }
       ],
       "metadata": {
-        "category": "public_service_training",
-        "recordPurpose": "opportunity_draft"
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "eligibility_demo",
+        "recordPurpose": "eligibility_demo"
       }
     },
     {
-      "id": "roi-rwanda-community-service-officer-draft",
+      "id": "roi-rwanda-community-service-officer-demo",
       "type": "job",
-      "title": "Community Service Officer",
+      "title": "DEMO ONLY — Community Service Officer",
       "organization": {
-        "name": "Public or community service organization (to be confirmed)",
+        "name": "DEMO ONLY — Fictional community organization",
         "kind": "unconfirmed"
       },
-      "description": "Draft opportunity profile for a community service role that may involve supporting local initiatives, coordinating community activities, and communicating with residents. The employing organization, actual duties, eligibility criteria, vacancy availability, and application details require confirmation from an official source.",
+      "description": "FICTIONAL DEMO RECORD — Use only to test unresolved eligibility states. This is not a real vacancy and has no confirmed criteria.",
       "location": {
         "country": "Rwanda",
         "province": null,
@@ -10477,9 +10502,9 @@
         "locationAssignmentStatus": "needs_confirmation"
       },
       "source": {
-        "id": null,
-        "name": "Official source not yet provided",
-        "url": null
+        "id": "roi-local-eligibility-demo",
+        "name": "DEMO ONLY — Fictional test data",
+        "url": "https://example.invalid/roi-eligibility-demo"
       },
       "applicationUrl": null,
       "deadline": null,
@@ -10497,7 +10522,12 @@
           "description": "Specific qualifications and experience requirements have not yet been confirmed.",
           "importance": "unknown",
           "certainty": "not_stated",
-          "evidence": []
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Fictional unclassified test requirement; not provided by a real organization."
+            }
+          ]
         }
       ],
       "verification": {
@@ -10513,30 +10543,32 @@
       "provenance": [
         {
           "field": "record",
-          "sourceId": null,
-          "certainty": "not_stated",
+          "sourceId": "roi-local-eligibility-demo",
+          "certainty": "unknown",
           "evidence": [
             {
               "kind": "other",
-              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+              "description": "Fictional local UI test data. Not sourced from an official organization."
             }
           ]
         }
       ],
       "metadata": {
-        "category": "community_service",
-        "recordPurpose": "opportunity_draft"
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "eligibility_demo",
+        "recordPurpose": "eligibility_demo"
       }
     },
     {
-      "id": "roi-spreadsheet-analysis-training-draft",
+      "id": "roi-spreadsheet-analysis-training-demo",
       "type": "training",
-      "title": "Spreadsheet Analysis Training Course",
+      "title": "DEMO ONLY — Spreadsheet Analysis Learning Course",
       "organization": {
-        "name": "Training provider (to be confirmed)",
+        "name": "DEMO ONLY — Fictional learning provider",
         "kind": "unconfirmed"
       },
-      "description": "Draft training listing for a course focused on spreadsheet analysis and practical data skills. Provider, curriculum, delivery format, fees, duration, enrolment availability, and registration details require confirmation from an official provider source.",
+      "description": "FICTIONAL DEMO RECORD — Learning course shown only to test skill-gap recommendations. This is not a real course; verify real training through official sources.",
       "location": {
         "country": "Rwanda",
         "province": null,
@@ -10546,9 +10578,9 @@
         "locationAssignmentStatus": "needs_confirmation"
       },
       "source": {
-        "id": null,
-        "name": "Official source not yet provided",
-        "url": null
+        "id": "roi-local-eligibility-demo",
+        "name": "DEMO ONLY — Fictional test data",
+        "url": "https://example.invalid/roi-eligibility-demo"
       },
       "applicationUrl": null,
       "deadline": null,
@@ -10568,25 +10600,39 @@
       },
       "mandatoryRequirementsDisclosure": "unknown",
       "suitabilitySignals": {
-        "skills": []
+        "skills": [
+          {
+            "name": "Spreadsheet analysis",
+            "purpose": "learning_outcome",
+            "evidence": [
+              {
+                "kind": "other",
+                "description": "Fictional learning outcome to test the eligibility suggestion UI; not a real course curriculum.",
+                "uri": "https://example.invalid/roi-eligibility-demo/training"
+              }
+            ]
+          }
+        ]
       },
       "careerFamilies": [],
       "provenance": [
         {
           "field": "record",
-          "sourceId": null,
-          "certainty": "not_stated",
+          "sourceId": "roi-local-eligibility-demo",
+          "certainty": "unknown",
           "evidence": [
             {
               "kind": "other",
-              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+              "description": "Fictional local UI test data. Not sourced from a real training provider."
             }
           ]
         }
       ],
       "metadata": {
-        "category": "digital_skills_training",
-        "recordPurpose": "opportunity_draft"
+        "isSynthetic": true,
+        "isLiveOpportunity": false,
+        "category": "eligibility_demo",
+        "recordPurpose": "eligibility_demo"
       }
     }
 

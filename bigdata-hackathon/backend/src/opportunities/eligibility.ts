@@ -316,6 +316,7 @@ function buildEligibilityAssessment(
   }
 
   return {
+    demonstrationData: opportunity.metadata?.recordPurpose === "eligibility_demo",
     mandatoryRequirements: {
       total: mandatory.length,
       satisfied: mandatory.filter((evaluation) => evaluation.status === "satisfied").length,
@@ -345,7 +346,8 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
       actionToResolve: "Check the full listing or ask the source which criteria apply.",
     };
   });
-  if (opportunity.metadata?.isSynthetic === true) {
+  if (opportunity.metadata?.isSynthetic === true &&
+    opportunity.metadata.recordPurpose !== "eligibility_demo") {
     const syntheticEvaluations = evaluations.map((evaluation) => ({
       ...evaluation,
       status: "unresolved" as const,
@@ -398,9 +400,12 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
       ? "No mandatory requirement is known to be unmet, but required information remains unresolved."
       : "All disclosed mandatory requirements are satisfied; this is not a guarantee of selection.";
 
+  const demonstrationWarning = opportunity.metadata?.recordPurpose === "eligibility_demo"
+    ? "DEMO ONLY — criteria are fictional and must not be used to assess a real application. "
+    : "";
   return {
     outcome,
-    explanation,
+    explanation: `${demonstrationWarning}${explanation}`,
     assessment: buildEligibilityAssessment(profile, opportunity, evaluations),
     satisfied,
     unmet,
@@ -419,10 +424,11 @@ export function findRelatedSkillDevelopmentOpportunities(
   const matched = new Map<string, SkillDevelopmentOpportunity>();
 
   for (const opportunity of opportunities) {
+    const isEligibilityDemo = opportunity.metadata?.recordPurpose === "eligibility_demo";
     if (
-      opportunity.metadata?.isSynthetic !== false ||
-      opportunity.verification.state !== "verified_listing" ||
-      (opportunity.status !== "open" && opportunity.status !== "rolling") ||
+      (opportunity.metadata?.isSynthetic !== false && !isEligibilityDemo) ||
+      (!isEligibilityDemo && opportunity.verification.state !== "verified_listing") ||
+      (!isEligibilityDemo && opportunity.status !== "open" && opportunity.status !== "rolling") ||
       !eligibleTypes.has(opportunity.type)
     ) continue;
 

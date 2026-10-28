@@ -197,6 +197,7 @@ export interface OpportunityProvenance {
 }
 
 export interface Opportunity {
+  demonstrationData?: boolean;
   id: string;
   type: OpportunityType;
   title: string;
@@ -255,6 +256,7 @@ export interface EligibilityResult {
 }
 
 export interface EligibilityAssessment {
+  demonstrationData: boolean;
   mandatoryRequirements: {
     total: number;
     satisfied: number;
