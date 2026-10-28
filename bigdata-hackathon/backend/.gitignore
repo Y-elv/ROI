@@ -7,6 +7,8 @@ data/*
 data/fixtures/*
 !data/fixtures/rwanda-opportunity-demo-30.json
 !data/fixtures/rwanda-opportunity-demo-v3.json
+# Local-only eligibility test data; never commit or deploy as a real opportunity.
+data/fixtures/local-eligibility-test.json
 !data/derived/
 data/derived/*
 !data/derived/nisr-analytics.json

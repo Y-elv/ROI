@@ -1,6 +1,7 @@
 import {
   DisclosureState,
   EligibilityResult,
+  EligibilityAssessment,
   EvidenceReference,
   Opportunity,
   OpportunityRequirement,
@@ -9,6 +10,7 @@ import {
   RequirementCriterion,
   RequirementEvaluation,
   RequirementEvaluationStatus,
+  SkillRequirementAssessment,
   UserProfile,
   OpportunityValidationResult,
   OPPORTUNITY_TYPES,
@@ -17,7 +19,9 @@ import {
   VERIFICATION_STATES,
   ProficiencyLevel,
   OpportunityProvenance,
+  SkillDevelopmentOpportunity,
 } from "./types";
+import { equivalentSkill } from "./careerTaxonomy";
 
 const PROFICIENCY_RANK: Record<ProficiencyLevel, number> = {
   beginner: 1,
@@ -273,6 +277,60 @@ function actionForCriterion(
   }
 }
 
+function buildEligibilityAssessment(
+  profile: UserProfile,
+  opportunity: Opportunity,
+  evaluations: RequirementEvaluation[],
+  includeSkillAssessments = true,
+): EligibilityAssessment {
+  const mandatory = evaluations.filter((evaluation) => evaluation.importance === "mandatory");
+  const skillGaps: SkillRequirementAssessment[] = [];
+  const skillsNeedingConfirmation: SkillRequirementAssessment[] = [];
+
+  if (includeSkillAssessments) {
+    opportunity.requirements.forEach((requirement, index) => {
+      if (typeof requirement === "string" || requirement.certainty !== "known" ||
+        requirement.criterion.kind !== "skill") return;
+
+      const evaluation = evaluations[index];
+      if (!evaluation) return;
+      const skillName = requirement.criterion.name;
+      const requiredProficiency = requirement.criterion.minimumProficiency;
+      const profileSkill = profile.skills?.find((skill) =>
+        normalize(skill.name) === normalize(skillName));
+      const skill: SkillRequirementAssessment = {
+        requirementId: requirement.id,
+        name: skillName,
+        ...(requiredProficiency
+          ? { requiredProficiency }
+          : {}),
+        ...(profileSkill?.proficiency ? { profileProficiency: profileSkill.proficiency } : {}),
+      };
+
+      if (requirement.importance === "mandatory" && evaluation.status === "unmet") {
+        skillGaps.push(skill);
+      } else if (requirement.importance === "mandatory" && evaluation.status === "unresolved") {
+        skillsNeedingConfirmation.push(skill);
+      }
+    });
+  }
+
+  return {
+    mandatoryRequirements: {
+      total: mandatory.length,
+      satisfied: mandatory.filter((evaluation) => evaluation.status === "satisfied").length,
+      unmet: mandatory.filter((evaluation) => evaluation.status === "unmet").length,
+      unresolved: mandatory.filter((evaluation) => evaluation.status === "unresolved").length,
+    },
+    unclassifiedRequirements: evaluations.filter((evaluation) => evaluation.importance === "unknown").length,
+    preferredRequirements: evaluations.filter((evaluation) => evaluation.importance === "preferred").length,
+    mandatoryRequirementsDisclosure: opportunity.mandatoryRequirementsDisclosure,
+    skillGaps,
+    skillsNeedingConfirmation,
+    relatedDevelopmentOpportunities: [],
+  };
+}
+
 export function evaluateEligibility(profile: UserProfile, opportunity: Opportunity): EligibilityResult {
   const evaluations = opportunity.requirements.map((requirement, index) => {
     if (typeof requirement !== "string") return evaluateRequirement(profile, requirement);
@@ -288,7 +346,7 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
     };
   });
   if (opportunity.metadata?.isSynthetic === true) {
-    const unresolved = evaluations.map((evaluation) => ({
+    const syntheticEvaluations = evaluations.map((evaluation) => ({
       ...evaluation,
       status: "unresolved" as const,
       explanation: "This is synthetic demo data; its requirements cannot establish real-world eligibility.",
@@ -296,6 +354,7 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
     return {
       outcome: "unknown",
       explanation: "This synthetic, non-live fixture cannot establish eligibility for any real opportunity.",
+      assessment: buildEligibilityAssessment(profile, opportunity, syntheticEvaluations, false),
       satisfied: [],
       unmet: [],
       unresolved: [{
@@ -304,7 +363,7 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
         importance: "unknown",
         status: "unresolved",
         explanation: "The record is a synthetic local fixture, not a genuine vacancy or programme.",
-      }, ...unresolved],
+      }, ...syntheticEvaluations],
       preferred: [],
     };
   }
@@ -339,7 +398,70 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
       ? "No mandatory requirement is known to be unmet, but required information remains unresolved."
       : "All disclosed mandatory requirements are satisfied; this is not a guarantee of selection.";
 
-  return { outcome, explanation, satisfied, unmet, unresolved, preferred };
+  return {
+    outcome,
+    explanation,
+    assessment: buildEligibilityAssessment(profile, opportunity, evaluations),
+    satisfied,
+    unmet,
+    unresolved,
+    preferred,
+  };
+}
+
+export function findRelatedSkillDevelopmentOpportunities(
+  skillGaps: SkillRequirementAssessment[],
+  opportunities: Opportunity[],
+): SkillDevelopmentOpportunity[] {
+  if (skillGaps.length === 0) return [];
+
+  const eligibleTypes = new Set(["training", "certification", "tvet", "apprenticeship"]);
+  const matched = new Map<string, SkillDevelopmentOpportunity>();
+
+  for (const opportunity of opportunities) {
+    if (
+      opportunity.metadata?.isSynthetic !== false ||
+      opportunity.verification.state !== "verified_listing" ||
+      (opportunity.status !== "open" && opportunity.status !== "rolling") ||
+      !eligibleTypes.has(opportunity.type)
+    ) continue;
+
+    const matchedSkills = skillGaps.flatMap((gap) => {
+      const signal = opportunity.suitabilitySignals?.skills?.find((candidate) =>
+        candidate.purpose === "learning_outcome" &&
+        candidate.evidence.length > 0 &&
+        equivalentSkill(candidate.name, gap.name));
+      return signal ? [{
+        requirementId: gap.requirementId,
+        name: gap.name,
+        evidence: signal.evidence,
+      }] : [];
+    });
+
+    if (matchedSkills.length === 0) continue;
+
+    matched.set(opportunity.id, {
+      opportunityId: opportunity.id,
+      title: opportunity.title,
+      organization: opportunity.organization.name,
+      type: opportunity.type,
+      status: opportunity.status,
+      deadlineStatus: opportunity.deadlineStatus,
+      ...(opportunity.applicationUrl !== undefined ? { applicationUrl: opportunity.applicationUrl } : {}),
+      source: {
+        name: opportunity.source.name,
+        ...(opportunity.source.url !== undefined ? { url: opportunity.source.url } : {}),
+      },
+      matchedSkills,
+    });
+  }
+
+  return [...matched.values()]
+    .sort((left, right) =>
+      right.matchedSkills.length - left.matchedSkills.length ||
+      left.title.localeCompare(right.title) ||
+      left.opportunityId.localeCompare(right.opportunityId))
+    .slice(0, 5);
 }
 
 function isCountryCodeList(value: unknown): value is string[] {

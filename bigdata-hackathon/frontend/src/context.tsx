@@ -63,15 +63,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [nearbyLocation, setNearbyLocation] = useState<NearbyLocationState>({ status: "idle" });
 
   async function findNearbyOpportunities(origin: Coordinates) {
+    console.info("[nearby] Step 3/5: Loading opportunity listings.");
     const opportunities: Opportunity[] = [];
     let totalPages = 1;
 
     for (let page = 1; page <= totalPages; page += 1) {
+      console.info(`[nearby] Fetching catalogue page ${page}.`);
       const response = await getOpportunities({ ...nearbyOpportunityFilters, page });
       opportunities.push(...response.data.opportunities);
       totalPages = response.data.pagination.totalPages;
     }
+    console.info(`[nearby] Loaded ${opportunities.length} catalogue listings.`);
 
+    console.info("[nearby] Step 4/5: Checking listing coordinates and calculating distances.");
     const ranked: NearbyOpportunity[] = [];
     let missingCoordinatesCount = 0;
     for (const opportunity of opportunities) {
@@ -99,9 +103,18 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     ranked.sort((left, right) => left.kilometers - right.kilometers);
+    const nearest = ranked.slice(0, 5);
+    console.info(`[nearby] Compared ${ranked.length} listings; ${missingCoordinatesCount} had no valid coordinates.`);
+    console.info("[nearby] Step 5/5: Nearest opportunities (straight-line distance).");
+    console.table(nearest.map(({ title, organization, location, kilometers }) => ({
+      title,
+      organization,
+      location,
+      distanceKm: Number(kilometers.toFixed(1)),
+    })));
     setNearbyLocation({
       status: "success",
-      opportunities: ranked.slice(0, 5),
+      opportunities: nearest,
       locatedCount: ranked.length,
       missingCoordinatesCount,
     });
@@ -109,11 +122,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   function findNearbyLocation() {
     if (typeof navigator === "undefined" || !navigator.geolocation) {
+      console.warn("[nearby] Step 1/5 failed: Browser geolocation is unavailable.");
       const message = translations[language].locationUnavailable;
       setNearbyLocation({ status: "error", message });
       return;
     }
 
+    console.info("[nearby] Step 1/5: Requesting browser location permission.");
     setNearbyLocation({ status: "requesting" });
     try {
       navigator.geolocation.getCurrentPosition(
@@ -122,17 +137,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
           const longitude = position.coords.longitude;
           const origin = { latitude, longitude };
           if (!isValidCoordinates(origin)) {
+            console.error("[nearby] Browser returned invalid coordinates.");
             const message = translations[language].locationUnavailable;
             setNearbyLocation({ status: "error", message });
             return;
           }
 
+          console.info("[nearby] Step 2/5: Location received; coordinates are not written to the console.");
           void findNearbyOpportunities(origin).catch((error: unknown) => {
+            console.error("[nearby] Failed while loading or ranking catalogue listings.", error);
             const message = getUserFacingErrorMessage(error, translations[language].locationError);
             setNearbyLocation({ status: "error", message });
           });
         },
         (error) => {
+          console.error("[nearby] Browser geolocation failed.", { code: error.code, message: error.message });
           const message = error.code === 1
             ? translations[language].locationPermissionDenied
             : error.code === 2
@@ -144,7 +163,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         },
         { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 },
       );
-    } catch {
+    } catch (error) {
+      console.error("[nearby] Browser geolocation could not be started.", error);
       setNearbyLocation({ status: "error", message: translations[language].locationError });
     }
   }

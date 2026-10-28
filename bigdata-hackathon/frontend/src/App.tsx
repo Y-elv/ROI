@@ -411,17 +411,84 @@ function DetailFact({ label, value }: { label: string; value: string }) {
 }
 
 function EligibilityPanel({ result }: { result: EligibilityResult }) {
+  const proficiencyRank: Record<NonNullable<EligibilityResult["assessment"]["skillGaps"][number]["requiredProficiency"]>, number> = {
+    beginner: 1,
+    intermediate: 2,
+    advanced: 3,
+    expert: 4,
+  };
+  const proficiencyLabel = (level?: keyof typeof proficiencyRank) => level ? humanize(level) : "Not stated";
+  const assessment = result.assessment;
+
   return (
     <div className="eligibility-panel">
       <div className={`eligibility-outcome outcome-${result.outcome}`}><strong>{humanize(result.outcome)} based on information provided</strong><p>{result.explanation}</p></div>
+      <div className="eligibility-statistics" aria-label="Eligibility requirement statistics">
+        <div><strong>{assessment.mandatoryRequirements.satisfied}</strong><span>Mandatory met</span></div>
+        <div className="eligibility-stat-gap"><strong>{assessment.mandatoryRequirements.unmet}</strong><span>Mandatory gaps</span></div>
+        <div><strong>{assessment.mandatoryRequirements.unresolved}</strong><span>Need confirmation</span></div>
+        <div><strong>{assessment.unclassifiedRequirements}</strong><span>Unclassified</span></div>
+        <div><strong>{assessment.preferredRequirements}</strong><span>Preferred</span></div>
+      </div>
+      {assessment.skillGaps.length > 0 && (
+        <section className="skill-gap-chart" aria-labelledby="skill-gap-heading">
+          <h3 id="skill-gap-heading">Skills to build</h3>
+          <p>Red bars show the proficiency difference for known mandatory skill requirements. They are not a probability of success.</p>
+          {assessment.skillGaps.map((gap) => {
+            const required = gap.requiredProficiency ? proficiencyRank[gap.requiredProficiency] : undefined;
+            const current = gap.profileProficiency ? proficiencyRank[gap.profileProficiency] : 0;
+            const gapWidth = required === undefined ? 0 : Math.max(0, required - current) / 4 * 100;
+            return (
+              <div className="skill-gap-row" key={gap.requirementId}>
+                <strong>{gap.name}</strong>
+                {required === undefined ? (
+                  <p className="skill-gap-unquantified">Not listed in your complete skill profile. The source does not specify a proficiency level.</p>
+                ) : (
+                  <>
+                    <div className="skill-gap-levels"><span>Your level: {proficiencyLabel(gap.profileProficiency)}</span><span>Required: {proficiencyLabel(gap.requiredProficiency)}</span></div>
+                    <div className="skill-gap-track" role="img" aria-label={`${gap.name}: ${proficiencyLabel(gap.profileProficiency)} stated, ${proficiencyLabel(gap.requiredProficiency)} required`}>
+                      <div className="skill-gap-fill" style={{ width: `${gapWidth}%` }} />
+                    </div>
+                    <small>{current === 0 ? "Skill not listed" : `${required - current} proficiency level${required - current === 1 ? "" : "s"} below requirement`}</small>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </section>
+      )}
       {[
         ["Satisfied", result.satisfied],
         ["Unmet", result.unmet],
         ["Need more information", result.unresolved],
         ["Preferred", result.preferred],
       ].filter(([, entries]) => (entries as EligibilityResult["satisfied"]).length > 0).map(([label, entries]) => (
-        <div className="requirement-group" key={label as string}><h4>{label as string}</h4>{(entries as EligibilityResult["satisfied"]).map((entry) => <p key={entry.requirementId}>{entry.description}<small>{entry.explanation}</small></p>)}</div>
+        <div className="requirement-group" key={label as string}><h4>{label as string}</h4>{(entries as EligibilityResult["satisfied"]).map((entry) => <p key={entry.requirementId}>{entry.description}<small>{entry.explanation}</small>{entry.actionToResolve && <small>Next step: {entry.actionToResolve}</small>}{entry.sourceEvidence?.map((evidence, index) => <small key={`${entry.requirementId}-source-${index}`}>Source evidence: {evidence.uri ? <a href={evidence.uri} target="_blank" rel="noreferrer">{evidence.description}</a> : evidence.description}</small>)}</p>)}</div>
       ))}
+      {assessment.skillsNeedingConfirmation.length > 0 && (
+        <div className="requirement-group">
+          <h4>Skills to confirm</h4>
+          {assessment.skillsNeedingConfirmation.map((skill) => (
+            <p key={skill.requirementId}>{skill.name}<small>Confirm your proficiency or whether this skill applies; it is not counted as a confirmed gap.</small></p>
+          ))}
+        </div>
+      )}
+      {assessment.relatedDevelopmentOpportunities.length > 0 && (
+        <div className="requirement-group development-opportunities">
+          <h4>Related learning opportunities</h4>
+          {assessment.relatedDevelopmentOpportunities.map((suggestion) => (
+            <article key={suggestion.opportunityId}>
+              <strong>{suggestion.title}</strong>
+              <span>{suggestion.organization} · {humanize(suggestion.type)} · {humanize(suggestion.status)}</span>
+              <small>Learning outcomes match: {suggestion.matchedSkills.map((skill) => skill.name).join(", ")}</small>
+              {suggestion.matchedSkills.flatMap((skill) => skill.evidence).map((evidence, index) => (
+                <small key={`${suggestion.opportunityId}-evidence-${index}`}>Evidence: {evidence.uri ? <a href={evidence.uri} target="_blank" rel="noreferrer">{evidence.description}</a> : evidence.description}</small>
+              ))}
+              {(suggestion.applicationUrl || suggestion.source.url) && <a href={suggestion.applicationUrl || suggestion.source.url || undefined} target="_blank" rel="noreferrer">View listing <ArrowUpRight size={13} /></a>}
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

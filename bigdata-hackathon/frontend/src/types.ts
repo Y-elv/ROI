@@ -91,11 +91,53 @@ export interface RequirementEvaluation {
   importance: "mandatory" | "preferred" | "unknown";
   status: "satisfied" | "unmet" | "unresolved";
   explanation: string;
+  sourceEvidence?: Array<{ description: string; uri?: string }>;
+  profileEvidence?: string[];
+  actionToResolve?: string;
+}
+
+export type ProficiencyLevel = "beginner" | "intermediate" | "advanced" | "expert";
+
+export interface SkillRequirementAssessment {
+  requirementId: string;
+  name: string;
+  requiredProficiency?: ProficiencyLevel;
+  profileProficiency?: ProficiencyLevel;
+}
+
+export interface EligibilityAssessment {
+  mandatoryRequirements: {
+    total: number;
+    satisfied: number;
+    unmet: number;
+    unresolved: number;
+  };
+  unclassifiedRequirements: number;
+  preferredRequirements: number;
+  mandatoryRequirementsDisclosure?: "complete" | "partial" | "unknown";
+  skillGaps: SkillRequirementAssessment[];
+  skillsNeedingConfirmation: SkillRequirementAssessment[];
+  relatedDevelopmentOpportunities: Array<{
+    opportunityId: string;
+    title: string;
+    organization: string;
+    type: OpportunityType;
+    status: OpportunityStatus;
+    deadlineStatus: DeadlineStatus;
+    applicationUrl?: string | null;
+    source: { name: string; url?: string | null };
+    matchedSkills: Array<{
+      requirementId: string;
+      name: string;
+      evidence: Array<{ description: string; uri?: string }>;
+    }>;
+  }>;
 }
 
 export interface EligibilityResult {
   outcome: EligibilityOutcome;
   explanation: string;
+  assessment: EligibilityAssessment;
   satisfied: RequirementEvaluation[];
   unmet: RequirementEvaluation[];
   unresolved: RequirementEvaluation[];

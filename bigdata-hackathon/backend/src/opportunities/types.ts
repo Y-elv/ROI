@@ -247,10 +247,52 @@ export interface RequirementEvaluation {
 export interface EligibilityResult {
   outcome: EligibilityOutcome;
   explanation: string;
+  assessment: EligibilityAssessment;
   satisfied: RequirementEvaluation[];
   unmet: RequirementEvaluation[];
   unresolved: RequirementEvaluation[];
   preferred: RequirementEvaluation[];
+}
+
+export interface EligibilityAssessment {
+  mandatoryRequirements: {
+    total: number;
+    satisfied: number;
+    unmet: number;
+    unresolved: number;
+  };
+  unclassifiedRequirements: number;
+  preferredRequirements: number;
+  mandatoryRequirementsDisclosure: DisclosureState | undefined;
+  skillGaps: SkillRequirementAssessment[];
+  skillsNeedingConfirmation: SkillRequirementAssessment[];
+  relatedDevelopmentOpportunities: SkillDevelopmentOpportunity[];
+}
+
+export interface SkillRequirementAssessment {
+  requirementId: string;
+  name: string;
+  requiredProficiency?: ProficiencyLevel;
+  profileProficiency?: ProficiencyLevel;
+}
+
+export interface SkillDevelopmentOpportunity {
+  opportunityId: string;
+  title: string;
+  organization: string;
+  type: OpportunityType;
+  status: OpportunityStatus;
+  deadlineStatus: DeadlineStatus;
+  applicationUrl?: string | null;
+  source: {
+    name: string;
+    url?: string | null;
+  };
+  matchedSkills: Array<{
+    requirementId: string;
+    name: string;
+    evidence: EvidenceReference[];
+  }>;
 }
 
 export type SuitabilityFactor =

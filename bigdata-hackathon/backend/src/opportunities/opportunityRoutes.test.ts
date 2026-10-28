@@ -40,7 +40,9 @@ test("public catalogue lists only non-synthetic records without internal metadat
     assert.ok(body.data.opportunities.some((item) => item.requirements.length > 0));
     assert.ok(body.data.opportunities.every((item) =>
       !Object.hasOwn(item.metadata ?? {}, "isSynthetic") &&
-      !Object.hasOwn(item.metadata ?? {}, "isLiveOpportunity")));
+      !Object.hasOwn(item.metadata ?? {}, "isLiveOpportunity") &&
+      !Object.hasOwn(item.metadata ?? {}, "displaySafety")));
+    assert.doesNotMatch(JSON.stringify(body), /"(?:isSynthetic|isLiveOpportunity|displaySafety)"/);
   });
 });
 
@@ -59,6 +61,31 @@ test("canonical list filters support catalogue types and status values", async (
   });
 });
 
+test("catalogue list accepts documented synthetic and live-opportunity filters", async () => {
+  await withServer(async (baseUrl) => {
+    const publicResponse = await fetch(`${baseUrl}/api/v1/opportunities?limit=100&isSynthetic=false`);
+    const publicBody = await publicResponse.json() as { data: { opportunities: unknown[] } };
+    assert.equal(publicResponse.status, 200);
+    assert.equal(publicBody.data.opportunities.length, 30);
+
+    const syntheticResponse = await fetch(`${baseUrl}/api/v1/opportunities?isSynthetic=true`);
+    const syntheticBody = await syntheticResponse.json() as { data: { opportunities: unknown[] } };
+    assert.equal(syntheticResponse.status, 200);
+    assert.equal(syntheticBody.data.opportunities.length, 0);
+
+    const liveResponse = await fetch(`${baseUrl}/api/v1/opportunities?isLiveOpportunity=true`);
+    const liveBody = await liveResponse.json() as {
+      data: { opportunities: Array<{ id: string }> };
+    };
+    assert.equal(liveResponse.status, 200);
+    assert.ok(liveBody.data.opportunities.length > 0);
+    assert.ok(liveBody.data.opportunities.every((entry) => entry.id.length > 0));
+
+    const invalidResponse = await fetch(`${baseUrl}/api/v1/opportunities?isSynthetic=yes`);
+    assert.equal(invalidResponse.status, 400);
+  });
+});
+
 test("detail route hides synthetic records and returns public records without internal metadata", async () => {
   await withServer(async (baseUrl) => {
     const retained = await fetch(`${baseUrl}/api/v1/opportunities/rw-example-027`);
@@ -74,6 +101,7 @@ test("detail route hides synthetic records and returns public records without in
     assert.equal(uniqueBody.data.opportunity.location.displayLocation, "Kirehe District, Eastern Province");
     assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "isSynthetic"), false);
     assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "isLiveOpportunity"), false);
+    assert.equal(Object.hasOwn(uniqueBody.data.opportunity.metadata ?? {}, "displaySafety"), false);
   });
 });
 
@@ -85,7 +113,20 @@ test("eligibility endpoint selects catalogue record and treats prose requirement
       body: JSON.stringify({ profile: {}, opportunityId: "rw-opp-001" }),
     });
     const body = await response.json() as {
-      data: { eligibility: { outcome: string; unresolved: Array<{ importance: string; sourceEvidence?: unknown[]; actionToResolve?: string }> }; opportunity: { id: string } };
+      data: {
+        eligibility: {
+          outcome: string;
+          unresolved: Array<{ importance: string; sourceEvidence?: unknown[]; actionToResolve?: string }>;
+          assessment: {
+            mandatoryRequirements: { total: number; satisfied: number; unmet: number; unresolved: number };
+            unclassifiedRequirements: number;
+            skillGaps: unknown[];
+            skillsNeedingConfirmation: unknown[];
+            relatedDevelopmentOpportunities: unknown[];
+          };
+        };
+        opportunity: { id: string };
+      };
     };
     assert.equal(response.status, 200);
     assert.equal(body.data.opportunity.id, "rw-opp-001");
@@ -93,6 +134,16 @@ test("eligibility endpoint selects catalogue record and treats prose requirement
     assert.ok(body.data.eligibility.unresolved.some((entry) => entry.importance === "unknown"));
     assert.ok(body.data.eligibility.unresolved.some((entry) =>
       entry.sourceEvidence?.length && entry.actionToResolve));
+    assert.deepEqual(body.data.eligibility.assessment.mandatoryRequirements, {
+      total: 0,
+      satisfied: 0,
+      unmet: 0,
+      unresolved: 0,
+    });
+    assert.equal(body.data.eligibility.assessment.unclassifiedRequirements, 1);
+    assert.deepEqual(body.data.eligibility.assessment.skillGaps, []);
+    assert.deepEqual(body.data.eligibility.assessment.skillsNeedingConfirmation, []);
+    assert.deepEqual(body.data.eligibility.assessment.relatedDevelopmentOpportunities, []);
   });
 });
 
@@ -235,7 +286,9 @@ test("synthetic matching remains supported without exposing internal metadata", 
     assert.ok(body.data.some((entry) => entry.opportunity.status === "synthetic_example"));
     assert.ok(body.data.every((entry) =>
       !Object.hasOwn(entry.opportunity.metadata ?? {}, "isSynthetic") &&
-      !Object.hasOwn(entry.opportunity.metadata ?? {}, "isLiveOpportunity")));
+      !Object.hasOwn(entry.opportunity.metadata ?? {}, "isLiveOpportunity") &&
+      !Object.hasOwn(entry.opportunity.metadata ?? {}, "displaySafety")));
+    assert.doesNotMatch(JSON.stringify(body), /"(?:isSynthetic|isLiveOpportunity|displaySafety)"/);
   });
 });
 
@@ -280,6 +333,8 @@ test("Swagger documents canonical types, statuses, and existing opportunity rout
     assert.match(body, /verified_listing/);
     assert.match(body, /\/api\/v1\/opportunities\/eligibility/);
     assert.match(body, /\/api\/v1\/opportunities\/match/);
+    assert.match(body, /EligibilityAssessment/);
+    assert.match(body, /skillsNeedingConfirmation/);
     assert.doesNotMatch(body, /demo-rw-001/);
   });
 });

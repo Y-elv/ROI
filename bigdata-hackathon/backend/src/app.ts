@@ -94,6 +94,10 @@ const swaggerSpec = swaggerJsdoc({
             evidence: { type: "array", items: { $ref: "#/components/schemas/OpportunityEvidence" } },
           },
         },
+        ProficiencyLevel: {
+          type: "string",
+          enum: ["beginner", "intermediate", "advanced", "expert"],
+        },
         OpportunityType: {
           type: "string",
           enum: ["job", "internship", "apprenticeship", "scholarship", "training", "entrepreneurship", "business_support", "certification", "education", "industrial_placement", "livelihoods", "study_loan", "tvet"],
@@ -237,10 +241,89 @@ const swaggerSpec = swaggerJsdoc({
             actionToResolve: { type: "string" },
           },
         },
+        SkillRequirementAssessment: {
+          type: "object",
+          required: ["requirementId", "name"],
+          description: "A skill tied to a known structured skill criterion. Only mandatory unmet skills appear in skillGaps.",
+          properties: {
+            requirementId: { type: "string" },
+            name: { type: "string" },
+            requiredProficiency: { $ref: "#/components/schemas/ProficiencyLevel" },
+            profileProficiency: { $ref: "#/components/schemas/ProficiencyLevel" },
+          },
+        },
+        EligibilityAssessment: {
+          type: "object",
+          required: [
+            "mandatoryRequirements",
+            "unclassifiedRequirements",
+            "preferredRequirements",
+            "skillGaps",
+            "skillsNeedingConfirmation",
+            "relatedDevelopmentOpportunities",
+          ],
+          description: "Summary counts concern catalogue-declared mandatory requirements; skill gaps exclude unknown, preferred, and unclassified criteria.",
+          properties: {
+            mandatoryRequirements: {
+              type: "object",
+              required: ["total", "satisfied", "unmet", "unresolved"],
+              properties: {
+                total: { type: "integer", minimum: 0 },
+                satisfied: { type: "integer", minimum: 0 },
+                unmet: { type: "integer", minimum: 0 },
+                unresolved: { type: "integer", minimum: 0 },
+              },
+            },
+            unclassifiedRequirements: { type: "integer", minimum: 0 },
+            preferredRequirements: { type: "integer", minimum: 0 },
+            mandatoryRequirementsDisclosure: {
+              type: "string",
+              enum: ["complete", "partial", "unknown"],
+            },
+            skillGaps: { type: "array", items: { $ref: "#/components/schemas/SkillRequirementAssessment" } },
+            skillsNeedingConfirmation: { type: "array", items: { $ref: "#/components/schemas/SkillRequirementAssessment" } },
+            relatedDevelopmentOpportunities: {
+              type: "array",
+              description: "Verified, non-synthetic, open/rolling training records with an evidenced learning outcome matching a known mandatory skill gap.",
+              items: { $ref: "#/components/schemas/SkillDevelopmentOpportunity" },
+            },
+          },
+        },
+        SkillDevelopmentOpportunity: {
+          type: "object",
+          required: ["opportunityId", "title", "organization", "type", "status", "deadlineStatus", "source", "matchedSkills"],
+          properties: {
+            opportunityId: { type: "string" },
+            title: { type: "string" },
+            organization: { type: "string" },
+            type: { $ref: "#/components/schemas/OpportunityType" },
+            status: { $ref: "#/components/schemas/OpportunityStatus" },
+            deadlineStatus: { $ref: "#/components/schemas/DeadlineStatus" },
+            applicationUrl: { type: "string", format: "uri", nullable: true },
+            source: {
+              type: "object",
+              required: ["name"],
+              properties: { name: { type: "string" }, url: { type: "string", format: "uri", nullable: true } },
+            },
+            matchedSkills: {
+              type: "array",
+              items: {
+                type: "object",
+                required: ["requirementId", "name", "evidence"],
+                properties: {
+                  requirementId: { type: "string" },
+                  name: { type: "string" },
+                  evidence: { type: "array", items: { $ref: "#/components/schemas/OpportunityEvidence" } },
+                },
+              },
+            },
+          },
+        },
         EligibilityResult: {
-          type: "object", required: ["outcome", "explanation", "satisfied", "unmet", "unresolved", "preferred"],
+          type: "object", required: ["outcome", "explanation", "assessment", "satisfied", "unmet", "unresolved", "preferred"],
           properties: {
             outcome: { type: "string", enum: ["eligible", "ineligible", "unknown"] }, explanation: { type: "string" },
+            assessment: { $ref: "#/components/schemas/EligibilityAssessment" },
             satisfied: { type: "array", items: { $ref: "#/components/schemas/RequirementEvaluation" } },
             unmet: { type: "array", items: { $ref: "#/components/schemas/RequirementEvaluation" } },
             unresolved: { type: "array", items: { $ref: "#/components/schemas/RequirementEvaluation" } },

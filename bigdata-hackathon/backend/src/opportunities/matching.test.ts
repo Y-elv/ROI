@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { evaluateEligibility, validateOpportunity } from "./eligibility";
+import { evaluateEligibility, findRelatedSkillDevelopmentOpportunities, validateOpportunity } from "./eligibility";
 import { DEFAULT_MATCHING_WEIGHTS, matchOpportunity, rankOpportunities } from "./matching";
 import { Opportunity, OpportunityRequirement, UserProfile } from "./types";
 
@@ -79,6 +79,83 @@ test("a documented mandatory requirement not satisfied returns ineligible", () =
   ]));
   assert.equal(result.outcome, "ineligible");
   assert.equal(result.unmet.length, 1);
+});
+
+test("eligibility assessment counts mandatory requirements and exposes only explicit unmet skill gaps", () => {
+  const profile: UserProfile = {
+    skills: [{ name: "Python", proficiency: "beginner" }],
+    skillDisclosure: "complete",
+  };
+  const result = evaluateEligibility(profile, fixtureOpportunity({}, [pythonRequirement, degreeRequirement]));
+
+  assert.equal(result.assessment.mandatoryRequirements.total, 2);
+  assert.equal(result.assessment.mandatoryRequirements.unmet, 1);
+  assert.equal(result.assessment.mandatoryRequirements.unresolved, 1);
+  assert.equal(result.assessment.unclassifiedRequirements, 0);
+  assert.deepEqual(result.assessment.skillGaps, [{
+    requirementId: "python-skill",
+    name: "Python",
+    requiredProficiency: "intermediate",
+    profileProficiency: "beginner",
+  }]);
+  assert.deepEqual(result.assessment.skillsNeedingConfirmation, []);
+});
+
+test("unreported mandatory skill is confirmation-needed, not a confirmed skill gap", () => {
+  const result = evaluateEligibility({}, fixtureOpportunity({}, [pythonRequirement]));
+
+  assert.deepEqual(result.assessment.skillGaps, []);
+  assert.deepEqual(result.assessment.skillsNeedingConfirmation, [{
+    requirementId: "python-skill",
+    name: "Python",
+    requiredProficiency: "intermediate",
+  }]);
+});
+
+test("skill development suggestions require an evidenced learning outcome and a live verified record", () => {
+  const gap = {
+    requirementId: "python-skill",
+    name: "Python",
+    requiredProficiency: "intermediate" as const,
+  };
+  const training = fixtureOpportunity({
+    id: "python-training",
+    type: "training",
+    title: "Python foundations",
+    suitabilitySignals: {
+      skills: [{
+        name: "Python 3",
+        purpose: "learning_outcome",
+        evidence: [fixtureEvidence],
+      }],
+    },
+  });
+  const suggestions = findRelatedSkillDevelopmentOpportunities([gap], [training]);
+
+  assert.equal(suggestions.length, 1);
+  assert.equal(suggestions[0].opportunityId, "python-training");
+  assert.deepEqual(suggestions[0].matchedSkills, [{
+    requirementId: "python-skill",
+    name: "Python",
+    evidence: [fixtureEvidence],
+  }]);
+
+  assert.deepEqual(findRelatedSkillDevelopmentOpportunities([gap], [
+    { ...training, status: "closed" },
+  ]), []);
+  assert.deepEqual(findRelatedSkillDevelopmentOpportunities([gap], [
+    { ...training, verification: { state: "needs_confirmation" } },
+  ]), []);
+  assert.deepEqual(findRelatedSkillDevelopmentOpportunities([gap], [
+    { ...training, metadata: { isSynthetic: true } },
+  ]), []);
+  assert.deepEqual(findRelatedSkillDevelopmentOpportunities([gap], [
+    { ...training, suitabilitySignals: { skills: [{
+      name: "Python",
+      purpose: "related",
+      evidence: [fixtureEvidence],
+    }] } },
+  ]), []);
 });
 
 test("an unresolved mandatory requirement returns unknown", () => {

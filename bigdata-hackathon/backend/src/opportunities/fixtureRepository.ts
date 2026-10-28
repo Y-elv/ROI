@@ -3,7 +3,11 @@ import path from "node:path";
 import { validateOpportunity } from "./eligibility";
 import { Opportunity } from "./types";
 
-const CATALOGUE_PATH = path.resolve(__dirname, "../../data/fixtures/rwanda-opportunity-demo-v3.json");
+const CATALOGUE_PATH = path.resolve(
+  __dirname,
+  "../../data/fixtures",
+  "rwanda-opportunity-demo-v3.json",
+);
 const MAX_CATALOGUE_BYTES = 2 * 1024 * 1024;
 
 export interface CatalogueCoverage {
@@ -136,7 +140,7 @@ export function createCatalogueRepository(
       cached = readDocument().then(parseCatalogueDocument).catch((error: unknown) => {
         cached = undefined;
         if (error instanceof FixtureDataError) throw error;
-        throw new FixtureDataError("Unable to load the canonical opportunity catalogue.");
+        throw new FixtureDataError("Unable to load the configured opportunity catalogue.");
       });
     }
     return cached;

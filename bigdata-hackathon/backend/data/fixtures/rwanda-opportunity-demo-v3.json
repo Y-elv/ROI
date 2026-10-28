@@ -1,9 +1,9 @@
 {
   "datasetName": "Rwanda Opportunity Intelligence",
-  "datasetVersion": "3.0.0",
-  "purpose": "Evidence-based career discovery, opportunity matching, and eligibility guidance. Source prose is retained without inferring mandatory criteria.",
-  "warning": "Records are based on linked official portals and opportunity listings checked on 2026-10-26. A portal/programme record is not necessarily an open application. Check each source before applying; never infer a deadline, salary, fee, or funding amount when it is not stated. V3 preserves source requirements as unclassified unless the source explicitly states structured criteria; taxonomy-inferred career and skill signals are for suitability ranking only and are not eligibility rules. The original V2 catalogue remains unchanged.",
-  "asOf": "2026-10-26",
+  "datasetVersion": "4.0.0",
+  "purpose": "Evidence-based career discovery, opportunity matching, and eligibility guidance.",
+  "warning": "Records are based on linked official portals and opportunity listings.",
+  "asOf": "2026-10-28",
   "coverage": {
     "country": "Rwanda",
     "opportunityCount": 44,
@@ -38,36 +38,36 @@
       }
     ],
     "districts": [
-      "Nyarugenge",
       "Gasabo",
       "Kicukiro",
-      "Nyanza",
-      "Gisagara",
-      "Nyaruguru",
-      "Huye",
-      "Nyamagabe",
-      "Ruhango",
-      "Muhanga",
-      "Kamonyi",
-      "Karongi",
-      "Rutsiro",
-      "Rubavu",
-      "Nyabihu",
-      "Ngororero",
-      "Rusizi",
-      "Nyamasheke",
-      "Rulindo",
-      "Gakenke",
-      "Musanze",
-      "Burera",
-      "Gicumbi",
-      "Rwamagana",
-      "Nyagatare",
+      "Nyarugenge",
+      "Bugesera",
       "Gatsibo",
       "Kayonza",
       "Kirehe",
       "Ngoma",
-      "Bugesera"
+      "Nyagatare",
+      "Rwamagana",
+      "Burera",
+      "Gakenke",
+      "Gicumbi",
+      "Musanze",
+      "Rulindo",
+      "Gisagara",
+      "Huye",
+      "Kamonyi",
+      "Muhanga",
+      "Nyamagabe",
+      "Nyanza",
+      "Nyaruguru",
+      "Ruhango",
+      "Karongi",
+      "Ngororero",
+      "Nyabihu",
+      "Nyamasheke",
+      "Rubavu",
+      "Rusizi",
+      "Rutsiro"
     ],
     "provinces": [
       "City of Kigali",
@@ -77,7 +77,12 @@
       "Western Province"
     ],
     "syntheticRecordCount": 14,
-    "nonSyntheticRecordCount": 30
+    "nonSyntheticRecordCount": 30,
+    "datasetVersion": "4.0.0",
+    "coordinateSystem": {
+      "coordinateType": "district_reference",
+      "description": "Approximate district reference coordinates supplied for mapping; not exact opportunity venue coordinates."
+    }
   },
   "opportunities": [
     {
@@ -95,9 +100,10 @@
         "district": "Kirehe",
         "displayLocation": "Kirehe District, Eastern Province",
         "workMode": "in_person",
-        "latitude": -2.2694,
-        "longitude": 30.6517,
-        "coordinateType": "district_reference"
+        "latitude": -2.283,
+        "longitude": 30.883,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -349,9 +355,10 @@
         "district": "Kirehe",
         "displayLocation": "Kirehe District, Eastern Province",
         "workMode": "in_person",
-        "latitude": -2.2694,
-        "longitude": 30.6517,
-        "coordinateType": "district_reference"
+        "latitude": -2.283,
+        "longitude": 30.883,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -599,10 +606,14 @@
       "description": "Teaching vacancy listed on the civil-service recruitment portal. Verify subject combination, teaching qualifications and any required registration in the job profile.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda; duty station in official advert",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -829,10 +840,14 @@
       "description": "Teaching vacancy listed on the civil-service recruitment portal. Verify subject requirements, teaching qualifications and duty station.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda; duty station in official advert",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -1059,10 +1074,14 @@
       "description": "Use the live portal to find current district and ministry vacancies, open each job profile, and apply before its individual deadline. This is a discovery record rather than a single post.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Nationwide, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "mifotra-recruitment-portal",
@@ -1312,10 +1331,14 @@
       "description": "Government-verified job portal with CV/profile matching, daily refreshed recommendations, sector filters and job-centre support. Search IT, data, software, remote, agriculture and other sectors.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Nationwide; remote roles may be listed",
-        "workMode": "hybrid"
+        "workMode": "hybrid",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "kora-job-portal",
@@ -1540,10 +1563,14 @@
       "description": "Professional internship pathway for eligible fresh graduates from higher learning institutions and TVET institutions. The programme connects graduates with host institutions; placements depend on current intake and host demand.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Nationwide, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "national-internship-programme",
@@ -1768,10 +1795,14 @@
       "description": "Use the programme portal and guidelines to review graduate registration and host-institution processes. Placement dates and availability vary.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Nationwide, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "national-internship-programme-guidelines",
@@ -1997,9 +2028,13 @@
       "location": {
         "country": "Rwanda",
         "province": "City of Kigali",
-        "district": null,
+        "district": "Gasabo",
         "displayLocation": "Kigali, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.944,
+        "longitude": 30.123,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "province_reference_fallback"
       },
       "source": {
         "id": "kura-opportunities",
@@ -2261,10 +2296,14 @@
       "description": "Online programming courses designed to build foundational skills in programming, data science, and Android/Kotlin development. The programme description mentions expert mentors, a community platform and certification after successful completion.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Online; Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "kura-/-one-million-coders",
@@ -2584,10 +2623,14 @@
       "description": "Current academic-year call for public, private and foreign candidates wishing to study at Rwanda Polytechnic. Use the official announcement to open the call document and verify programmes, entry requirements, fees and deadline.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda Polytechnic campuses, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "rwanda-polytechnic-official-announcements",
@@ -2812,10 +2855,14 @@
       "description": "Historical call for applications for study at Rwanda Polytechnic in academic year 2024–2025. Included for reference only; it is not a current intake.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda Polytechnic campuses, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "rwanda-polytechnic-official-announcements",
@@ -3040,10 +3087,14 @@
       "description": "Competitive government study-loan call for Rwandan citizens admitted to recognized foreign higher education institutions, prioritizing programmes in national priority areas not offered locally. The notice states the application period was 1–21 October 2026.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Study abroad; apply from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -3268,10 +3319,14 @@
       "description": "Scholarship call for eligible Rwandan citizens for full-time taught Master’s study in the UK starting September 2027. Both HEC nomination and CSC Central submissions were required.",
       "location": {
         "country": "United Kingdom",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "United Kingdom — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -3470,10 +3525,14 @@
       "description": "Scholarship call for eligible Rwandan citizens for doctoral study in the UK beginning September or October 2027. HEC could nominate up to 16 PhD candidates; nomination did not guarantee final selection.",
       "location": {
         "country": "United Kingdom",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "United Kingdom — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -3672,10 +3731,14 @@
       "description": "Bilateral scholarships for Rwandan students for Bachelor’s study in Medical Sciences, Architecture, Urban Planning and Urban Studies, Mathematics and Computer Science, and Science and Technology.",
       "location": {
         "country": "Algeria",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Algeria — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -3900,10 +3963,14 @@
       "description": "Scholarship offer for Diploma, Bachelor’s, Master’s and PhD study at Moroccan public training institutions and universities; programmes are taught in French. The call included TVET diploma pathways for eligible TSS graduates.",
       "location": {
         "country": "Morocco",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Morocco — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -4129,10 +4196,14 @@
       "description": "Two-year funded Master’s scholarships for eligible EAC nationals to study in an EAC partner state other than their country of citizenship. Fields include mathematics, engineering, informatics, science, technology and business science.",
       "location": {
         "country": "EAC partner state outside applicant’s country",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "EAC partner state outside applicant’s country",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda-/-iucea",
@@ -4357,10 +4428,14 @@
       "description": "HEC listed a JICA–Rwanda Government scholarship announcement in September 2026. The exact degree level, eligibility and closing date must be checked in the official notice.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Study abroad; country and institution per call",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -4559,10 +4634,14 @@
       "description": "HEC listed a Kent State University opportunity in September 2026. Check the original announcement for study level, eligible courses, funding coverage and application route.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "United States — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -4761,10 +4840,14 @@
       "description": "HEC listed a China–Rwanda scholarship opportunity associated with Inner Mongolia FR Medical University for academic year 2026–2027. Confirm programme, language, recognition, costs and award coverage from the official notice.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "China — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -4989,10 +5072,14 @@
       "description": "HEC listed a scholarship opportunity for Azerbaijan in August 2026. Consult the detailed call for degree level, subjects, language, nomination route and funding package.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Azerbaijan — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -5191,10 +5278,14 @@
       "description": "HEC listed a scholarship opportunity in Pakistan in July 2026. The official notice should be consulted for eligible levels, fields, funding and application steps.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Pakistan — application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -5393,10 +5484,14 @@
       "description": "HEC published a bursary/loan call for September 2026. It required admission to a recognized foreign university and documentation of study and living costs. Included as a closed reference for future applicants preparing documentation.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Study abroad; application from Rwanda",
-        "workMode": "remote"
+        "workMode": "remote",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hec-rwanda",
@@ -5596,9 +5691,13 @@
       "location": {
         "country": "Rwanda",
         "province": "City of Kigali",
-        "district": null,
+        "district": "Gasabo",
         "displayLocation": "Kigali, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.944,
+        "longitude": 30.123,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "province_reference_fallback"
       },
       "source": {
         "id": "kigali-smart-skills-hub",
@@ -5860,10 +5959,14 @@
       "description": "Short course listed by the school to support digital skills and employability. Confirm current enrolment, syllabus, duration and delivery mode with the provider.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda; provider location per school",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "intango-tss",
@@ -6113,10 +6216,14 @@
       "description": "Computer application course listed in the school’s short-course programmes. Verify curriculum, course duration and availability directly with the provider.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda; provider location per school",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "intango-tss",
@@ -6342,10 +6449,14 @@
       "description": "Explore current TVET, diploma and technical programmes offered through Rwanda Polytechnic. Programme availability, entry criteria, tuition and application deadlines vary by campus and academic year.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Multiple RP campuses, Rwanda",
-        "workMode": "in_person"
+        "workMode": "in_person",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "rwanda-polytechnic",
@@ -6570,10 +6681,14 @@
       "description": "Startup growth support, investment-readiness development and pitch opportunities. Programme calls and pitch events are cohort-specific; funding is not guaranteed.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Nyarugenge",
         "displayLocation": "Rwanda; programme and event locations vary",
-        "workMode": "hybrid"
+        "workMode": "hybrid",
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "national_reference_fallback"
       },
       "source": {
         "id": "hanga-growth-programme",
@@ -6798,10 +6913,14 @@
       "description": "Business-development support for entrepreneurs and small businesses. Services and eligibility vary by programme and location; applicants should confirm whether a current cohort or support product is available.",
       "location": {
         "country": "Rwanda",
-        "province": null,
-        "district": null,
+        "province": "City of Kigali",
+        "district": "Gasabo",
         "displayLocation": "Kigali and other programme locations, Rwanda",
-        "workMode": "hybrid"
+        "workMode": "hybrid",
+        "latitude": -1.944,
+        "longitude": 30.123,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "kigali_reference_fallback"
       },
       "source": {
         "id": "inkomoko",
@@ -7033,9 +7152,10 @@
         "displayLocation": "Gasabo District, City of Kigali (synthetic demo assignment; district reference point)",
         "workMode": "hybrid",
         "sourceDisplayLocation": "Kigali City, Rwanda",
-        "latitude": -1.9056,
-        "longitude": 30.1343,
-        "coordinateType": "district_reference"
+        "latitude": -1.944,
+        "longitude": 30.123,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7250,9 +7370,10 @@
         "displayLocation": "Kicukiro District, City of Kigali (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Kigali City, Rwanda",
-        "latitude": -2.0028,
-        "longitude": 30.1264,
-        "coordinateType": "district_reference"
+        "latitude": -1.979,
+        "longitude": 30.101,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7491,9 +7612,10 @@
         "displayLocation": "Nyarugenge District, City of Kigali (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Kigali City, Rwanda",
-        "latitude": -1.9851,
-        "longitude": 30.0319,
-        "coordinateType": "district_reference"
+        "latitude": -1.985,
+        "longitude": 30.032,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7707,10 +7829,11 @@
         "district": "Huye",
         "displayLocation": "Huye District, Southern Province (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
-        "latitude": -2.6053,
-        "longitude": 29.7402,
+        "latitude": -2.605,
+        "longitude": 29.74,
         "coordinateType": "district_reference",
-        "sourceDisplayLocation": "Huye District, Rwanda"
+        "sourceDisplayLocation": "Huye District, Rwanda",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -7936,9 +8059,10 @@
         "displayLocation": "Burera District, Northern Province (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Rwanda; duty station not specified",
-        "latitude": -1.439,
-        "longitude": 29.813,
-        "coordinateType": "district_reference"
+        "latitude": -1.416,
+        "longitude": 29.833,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8167,9 +8291,10 @@
         "displayLocation": "Gisagara District, Southern Province (synthetic demo assignment; district reference point)",
         "workMode": "remote",
         "sourceDisplayLocation": "Study location not specified",
-        "latitude": -2.6247,
-        "longitude": 29.845,
-        "coordinateType": "district_reference"
+        "latitude": -2.583,
+        "longitude": 29.866,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8373,9 +8498,10 @@
         "displayLocation": "Bugesera District, Eastern Province (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Rwanda or overseas; not specified",
-        "latitude": -2.2225,
-        "longitude": 30.1706,
-        "coordinateType": "district_reference"
+        "latitude": -2.215,
+        "longitude": 30.17,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8579,9 +8705,10 @@
         "displayLocation": "Karongi District, Western Province (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Rwanda; campus not specified",
-        "latitude": -2.1583,
-        "longitude": 29.3986,
-        "coordinateType": "district_reference"
+        "latitude": -2.15,
+        "longitude": 29.35,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -8809,9 +8936,10 @@
         "displayLocation": "Kicukiro District, City of Kigali (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Rwanda; centre not specified",
-        "latitude": -2.0028,
-        "longitude": 30.1264,
-        "coordinateType": "district_reference"
+        "latitude": -1.979,
+        "longitude": 30.101,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9062,9 +9190,10 @@
         "displayLocation": "Gakenke District, Northern Province (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Rwanda; delivery mode not specified",
-        "latitude": -1.7001,
-        "longitude": 29.7825,
-        "coordinateType": "district_reference"
+        "latitude": -1.716,
+        "longitude": 29.816,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9325,9 +9454,10 @@
         "displayLocation": "Kamonyi District, Southern Province (synthetic demo assignment; district reference point)",
         "workMode": "in_person",
         "sourceDisplayLocation": "Rwanda; district not specified",
-        "latitude": -1.9961,
-        "longitude": 29.9171,
-        "coordinateType": "district_reference"
+        "latitude": -1.966,
+        "longitude": 29.866,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9531,9 +9661,10 @@
         "displayLocation": "Gatsibo District, Eastern Province (synthetic demo assignment; district reference point)",
         "workMode": "hybrid",
         "sourceDisplayLocation": "Rwanda; location not specified",
-        "latitude": -1.5997,
-        "longitude": 30.4578,
-        "coordinateType": "district_reference"
+        "latitude": -1.618,
+        "longitude": 30.45,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9773,9 +9904,10 @@
         "displayLocation": "Ngororero District, Western Province (synthetic demo assignment; district reference point)",
         "workMode": "remote",
         "sourceDisplayLocation": "Study destination unknown",
-        "latitude": -1.8656,
-        "longitude": 29.6242,
-        "coordinateType": "district_reference"
+        "latitude": -1.85,
+        "longitude": 29.55,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -9979,9 +10111,10 @@
         "displayLocation": "Rubavu District, Western Province (synthetic demo assignment; district reference point)",
         "workMode": "hybrid",
         "sourceDisplayLocation": "Rwanda; location not specified",
-        "latitude": -1.6935,
-        "longitude": 29.2599,
-        "coordinateType": "district_reference"
+        "latitude": -1.683,
+        "longitude": 29.266,
+        "coordinateType": "district_reference",
+        "locationAssignmentStatus": "existing_district"
       },
       "source": {
         "id": "synthetic-example-source",
@@ -10168,6 +10301,294 @@
           ]
         }
       ]
+    },
+    {
+      "id": "roi-rwanda-public-service-data-officer-draft",
+      "type": "job",
+      "title": "Public Service Data Officer",
+      "organization": {
+        "name": "Public-sector employer (to be confirmed)",
+        "kind": "unconfirmed"
+      },
+      "description": "Draft opportunity profile for a public-sector data role involving spreadsheet analysis, data handling, and reporting. Employer, vacancy availability, duties, and application details require confirmation from an official source.",
+      "location": {
+        "country": "Rwanda",
+        "province": "City of Kigali",
+        "district": "Gasabo",
+        "displayLocation": "Gasabo District, City of Kigali (proposed location; confirm with employer)",
+        "workMode": "onsite",
+        "locationAssignmentStatus": "needs_confirmation"
+      },
+      "source": {
+        "id": null,
+        "name": "Official source not yet provided",
+        "url": null
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not confirmed",
+        "costCertainty": "unknown",
+        "fundingCertainty": "unknown"
+      },
+      "requirements": [
+        {
+          "id": "spreadsheet-analysis",
+          "description": "Spreadsheet analysis may be relevant to this role; confirm the required proficiency level with the employer.",
+          "importance": "unknown",
+          "certainty": "not_stated",
+          "criterion": {
+            "kind": "skill",
+            "name": "Spreadsheet analysis"
+          },
+          "evidence": []
+        },
+        {
+          "id": "report-writing",
+          "description": "Report writing may be relevant to this role; confirm the required proficiency level with the employer.",
+          "importance": "unknown",
+          "certainty": "not_stated",
+          "criterion": {
+            "kind": "skill",
+            "name": "Report writing"
+          },
+          "evidence": []
+        }
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": null,
+        "verificationNote": "Employer identity and location are unverified."
+      },
+      "mandatoryRequirementsDisclosure": "unknown",
+      "suitabilitySignals": {
+        "skills": []
+      },
+      "careerFamilies": [],
+      "provenance": [
+        {
+          "field": "record",
+          "sourceId": null,
+          "certainty": "not_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+            }
+          ]
+        }
+      ],
+      "metadata": {
+        "category": "public_service_data",
+        "recordPurpose": "opportunity_draft"
+      }
+    },
+    {
+      "id": "roi-rwanda-public-service-training-assistant-draft",
+      "type": "job",
+      "title": "Public Service Training Assistant",
+      "organization": {
+        "name": "Public-sector employer (to be confirmed)",
+        "kind": "unconfirmed"
+      },
+      "description": "Draft opportunity profile for a training support role that may involve preparing learning sessions, assisting facilitators, and communicating information. Employer, duties, vacancy availability, and application details require confirmation from an official source.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda (specific location to be confirmed)",
+        "workMode": "unspecified",
+        "locationAssignmentStatus": "needs_confirmation"
+      },
+      "source": {
+        "id": null,
+        "name": "Official source not yet provided",
+        "url": null
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not confirmed",
+        "costCertainty": "unknown",
+        "fundingCertainty": "unknown"
+      },
+      "requirements": [
+        {
+          "id": "presentation",
+          "description": "Presentation skills may be relevant to this role; confirm whether they are required and at what level.",
+          "importance": "unknown",
+          "certainty": "not_stated",
+          "criterion": {
+            "kind": "skill",
+            "name": "Presentation"
+          },
+          "evidence": []
+        }
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": null,
+        "verificationNote": "Employer identity, role duties, and location are unverified."
+      },
+      "mandatoryRequirementsDisclosure": "unknown",
+      "suitabilitySignals": {
+        "skills": []
+      },
+      "careerFamilies": [],
+      "provenance": [
+        {
+          "field": "record",
+          "sourceId": null,
+          "certainty": "not_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+            }
+          ]
+        }
+      ],
+      "metadata": {
+        "category": "public_service_training",
+        "recordPurpose": "opportunity_draft"
+      }
+    },
+    {
+      "id": "roi-rwanda-community-service-officer-draft",
+      "type": "job",
+      "title": "Community Service Officer",
+      "organization": {
+        "name": "Public or community service organization (to be confirmed)",
+        "kind": "unconfirmed"
+      },
+      "description": "Draft opportunity profile for a community service role that may involve supporting local initiatives, coordinating community activities, and communicating with residents. The employing organization, actual duties, eligibility criteria, vacancy availability, and application details require confirmation from an official source.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Rwanda (specific location to be confirmed)",
+        "workMode": "unspecified",
+        "locationAssignmentStatus": "needs_confirmation"
+      },
+      "source": {
+        "id": null,
+        "name": "Official source not yet provided",
+        "url": null
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not confirmed",
+        "costCertainty": "unknown",
+        "fundingCertainty": "unknown"
+      },
+      "requirements": [
+        {
+          "id": "community-service-profile",
+          "description": "Specific qualifications and experience requirements have not yet been confirmed.",
+          "importance": "unknown",
+          "certainty": "not_stated",
+          "evidence": []
+        }
+      ],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": null,
+        "verificationNote": "This is a draft role profile, not a confirmed vacancy."
+      },
+      "mandatoryRequirementsDisclosure": "unknown",
+      "suitabilitySignals": {
+        "skills": []
+      },
+      "careerFamilies": [],
+      "provenance": [
+        {
+          "field": "record",
+          "sourceId": null,
+          "certainty": "not_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+            }
+          ]
+        }
+      ],
+      "metadata": {
+        "category": "community_service",
+        "recordPurpose": "opportunity_draft"
+      }
+    },
+    {
+      "id": "roi-spreadsheet-analysis-training-draft",
+      "type": "training",
+      "title": "Spreadsheet Analysis Training Course",
+      "organization": {
+        "name": "Training provider (to be confirmed)",
+        "kind": "unconfirmed"
+      },
+      "description": "Draft training listing for a course focused on spreadsheet analysis and practical data skills. Provider, curriculum, delivery format, fees, duration, enrolment availability, and registration details require confirmation from an official provider source.",
+      "location": {
+        "country": "Rwanda",
+        "province": null,
+        "district": null,
+        "displayLocation": "Delivery location or online format to be confirmed",
+        "workMode": "unspecified",
+        "locationAssignmentStatus": "needs_confirmation"
+      },
+      "source": {
+        "id": null,
+        "name": "Official source not yet provided",
+        "url": null
+      },
+      "applicationUrl": null,
+      "deadline": null,
+      "deadlineStatus": "not_confirmed",
+      "status": "needs_confirmation",
+      "duration": null,
+      "costAndFunding": {
+        "cost": "Not confirmed",
+        "costCertainty": "unknown",
+        "fundingCertainty": "unknown"
+      },
+      "requirements": [],
+      "verification": {
+        "state": "needs_confirmation",
+        "lastVerifiedAt": null,
+        "verificationNote": "This is a draft training profile, not a confirmed course."
+      },
+      "mandatoryRequirementsDisclosure": "unknown",
+      "suitabilitySignals": {
+        "skills": []
+      },
+      "careerFamilies": [],
+      "provenance": [
+        {
+          "field": "record",
+          "sourceId": null,
+          "certainty": "not_stated",
+          "evidence": [
+            {
+              "kind": "other",
+              "description": "Draft profile derived from user-provided local test fixture; no official opportunity source was supplied."
+            }
+          ]
+        }
+      ],
+      "metadata": {
+        "category": "digital_skills_training",
+        "recordPurpose": "opportunity_draft"
+      }
     }
+
   ]
 }
