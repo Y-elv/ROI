@@ -20,6 +20,7 @@ export type DeadlineStatus = "confirmed" | "historical" | "not_confirmed" | "rol
 export type EligibilityOutcome = "eligible" | "ineligible" | "unknown";
 
 export interface Opportunity {
+  demonstrationData?: boolean;
   id: string;
   type: OpportunityType;
   title: string;
@@ -106,6 +107,7 @@ export interface SkillRequirementAssessment {
 }
 
 export interface EligibilityAssessment {
+  demonstrationData: boolean;
   mandatoryRequirements: {
     total: number;
     satisfied: number;

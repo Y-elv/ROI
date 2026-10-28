@@ -339,6 +339,7 @@ function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
     <article className="opportunity-card">
       <div className="card-topline"><span className="type-pill">{humanize(opportunity.type)}</span><StatusBadge opportunity={opportunity} /></div>
       <Link className="opportunity-title" to={`/opportunities/${encodeURIComponent(opportunity.id)}`}>{opportunity.title}</Link>
+      {opportunity.demonstrationData && <p className="demo-record-notice">DEMO ONLY — Fictional example, not a real vacancy or official requirement.</p>}
       <div className="organization">{opportunity.organization.name}</div>
       <div className="location-line"><MapPin size={14} /> {formatOpportunityLocation(opportunity.location)}</div>
       {opportunity.description && <p className="card-description">{opportunity.description}</p>}
@@ -373,6 +374,7 @@ function OpportunityDetailPage() {
       <section className="detail-hero">
         <div className="card-topline"><span className="type-pill">{humanize(opportunity.type)}</span><StatusBadge opportunity={opportunity} /></div>
         <h1>{opportunity.title}</h1>
+        {opportunity.demonstrationData && <p className="demo-record-notice">DEMO ONLY — This fictional record is shown for product testing. Do not use it as a real vacancy, training offer, or official eligibility requirement.</p>}
         <p className="detail-org">{opportunity.organization.name}{opportunity.organization.kind ? ` · ${humanize(opportunity.organization.kind)}` : ""}</p>
         <p className="location-line"><MapPin size={15} /> {formatOpportunityLocation(opportunity.location)}</p>
         <div className="detail-actions">
@@ -422,6 +424,7 @@ function EligibilityPanel({ result }: { result: EligibilityResult }) {
 
   return (
     <div className="eligibility-panel">
+      {assessment.demonstrationData && <p className="demo-record-notice">DEMO ONLY — The results, skill requirements, and learning suggestions below are fictional UI-test data, not official eligibility guidance.</p>}
       <div className={`eligibility-outcome outcome-${result.outcome}`}><strong>{humanize(result.outcome)} based on information provided</strong><p>{result.explanation}</p></div>
       <div className="eligibility-statistics" aria-label="Eligibility requirement statistics">
         <div><strong>{assessment.mandatoryRequirements.satisfied}</strong><span>Mandatory met</span></div>
