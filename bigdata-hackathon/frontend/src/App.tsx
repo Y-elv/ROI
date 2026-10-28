@@ -10,6 +10,7 @@ import {
   ArrowUpRight,
   BookOpen,
   BriefcaseBusiness,
+  FileUser,
   Check,
   CheckCircle2,
   ChevronDown,
@@ -31,10 +32,12 @@ import {
   NavLink,
   Route,
   Routes,
+  useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
 import CareerPathwaysPage from "./pages/CareerPathwaysPage";
+import CvBuilderPage from "./pages/CvBuilderPage";
 import {
   ApiError,
   checkEligibility,
@@ -52,14 +55,10 @@ import {
   type UserProfile,
 } from "./types";
 import {
-  distanceToOpportunity,
   districtsForProvince,
   formatOpportunityLocation,
-  isValidCoordinates,
   locationMatchesFilters,
   RWANDA_PROVINCES,
-  sortByDistance,
-  type Coordinates,
 } from "./location";
 import { AppProvider, useAppState } from "./context";
 import type { Language } from "./translations";
@@ -70,6 +69,7 @@ const navItems = [
   { to: "/guidance", label: "navGuidance", icon: Sparkles, end: false },
   { to: "/action-plan", label: "navActionPlan", icon: CheckCircle2, end: false },
   { to: "/career-pathways", label: "navCareerPathways", icon: TrendingUp, end: false },
+  { to: "/create-cv", label: "navCvBuilder", icon: FileUser, end: false },
 ] as const;
 
 export default function App() {
@@ -124,6 +124,7 @@ function AppFrame() {
                 <option value="en">{t("languageEnglish")}</option>
                 <option value="fr">{t("languageFrench")}</option>
               </select></label>
+              <NearMeAction />
               <Link className="profile-link" to="/guidance"><span className="avatar">R</span><span>{t("navGuidance")}</span><ChevronDown size={15} /></Link>
             </div>
           </header>
@@ -135,6 +136,7 @@ function AppFrame() {
               <Route path="/guidance" element={<GuidancePage />} />
               <Route path="/action-plan" element={<ActionPlanPage />} />
               <Route path="/career-pathways" element={<CareerPathwaysPage />} />
+              <Route path="/create-cv" element={<CvBuilderPage />} />
               <Route path="/insights" element={<Navigate to="/career-pathways" replace />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
@@ -157,6 +159,42 @@ function PlanCount() {
   return <>{plan.length}</>;
 }
 
+function NearMeAction({ prominent = false }: { prominent?: boolean }) {
+  const { t, nearbyLocation, findNearbyLocation } = useAppState();
+  const { pathname } = useLocation();
+  const showResults = prominent || pathname !== "/";
+  return (
+    <div className={`nearby-action${prominent ? " nearby-action-prominent" : ""}`}>
+      <button
+        className={`button button-nearby${prominent ? " button-nearby-prominent" : ""}`}
+        type="button"
+        onClick={findNearbyLocation}
+        disabled={nearbyLocation.status === "requesting"}
+        aria-label={t("findOpportunitiesNearMe")}
+      >
+        <MapPin size={prominent ? 17 : 15} />
+        <span>{nearbyLocation.status === "requesting" ? t("findingYourLocation") : t("findOpportunitiesNearMe")}</span>
+      </button>
+      {showResults && nearbyLocation.status === "success" && (
+        <div className="nearby-action-status" role="status">
+          <strong>{t("nearbySummary", { count: nearbyLocation.locatedCount })}</strong>
+          {nearbyLocation.opportunities.length === 0
+            ? <p>{t("nearbyNoneFound")}</p>
+            : <ol>{nearbyLocation.opportunities.map((opportunity) => (
+                <li key={opportunity.id}>
+                  <Link to={`/opportunities/${encodeURIComponent(opportunity.id)}`}>{opportunity.title}</Link>
+                  <span>{opportunity.organization} · {opportunity.location}</span>
+                  <b>{opportunity.kilometers.toFixed(1)} km</b>
+                </li>
+              ))}</ol>}
+          {nearbyLocation.missingCoordinatesCount > 0 && <small>{nearbyLocation.missingCoordinatesCount} opportunities skipped because they have no valid coordinates.</small>}
+        </div>
+      )}
+      {nearbyLocation.status === "error" && <p className="nearby-action-error" role="alert">{nearbyLocation.message}</p>}
+    </div>
+  );
+}
+
 function HomePage() {
   const { t } = useAppState();
   return (
@@ -170,6 +208,7 @@ function HomePage() {
             <Link className="button button-dark" to="/opportunities">{t("exploreOpportunities")} <ArrowRight size={16} /></Link>
             <Link className="button button-outline" to="/guidance">{t("buildProfile")} <Sparkles size={16} /></Link>
           </div>
+          <NearMeAction prominent />
           <div className="hero-trust"><CheckCircle2 size={16} /> {t("homeTrust")}</div>
         </div>
         <div className="hero-art" aria-hidden="true">
@@ -395,13 +434,6 @@ function EligibilityPanel({ result }: { result: EligibilityResult }) {
   );
 }
 
-type NearbyState =
-  | { status: "idle" }
-  | { status: "requesting" }
-  | { status: "ready"; origin: Coordinates }
-  | { status: "error"; message: string }
-  | { status: "no-coordinates" };
-
 function GuidancePage() {
   const { profile, setProfile, setRecommendations, recommendations, addToPlan, plan, t } = useAppState();
   const mutation = useMutation({ mutationFn: getMatches });
@@ -410,8 +442,6 @@ function GuidancePage() {
   const [stepIndex, setStepIndex] = useState(0);
   const [selectedMatchProvince, setSelectedMatchProvince] = useState("");
   const [selectedMatchDistrict, setSelectedMatchDistrict] = useState("");
-  const [sortMode, setSortMode] = useState<"profile" | "nearest">("profile");
-  const [nearbyState, setNearbyState] = useState<NearbyState>({ status: "idle" });
   const steps = [
     { title: "step1Title", description: "step1Description" },
     { title: "step2Title", description: "step2Description" },
@@ -439,9 +469,6 @@ function GuidancePage() {
   const matches = mutation.data?.data ?? recommendations;
   const filteredMatches = matches.filter(({ opportunity }) =>
     locationMatchesFilters(opportunity.location, selectedMatchProvince, selectedMatchDistrict));
-  const visibleMatches = sortMode === "nearest" && nearbyState.status === "ready"
-    ? sortByDistance(filteredMatches, (recommendation) => recommendation.opportunity.location, nearbyState.origin)
-    : filteredMatches;
   const inPlan = new Set(plan.map((item) => item.recommendation.opportunityId));
   const progressPercent = ((stepIndex + 1) / steps.length) * 100;
 
@@ -449,43 +476,6 @@ function GuidancePage() {
     setSelectedMatchProvince(province);
     setSelectedMatchDistrict((current) =>
       current && !districtsForProvince(province).includes(current) ? "" : current);
-  }
-
-  function findNearbyOpportunities() {
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
-      setNearbyState({ status: "error", message: "This browser does not support location access. You can still filter by province and district." });
-      setSortMode("profile");
-      return;
-    }
-
-    setNearbyState({ status: "requesting" });
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const origin = { latitude: position.coords.latitude, longitude: position.coords.longitude };
-        if (!isValidCoordinates(origin)) {
-          setNearbyState({ status: "error", message: "Your device returned invalid coordinates. Try again or use the province and district filters." });
-          setSortMode("profile");
-          return;
-        }
-        if (!matches.some((recommendation) => distanceToOpportunity(recommendation.opportunity.location, origin))) {
-          setNearbyState({ status: "no-coordinates" });
-          setSortMode("profile");
-          return;
-        }
-        setNearbyState({ status: "ready", origin });
-        setSortMode("nearest");
-      },
-      (error) => {
-        const message = error.code === 1
-          ? "Location permission was denied. You can retry or filter by province and district."
-          : error.code === 3
-            ? "The location request timed out. Try again or use the province and district filters."
-            : "Your device could not determine your location. Try again or use the province and district filters.";
-        setNearbyState({ status: "error", message });
-        setSortMode("profile");
-      },
-      { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 },
-    );
   }
 
   return (
@@ -568,35 +558,18 @@ function GuidancePage() {
               </select>
             </label>
             <div className="nearby-actions">
-              <button className="button button-outline button-small" type="button" onClick={findNearbyOpportunities} disabled={nearbyState.status === "requesting"}>
-                <MapPin size={14} /> {nearbyState.status === "requesting" ? "Finding your location…" : "Find opportunities near me"}
-              </button>
-              {nearbyState.status === "ready" && <label className="sort-select">Sort results
-                <select value={sortMode} onChange={(event) => setSortMode(event.target.value === "nearest" ? "nearest" : "profile")}>
-                  <option value="profile">Best profile match</option>
-                  <option value="nearest">Nearest to me</option>
-                </select>
-              </label>}
-              {nearbyState.status === "ready" && <button className="text-button" type="button" onClick={() => {
-                setNearbyState({ status: "idle" });
-                setSortMode("profile");
-              }}>Clear my location</button>}
               {(selectedMatchProvince || selectedMatchDistrict) && <button className="text-button" type="button" onClick={() => {
                 setSelectedMatchProvince("");
                 setSelectedMatchDistrict("");
               }}>Clear location filters</button>}
             </div>
-            <span>Click “Find opportunities near me” to request browser location; coordinates stay in this page session and are not sent to ROI’s API. District selections filter results separately.</span>
           </div>
-          {nearbyState.status === "ready" && <p className="nearby-feedback" role="status">Distances are approximate straight-line distances from district reference points, not exact venues or road distances. Your coordinates are used for this page session and are not sent to ROI’s API.</p>}
-          {nearbyState.status === "error" && <p className="nearby-feedback nearby-error" role="alert">{nearbyState.message}</p>}
-          {nearbyState.status === "no-coordinates" && <p className="nearby-feedback" role="status">Your location was obtained, but none of these profile matches has usable opportunity coordinates. Profile ranking and province/district filters are still available.</p>}
           {matches.length === 0 && <EmptyState title={t("noMatchesTitle")} text={t("noMatchesText")} />}
-          {matches.length > 0 && visibleMatches.length === 0 && <EmptyState title="No profile matches in this location" text="The selected province and district narrow the returned profile matches. Clear the location filters to review all matches." action={<button className="button button-outline" type="button" onClick={() => {
+          {matches.length > 0 && filteredMatches.length === 0 && <EmptyState title="No profile matches in this location" text="The selected province and district narrow the returned profile matches. Clear the location filters to review all matches." action={<button className="button button-outline" type="button" onClick={() => {
             setSelectedMatchProvince("");
             setSelectedMatchDistrict("");
           }}>Show all profile matches</button>} />}
-          <div className="match-list">{visibleMatches.map((result) => <RecommendationCard key={result.opportunityId} recommendation={result} onAdd={() => addToPlan(result)} inPlan={inPlan.has(result.opportunityId)} nearbyOrigin={nearbyState.status === "ready" ? nearbyState.origin : undefined} />)}</div>
+          <div className="match-list">{filteredMatches.map((result) => <RecommendationCard key={result.opportunityId} recommendation={result} onAdd={() => addToPlan(result)} inPlan={inPlan.has(result.opportunityId)} />)}</div>
         </section>
       )}
     </div>
@@ -678,17 +651,14 @@ function RecommendationCard({
   recommendation,
   onAdd,
   inPlan,
-  nearbyOrigin,
 }: {
   recommendation: Recommendation;
   onAdd: () => void;
   inPlan: boolean;
-  nearbyOrigin?: Coordinates;
 }) {
   const { opportunity } = recommendation;
   const skillEvidence = recommendation.suitability.components.find((component) => component.factor === "skills");
   const interestEvidence = recommendation.suitability.components.find((component) => component.factor === "interests");
-  const distance = nearbyOrigin ? distanceToOpportunity(opportunity.location, nearbyOrigin) : null;
   return (
     <article className="recommendation-card">
       <div className="recommendation-main">
@@ -696,13 +666,6 @@ function RecommendationCard({
         <Link className="opportunity-title" to={`/opportunities/${encodeURIComponent(opportunity.id)}`}>{recommendation.title}</Link>
         <div className="organization">{recommendation.organization}</div>
         <div className="recommendation-location"><MapPin size={13} /> {formatOpportunityLocation(opportunity.location)}</div>
-        {nearbyOrigin && <div className="recommendation-distance">
-          {distance
-            ? distance.precision === "district_reference"
-              ? `Approximately ${distance.kilometers.toFixed(1)} km straight-line distance from district reference point`
-              : `Approximately ${distance.kilometers.toFixed(1)} km straight-line distance; coordinate precision is unspecified`
-            : "Distance unavailable: opportunity coordinates are missing or invalid."}
-        </div>}
         <div className="recommendation-meta">
           <span><strong>Deadline:</strong> {deadlineText(opportunity)}</span>
           {opportunity.applicationUrl && <a href={opportunity.applicationUrl} target="_blank" rel="noreferrer">Application link <ArrowUpRight size={13} /></a>}

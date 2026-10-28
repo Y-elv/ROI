@@ -1037,6 +1037,26 @@ Never commit:
 
 to GitHub.
 
+## CV Builder backend configuration
+
+The CV Builder is available at `/create-cv`. Its optional AI enhancement and genuine Word document generation are served by the ROI backend routes `/api/v1/cv/improve` and `/api/v1/cv/docx`.
+
+Install the backend dependencies, including the `docx` document generator, from `bigdata-hackathon/backend`:
+
+```bash
+npm install
+```
+
+For AI-assisted wording improvements, configure these variables in the backend process environment or its local `.env` file:
+
+```env
+AI_API_KEY=
+AI_MODEL=gpt-4o-mini
+AI_API_URL=https://api.openai.com/v1/chat/completions
+```
+
+The AI settings are optional. Without `AI_API_KEY`, the backend keeps the user's wording unchanged and still creates a downloadable `.docx`. When configured, CV content is sent to the configured AI provider only after the user selects Generate CV. The backend does not persist CV content. Never expose or commit the AI key.
+
 ---
 
 # ▶️ Run Development

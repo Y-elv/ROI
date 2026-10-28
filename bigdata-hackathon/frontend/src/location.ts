@@ -16,29 +16,16 @@ export interface Coordinates {
   longitude: number;
 }
 
-export function districtsForProvince(province?: string): string[] {
-  if (province) {
-    return RWANDA_PROVINCES.includes(province as RwandaProvince)
-      ? [...RWANDA_DISTRICTS_BY_PROVINCE[province as RwandaProvince]]
-      : [];
-  }
-  return Object.values(RWANDA_DISTRICTS_BY_PROVINCE).flatMap((districts) => [...districts]);
-}
-
-export function isValidCoordinates<T extends { latitude?: unknown; longitude?: unknown }>(
-  value: T,
-): value is T & Coordinates {
-  return typeof value.latitude === "number" &&
-    Number.isFinite(value.latitude) &&
+export function isValidCoordinates(value: Coordinates): boolean {
+  return Number.isFinite(value.latitude) &&
     value.latitude >= -90 &&
     value.latitude <= 90 &&
-    typeof value.longitude === "number" &&
     Number.isFinite(value.longitude) &&
     value.longitude >= -180 &&
     value.longitude <= 180;
 }
 
-export function haversineDistanceKm(from: Coordinates, to: Coordinates): number | null {
+export function calculateDistanceKm(from: Coordinates, to: Coordinates): number | null {
   if (!isValidCoordinates(from) || !isValidCoordinates(to)) return null;
 
   const radians = (degrees: number) => degrees * (Math.PI / 180);
@@ -53,18 +40,13 @@ export function haversineDistanceKm(from: Coordinates, to: Coordinates): number 
   return Number.isFinite(distance) ? distance : null;
 }
 
-export function distanceToOpportunity(
-  location: Opportunity["location"],
-  origin: Coordinates,
-): { kilometers: number; precision: "district_reference" | "unspecified" } | null {
-  if (!location || !isValidCoordinates(location)) return null;
-  const kilometers = haversineDistanceKm(origin, location);
-  return kilometers === null
-    ? null
-    : {
-        kilometers,
-        precision: location.coordinateType === "district_reference" ? "district_reference" : "unspecified",
-      };
+export function districtsForProvince(province?: string): string[] {
+  if (province) {
+    return RWANDA_PROVINCES.includes(province as RwandaProvince)
+      ? [...RWANDA_DISTRICTS_BY_PROVINCE[province as RwandaProvince]]
+      : [];
+  }
+  return Object.values(RWANDA_DISTRICTS_BY_PROVINCE).flatMap((districts) => [...districts]);
 }
 
 export function locationMatchesFilters(
@@ -74,25 +56,6 @@ export function locationMatchesFilters(
 ): boolean {
   return (!province || location?.province === province) &&
     (!district || location?.district === district);
-}
-
-export function sortByDistance<T>(
-  entries: T[],
-  getLocation: (entry: T) => Opportunity["location"],
-  origin: Coordinates,
-): T[] {
-  return entries
-    .map((entry, index) => ({
-      entry,
-      index,
-      distance: distanceToOpportunity(getLocation(entry), origin)?.kilometers ?? null,
-    }))
-    .sort((left, right) => {
-      if (left.distance === null) return right.distance === null ? left.index - right.index : 1;
-      if (right.distance === null) return -1;
-      return left.distance - right.distance || left.index - right.index;
-    })
-    .map(({ entry }) => entry);
 }
 
 export function formatOpportunityLocation(location: Opportunity["location"]): string {

@@ -5,6 +5,7 @@ import path from "node:path";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { createNisrAnalyticsRouter } from "./analytics/nisrRoutes";
+import { createCvRouter } from "./cv/cvRoutes";
 import { createOpportunityRouter } from "./opportunities/opportunityRoutes";
 
 const app = express();
@@ -415,6 +416,7 @@ const swaggerSpec = swaggerJsdoc({
   },
   apis: [
     path.join(__dirname, "analytics", "nisrRoutes.{ts,js}"),
+    path.join(__dirname, "cv", "cvRoutes.{ts,js}"),
     path.join(__dirname, "opportunities", "opportunityRoutes.{ts,js}"),
   ],
 });
@@ -435,6 +437,7 @@ app.get("/api/v1/health", (_req: Request, res: Response) => {
 });
 
 app.use("/api/v1/analytics/nisr", createNisrAnalyticsRouter());
+app.use("/api/v1/cv", createCvRouter());
 app.use("/api/v1/opportunities", createOpportunityRouter());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

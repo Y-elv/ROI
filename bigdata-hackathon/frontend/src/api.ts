@@ -11,6 +11,7 @@ import type {
   OpportunityType,
   UserProfile,
 } from "./types";
+import type { CvData, CvImproveResponse, CvLanguageCode } from "./cvTypes";
 
 const configuredBase = import.meta.env.VITE_API_BASE_URL?.trim();
 const apiBase = (configuredBase).replace(/\/+$/, "");
@@ -111,6 +112,45 @@ export function checkEligibility(
     method: "POST",
     body: JSON.stringify({ profile, opportunityId }),
   });
+}
+
+export function improveCv(cv: CvData, language: CvLanguageCode): Promise<CvImproveResponse> {
+  return request("/api/v1/cv/improve", {
+    method: "POST",
+    body: JSON.stringify({ cv, language }),
+  });
+}
+
+export async function downloadCvDocument(cv: CvData, language: CvLanguageCode): Promise<Blob> {
+  let response: Response;
+  try {
+    response = await fetch(`${apiBase}/api/v1/cv/docx`, {
+      method: "POST",
+      headers: { Accept: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "Content-Type": "application/json" },
+      body: JSON.stringify({ cv, language }),
+    });
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new ApiError(`Could not connect to the API at ${apiBase}. Check the service status and browser network or CORS errors, then retry.`, 0);
+    }
+    throw error;
+  }
+  if (!response.ok) {
+    let message = `Request failed with status ${response.status}.`;
+    try {
+      const errorBody: unknown = await response.json();
+      if (typeof errorBody === "object" && errorBody !== null && "error" in errorBody) {
+        const apiError = errorBody.error;
+        if (typeof apiError === "object" && apiError !== null && "message" in apiError && typeof apiError.message === "string") {
+          message = apiError.message;
+        }
+      }
+    } catch {
+      message = `Request failed with status ${response.status}.`;
+    }
+    throw new ApiError(message, response.status);
+  }
+  return response.blob();
 }
 
 export function getNisrOverview(): Promise<NISRResponse<NISROverview>> {
