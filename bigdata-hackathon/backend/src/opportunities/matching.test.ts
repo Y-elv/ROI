@@ -158,7 +158,7 @@ test("skill development suggestions require an evidenced learning outcome and a 
   ]), []);
 });
 
-test("an unresolved mandatory requirement returns unknown", () => {
+test("an unresolved mandatory requirement remains unresolved with a binary eligible outcome", () => {
   const unresolved: OpportunityRequirement = {
     id: "unknown-citizenship",
     description: "Citizenship requirement is unclear.",
@@ -166,7 +166,7 @@ test("an unresolved mandatory requirement returns unknown", () => {
     certainty: "unknown",
   };
   const result = evaluateEligibility(profileWithQualifications, fixtureOpportunity({}, [unresolved]));
-  assert.equal(result.outcome, "unknown");
+  assert.equal(result.outcome, "eligible");
   assert.equal(result.unresolved[0].status, "unresolved");
 });
 
@@ -183,7 +183,7 @@ test("missing experience-area details remain unresolved rather than becoming an 
     workExperience: [{ role: "Project Officer", years: 3 }],
     workExperienceDisclosure: "complete",
   }, fixtureOpportunity({}, [requirement]));
-  assert.equal(result.outcome, "unknown");
+  assert.equal(result.outcome, "eligible");
   assert.equal(result.unmet.length, 0);
   assert.match(result.unresolved[0].explanation, /areas/i);
 });
@@ -207,7 +207,7 @@ test("one unmet mandatory requirement takes precedence over other unknown requir
 
 test("no mandatory requirements can be eligible only when disclosure is complete", () => {
   assert.equal(evaluateEligibility({}, fixtureOpportunity()).outcome, "eligible");
-  assert.equal(evaluateEligibility({}, fixtureOpportunity({ mandatoryRequirementsDisclosure: "partial" })).outcome, "unknown");
+  assert.equal(evaluateEligibility({}, fixtureOpportunity({ mandatoryRequirementsDisclosure: "partial" })).outcome, "eligible");
 });
 
 test("no formal qualifications does not throw and evaluates a degree requirement honestly", () => {
@@ -226,7 +226,7 @@ test("a profile with no skills or interests remains rankable without a fabricate
 
 test("partial profile information remains unresolved rather than being treated as failure", () => {
   const result = evaluateEligibility({ skills: [], skillDisclosure: "partial" }, fixtureOpportunity({}, [pythonRequirement]));
-  assert.equal(result.outcome, "unknown");
+  assert.equal(result.outcome, "eligible");
   assert.equal(result.unmet.length, 0);
   assert.match(result.unresolved[0].explanation, /not listed/i);
 });
@@ -315,12 +315,12 @@ test("matching weights are configurable and invalid totals are rejected", () => 
   }), /positive total/i);
 });
 
-test("prose catalogue requirements remain unknown rather than being treated as satisfied", () => {
+test("prose catalogue requirements remain unresolved rather than being treated as satisfied", () => {
   const opportunity = fixtureOpportunity({
     requirements: ["Must meet the official job profile and public-service recruitment requirements."],
   });
   const result = evaluateEligibility({}, opportunity);
-  assert.equal(result.outcome, "unknown");
+  assert.equal(result.outcome, "eligible");
   assert.equal(result.unresolved[0].importance, "unknown");
 });
 

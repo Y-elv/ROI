@@ -354,7 +354,7 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
       explanation: "This is synthetic demo data; its requirements cannot establish real-world eligibility.",
     }));
     return {
-      outcome: "unknown",
+      outcome: "ineligible",
       explanation: "This synthetic, non-live fixture cannot establish eligibility for any real opportunity.",
       assessment: buildEligibilityAssessment(profile, opportunity, syntheticEvaluations, false),
       satisfied: [],
@@ -391,12 +391,10 @@ export function evaluateEligibility(profile: UserProfile, opportunity: Opportuni
 
   const outcome = unmet.length > 0
     ? "ineligible"
-    : unresolved.length > 0
-      ? "unknown"
-      : "eligible";
+    : "eligible";
   const explanation = outcome === "ineligible"
     ? "At least one documented mandatory requirement is demonstrably unmet."
-    : outcome === "unknown"
+    : unresolved.length > 0
       ? "No mandatory requirement is known to be unmet, but required information remains unresolved."
       : "All disclosed mandatory requirements are satisfied; this is not a guarantee of selection.";
 

@@ -278,9 +278,8 @@ h1, h2, h3, h4, p { margin-top: 0; }
 .eligibility-outcome { padding: 12px; border-radius: 9px; }
 .eligibility-outcome strong { font-size: 11px; }
 .eligibility-outcome p { margin: 5px 0 0; font-size: 10px; line-height: 1.55; }
-.outcome-eligible { background: #eaf4eb; color: #386949; }
-.outcome-ineligible { background: #fff0ec; color: #895b4f; }
-.outcome-unknown { background: #fff5df; color: #816a37; }
+.outcome-eligible { border: 1px solid #86c29a; background: #eaf4eb; color: #28643a; }
+.outcome-ineligible { border: 1px solid #e7a39a; background: #fff0ec; color: #9b3f32; }
 .eligibility-statistics { display: grid; grid-template-columns: repeat(auto-fit, minmax(94px, 1fr)); gap: 7px; margin-top: 11px; }
 .eligibility-statistics > div { display: grid; gap: 3px; padding: 10px; border: 1px solid #e8ece8; border-radius: 8px; background: #fbfcfb; }
 .eligibility-statistics strong { color: #263d31; font: 700 18px "Manrope", sans-serif; }
@@ -369,9 +368,8 @@ h1, h2, h3, h4, p { margin-top: 0; }
 .evidence-factor progress { display: block; width: min(100%, 300px); height: 8px; accent-color: var(--green); }
 .evidence-factor p { margin: 5px 0 0; line-height: 1.55; }
 .eligibility-badge { margin-left: auto; }
-.eligibility-eligible { background: #e7f3e9; color: #39704b; }
-.eligibility-ineligible { background: #fff0ec; color: #995d50; }
-.eligibility-unknown { background: #fff4dc; color: #806a34; }
+.eligibility-eligible { border: 1px solid #86c29a; background: #dcfce7; color: #166534; }
+.eligibility-ineligible { border: 1px solid #e7a39a; background: #fee2e2; color: #991b1b; }
 .recommendation-side { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding-left: 15px; border-left: 1px solid #edf0ed; }
 .score-label { color: #8a968e; font-size: 8px; font-weight: 700; letter-spacing: .9px; }
 .suitability-score { margin-top: 3px; color: var(--green); font: 800 25px "Manrope", sans-serif; }
@@ -475,4 +473,133 @@ h1, h2, h3, h4, p { margin-top: 0; }
   .plan-progress { align-items: flex-start; flex-direction: column; gap: 7px; }
   .progress-track { width: 100%; }
   .site-footer { font-size: 9px; }
+}
+
+.theme-toggle {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.theme-toggle:hover { border-color: var(--accent-blue); color: var(--primary-blue); }
+
+:root[data-theme="dark"] {
+  --background-light: #111827;
+  --ink: #e2e8f0;
+  --muted: #a7b3c4;
+  --line: #334155;
+  --surface: #172033;
+  --warm: #111827;
+  --shadow: 0 14px 38px rgb(0 0 0 / 28%);
+  color: var(--ink);
+  background: #0b1120;
+}
+
+:root[data-theme="dark"] body,
+:root[data-theme="dark"] .app-shell,
+:root[data-theme="dark"] .main-column,
+:root[data-theme="dark"] .page-content {
+  background: #0b1120;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .sidebar,
+:root[data-theme="dark"] .topbar,
+:root[data-theme="dark"] .detail-section,
+:root[data-theme="dark"] .aside-card,
+:root[data-theme="dark"] .source-card,
+:root[data-theme="dark"] .detail-hero,
+:root[data-theme="dark"] .profile-form,
+:root[data-theme="dark"] .guidance-tip,
+:root[data-theme="dark"] .empty-state,
+:root[data-theme="dark"] .plan-card,
+:root[data-theme="dark"] .recommendation-card,
+:root[data-theme="dark"] .nearby-action-status,
+:root[data-theme="dark"] .nearby-action-error {
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .sidebar-note,
+:root[data-theme="dark"] .nav-link:hover,
+:root[data-theme="dark"] .nav-count,
+:root[data-theme="dark"] .avatar,
+:root[data-theme="dark"] .note-icon,
+:root[data-theme="dark"] .button-outline,
+:root[data-theme="dark"] .hero,
+:root[data-theme="dark"] .welcome-strip,
+:root[data-theme="dark"] .pathway-card,
+:root[data-theme="dark"] .evidence-banner,
+:root[data-theme="dark"] .requirement-group,
+:root[data-theme="dark"] .skill-gap-track {
+  background: #111827;
+}
+
+:root[data-theme="dark"] h1,
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] h3,
+:root[data-theme="dark"] h4,
+:root[data-theme="dark"] strong,
+:root[data-theme="dark"] .nav-link,
+:root[data-theme="dark"] .profile-link,
+:root[data-theme="dark"] .brand-text,
+:root[data-theme="dark"] .detail-fact strong {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] p,
+:root[data-theme="dark"] small,
+:root[data-theme="dark"] .muted,
+:root[data-theme="dark"] .topbar-context,
+:root[data-theme="dark"] .site-footer,
+:root[data-theme="dark"] .sidebar-foot,
+:root[data-theme="dark"] .nav-label,
+:root[data-theme="dark"] .eyebrow,
+:root[data-theme="dark"] .detail-section > p,
+:root[data-theme="dark"] .requirements-list li,
+:root[data-theme="dark"] .requirement-group small,
+:root[data-theme="dark"] .inline-empty p,
+:root[data-theme="dark"] .detail-org,
+:root[data-theme="dark"] .back-link {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  border-color: var(--line);
+  background: #111827;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .button-outline {
+  border-color: var(--line);
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .button-outline:hover:not(:disabled) {
+  background: #1e293b;
+}
+
+:root[data-theme="dark"] .language-picker select {
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .outcome-eligible,
+:root[data-theme="dark"] .eligibility-eligible {
+  border-color: #4ade80;
+  background: #14532d;
+  color: #bbf7d0;
+}
+
+:root[data-theme="dark"] .outcome-ineligible,
+:root[data-theme="dark"] .eligibility-ineligible {
+  border-color: #f87171;
+  background: #7f1d1d;
+  color: #fecaca;
 }

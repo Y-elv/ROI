@@ -20,9 +20,11 @@ import {
   Heart,
   Lightbulb,
   MapPin,
+  Moon,
   RotateCw,
   Search,
   Sparkles,
+  Sun,
   Target,
   TrendingUp,
 } from "lucide-react";
@@ -81,7 +83,7 @@ export default function App() {
 }
 
 function AppFrame() {
-  const { language, setLanguage, t } = useAppState();
+  const { language, setLanguage, theme, toggleTheme, t } = useAppState();
   useEffect(() => {
     document.documentElement.lang = language;
   }, [language]);
@@ -116,6 +118,15 @@ function AppFrame() {
             <div className="topbar-mobile-brand"><Compass size={19} /> ROI <span>RWANDA</span></div>
             <div className="topbar-context">{t("topbarContext")}</div>
             <div className="topbar-actions">
+              <button
+                className="theme-toggle"
+                type="button"
+                onClick={toggleTheme}
+                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                title={theme === "dark" ? "Light mode" : "Dark mode"}
+              >
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+              </button>
               <label className="language-picker"><span>{t("language")}</span><select aria-label={t("language")} value={language} onChange={(event) => {
                 const nextLanguage = event.target.value;
                 if (isLanguage(nextLanguage)) setLanguage(nextLanguage);
@@ -143,7 +154,6 @@ function AppFrame() {
           </main>
           <footer className="site-footer">
             <span>{t("footerGuidance")}</span>
-            <span>{t("footerEvidence")}</span>
           </footer>
         </div>
       </div>

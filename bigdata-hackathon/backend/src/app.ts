@@ -331,7 +331,7 @@ const swaggerSpec = swaggerJsdoc({
         EligibilityResult: {
           type: "object", required: ["outcome", "explanation", "assessment", "satisfied", "unmet", "unresolved", "preferred"],
           properties: {
-            outcome: { type: "string", enum: ["eligible", "ineligible", "unknown"] }, explanation: { type: "string" },
+            outcome: { type: "string", enum: ["eligible", "ineligible"] }, explanation: { type: "string" },
             assessment: { $ref: "#/components/schemas/EligibilityAssessment" },
             satisfied: { type: "array", items: { $ref: "#/components/schemas/RequirementEvaluation" } },
             unmet: { type: "array", items: { $ref: "#/components/schemas/RequirementEvaluation" } },

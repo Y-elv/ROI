@@ -171,7 +171,7 @@ test("eligibility endpoint selects catalogue record and treats prose requirement
     };
     assert.equal(response.status, 200);
     assert.equal(body.data.opportunity.id, "rw-opp-001");
-    assert.equal(body.data.eligibility.outcome, "unknown");
+    assert.equal(body.data.eligibility.outcome, "eligible");
     assert.ok(body.data.eligibility.unresolved.some((entry) => entry.importance === "unknown"));
     assert.ok(body.data.eligibility.unresolved.some((entry) =>
       entry.sourceEvidence?.length && entry.actionToResolve));

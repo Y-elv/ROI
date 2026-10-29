@@ -1,1484 +1,240 @@
-# 🇷🇼 Rwanda Opportunity Intelligence
+# Rwanda Opportunity Intelligence
 
-### Data-driven Labour Market Intelligence, Skills-Gap Analysis & Opportunity Pathways
+Rwanda Opportunity Intelligence (ROI) is a bilingual-ready web platform for exploring opportunities, comparing a user profile with catalogue requirements, visualizing skill gaps, viewing Rwanda labour-market evidence, building a CV, and tracking practical next steps.
 
-> **An open, data-driven platform that connects labour-market supply, skills, education, experience, businesses and opportunities using Rwanda's official statistical and public data ecosystem.**
+The application is implemented with React/Vite on the frontend and Express/TypeScript on the backend.
 
----
+## Demo
 
-## 📌 Overview
+**Live demo:** <!-- Add the deployed frontend/demo URL here -->
 
-**Rwanda Opportunity Intelligence** is a web-based labour-market intelligence platform designed to transform fragmented labour-market information into actionable insights for:
+## Current features
 
-- Students
-- Graduates
-- Job seekers
-- Career guidance providers
-- Universities and training institutions
-- Employers
-- Policymakers and development organisations
+### Opportunity exploration
 
-The platform combines statistical information from **NISR** with publicly available and, where formally authorized, interoperable information from Rwanda's labour-market ecosystem, including **MIFOTRA/LMIS**, Kora, graduate-tracer information and professional internship programmes.
+- Browse the opportunity catalogue with pagination and filters for:
+  - Opportunity type
+  - Status
+  - Deadline status
+  - Province
+  - District
+  - Category
+- View opportunity details, requirements, location, source, verification, cost, benefits, and application information.
+- Find opportunities near the user through browser geolocation and the catalogue's district reference coordinates.
+- Distance results are approximate and are not an exact indication of workplace location.
 
-Rather than functioning as another conventional job board, the platform focuses on the relationship between:
+### Profile guidance and matching
 
-```text
-Education
-    ↓
-Skills
-    ↓
-Experience
-    ↓
-Occupation
-    ↓
-Industry
-    ↓
-Geography
-    ↓
-Labour-market demand
-    ↓
-Opportunities
-```
+- Create a profile covering:
+  - Age
+  - Location preferences
+  - Qualifications and field of study
+  - Skills
+  - Work experience
+  - Projects
+  - Interests
+  - Career goals
+  - Preferred opportunity types
+- Match the profile against catalogue opportunities.
+- View suitability scores with evidence explanations.
+- Add recommended opportunities to a local action plan.
 
-The objective is to help users understand **where they fit in the labour market, what gaps exist, and which pathways can help them move toward relevant opportunities**.
+### Eligibility assessment
 
-## Current implementation and demo-data notice
+- Check a profile against an individual opportunity from its detail page.
+- The API returns one of two eligibility outcomes:
+  - `eligible`
+  - `ineligible`
+- Eligible results appear green and ineligible results appear red.
+- Requirement details are separated into satisfied, unmet, unresolved, and preferred groups.
+- Known mandatory skill gaps show the current proficiency, required proficiency, and proficiency difference.
+- Unresolved information remains visible as unresolved requirements; it does not become an additional eligibility outcome.
+- Eligibility assessments are explanatory guidance, not a promise of selection, admission, hiring, or funding.
 
-The current application is a React/Vite frontend in `bigdata-hackathon/frontend` and an Express/TypeScript API in `bigdata-hackathon/backend`. The API reads its opportunity catalogue only from `bigdata-hackathon/backend/data/fixtures/rwanda-opportunity-demo-v3.json`; its declared and actual record counts must agree for catalogue, match, and eligibility routes to work.
+### Learning suggestions
 
-The catalogue currently contains **48 records**. All 48 are available from the opportunity directory and detail pages. Synthetic examples are clearly labeled **DEMO ONLY** in the UI and are not treated as verified live vacancies. Match recommendations continue to exclude synthetic records by default. Four fictional eligibility examples exist specifically to demonstrate known skill requirements, red skill-gap bars, and an explicitly fictional spreadsheet-learning suggestion. Never use their invented criteria or the suggestion as real recruitment or training guidance. Internal fields such as `isSynthetic`, `isLiveOpportunity`, and `displaySafety` are not sent to or rendered by the frontend.
+- Generate related learning opportunities for identified skill gaps.
+- Suggestions include the matched skill, evidence, training type, status, source, and source link.
 
-### Eligibility flow
+### Career pathways and NISR evidence
 
-Create a profile under **Guidance** and save it in the browser's local storage. Open an opportunity and select **Check my eligibility**. The API compares the supplied profile with structured catalogue requirements and returns an outcome, requirement counts, satisfied/unmet/unresolved criteria, skill gaps, and evidence-backed related learning suggestions. Red bars visualize proficiency differences only for known mandatory skill requirements; they are not a probability of success. Missing or unclassified source information remains unknown rather than being treated as an unmet requirement. The fictional examples show a prominent warning in their listing, detail page, and eligibility results.
+- View labour-market overview, occupation, sector, education, TVET, establishment, and census-derived evidence.
+- Explore career directions against opportunity matches and published NISR-based analytics.
+- Survey patterns describe populations and do not predict an individual's outcome.
 
-### Opportunity API
+### CV builder
 
-- `GET /api/v1/opportunities` — paginated catalogue (48 records total).
-- `GET /api/v1/opportunities/:id` — opportunity detail.
-- `POST /api/v1/opportunities/match` — profile-based matching against eligible catalogue entries.
-- `POST /api/v1/opportunities/eligibility` — body: `{ "profile": { ... }, "opportunityId": "..." }`.
+- Build and update a CV through a guided multi-step interface.
+- Save CV progress in browser local storage.
+- Improve CV text through the backend when AI configuration is available.
+- Download a generated Word document.
 
-The demo API used by the hosted frontend is `https://roi-7qfn.onrender.com`. Deploy the backend and frontend changes before expecting the hosted application to reflect this repository state; a successful local test does not confirm that Render has redeployed.
+### Interface
 
-### Run and verify this implementation
+- Light and dark themes.
+- Theme preference is stored in browser local storage.
+- English, Kinyarwanda, and French interface translations.
+- Responsive desktop and mobile layouts.
+- Swagger UI/API documentation at `/api-docs`.
 
-From `bigdata-hackathon/backend`:
+## Dataset and demo-data notice
 
-```bash
-npm test
-npm run build
-```
+The current opportunity catalogue is temporary demo data:
 
-From `bigdata-hackathon/frontend`:
+- `Rwanda Opportunity Intelligence`
+- Dataset version `4.0.0`
+- Catalogue fixture: `bigdata-hackathon/backend/data/fixtures/rwanda-opportunity-demo-v3.json`
+- The current fixture contains 48 opportunity records.
 
-```bash
-npm run build
-```
+Some fictional opportunity and training records are marked with `DEMO ONLY`. Their criteria, descriptions, organizations, application links, verification state, and learning suggestions must not be interpreted as real job vacancies, official eligibility rules, or confirmed training providers.
 
-### Video demonstration
+The temporary data is used now for frontend, matching, eligibility, chart, suggestion, and near-me testing. We will later collaborate with official opportunity and labour-market sources, including MIFOTRA, KORA, public recruitment portals, universities, TVET providers, and other verified sources.
 
-Link pending — no video URL has been provided yet.
+Future integration should use their official APIs or formally authorized data feeds, source timestamps, verification rules, and update schedules where available. This will replace or supplement temporary fixtures with reliable live information.
 
----
+## Implemented API routes
 
-# 🎯 Problem
-
-Labour-market information is distributed across multiple statistical and institutional sources.
-
-NISR provides extensive information about Rwanda's:
-
-- population
-- labour force
-- employment
-- unemployment
-- education
-- fields of study
-- work experience
-- occupations
-- industries
-- earnings
-- geographic distribution
-- establishments
-
-MIFOTRA and the Rwanda Labour Market Information System provide complementary information around:
-
-- labour-market demand
-- occupations
-- skills
-- vacancies
-- employment programmes
-- career guidance
-- internships
-- graduate outcomes
-
-The existence of these separate information sources creates an opportunity for an intelligence layer that can connect the signals without replacing the institutions that produce them.
-
-### Core challenge
-
-> **How can available labour-market data be transformed into understandable, explainable and actionable information about skills, opportunities and career pathways?**
-
----
-
-# 💡 Solution
-
-Rwanda Opportunity Intelligence provides three major experiences.
-
-## 1. Career Navigator
-
-For students, graduates and job seekers.
-
-Users can provide:
-
-- education level
-- field of study
-- skills
-- experience
-- location
-- target occupation
-- career interests
-
-The system then analyses their profile against available labour-market information.
-
-Example:
+### Opportunities
 
 ```text
-Your Profile
-
-Education:
-Bachelor's — Computer Science
-
-Experience:
-0 years
-
-Skills:
-Python
-SQL
-JavaScript
-
-Target:
-Software Developer
+GET  /api/v1/opportunities
+GET  /api/v1/opportunities/sources
+GET  /api/v1/opportunities/:id
+POST /api/v1/opportunities/match
+POST /api/v1/opportunities/eligibility
 ```
 
-The system can produce:
-
-```text
-Education alignment       ██████████  100%
-Skill alignment           ███████░░░   70%
-Experience alignment      ███░░░░░░░   30%
-Occupation alignment      ██████████  100%
-```
-
-The platform then explains the result rather than simply producing an unexplained score.
-
----
-
-# 2. Skills & Opportunity Intelligence
-
-The platform analyses labour-market signals to identify:
-
-- frequently requested skills
-- occupations
-- sectors
-- geographic opportunity
-- experience requirements
-- education requirements
-- potential skills gaps
-- emerging opportunities
-
-Example:
-
-```text
-Occupation: Software Development
-
-Frequently observed skills:
-
-Python       █████████████
-SQL          ███████████
-Git          █████████
-Cloud        ███████
-Docker       █████
-```
-
-A user can compare these signals with their own profile.
-
----
-
-# 3. Rwanda Labour-Market Intelligence Dashboard
-
-A second interface is designed for institutions.
-
-Users can explore:
-
-```text
-District
-   ↓
-Industry
-   ↓
-Occupation
-   ↓
-Skills
-   ↓
-Employment
-   ↓
-Opportunities
-```
-
-The dashboard can visualize:
-
-- labour supply
-- labour demand
-- employment
-- establishments
-- workers
-- occupations
-- skills
-- vacancies
-- geographic concentration
-- education/occupation relationships
-
-This enables users to investigate questions such as:
-
-> Where is a particular economic activity concentrated?
-
-> Which occupations are associated with a particular sector?
-
-> What skills are commonly requested?
-
-> How does labour supply compare with observed demand?
-
----
-
-# 🧠 Data & Methodology
-
-The platform follows a **data-first architecture**.
-
-We do not allow an AI model to invent labour-market statistics.
-
-The numerical results are generated from structured data and deterministic analytical methods.
-
-AI is used only where it adds value, such as:
-
-- extracting skills from unstructured job descriptions
-- classifying job descriptions
-- semantic similarity
-- explaining analytical results
-- natural-language interaction with the platform
-
----
-
-# 📊 Primary Data Sources
-
-## NISR
-
-The project uses publicly available NISR statistical products and public-use datasets where licensing/access conditions permit.
-
-Potential sources include:
-
-### Labour Force Survey
-
-Used for information related to:
-
-- employment
-- unemployment
-- education
-- experience
-- occupation
-- industry
-- labour-force status
-- geography
-- earnings
-- job characteristics
-
-Official source:
-
-https://statistics.gov.rw/data-sources/surveys/Labour-Force-Survey
-
-### Establishment Census 2023
-
-Used for:
-
-- establishments
-- economic activities
-- establishment size
-- workers
-- geography
-- formal/informal status
-
-Official source:
-
-https://microdatabk.statistics.gov.rw/catalog/112
-
----
-
-# 🇷🇼 MIFOTRA / Labour-Market Sources
-
-The platform may integrate publicly available information from Rwanda's labour-market ecosystem.
-
-Potential sources include:
-
-### Rwanda Labour Market Information System
-
-LMIS provides labour-market analytical information around:
-
-- employment
-- occupations
-- skills
-- vacancies
-- labour-market trends
-- career information
-- employment programmes
-
-Official platform:
-
-https://www.lmis.rw/
-
-### Kora Job Portal
-
-Kora is a MIFOTRA employment platform connecting job seekers and employers.
-
-Official platform:
-
-https://jobportal.kora.rw/
-
-### Graduate Tracer Information
-
-Graduate tracer information can provide evidence concerning:
-
-- graduate employment
-- career outcomes
-- further education
-- employment challenges
-- education/employment relationships
-
-Only publicly released or formally authorized data should be used.
-
-### Professional Internship Programme
-
-The Professional Internship Portal provides information related to graduate internship pathways.
-
-Official platform:
-
-https://www.internship.rw/
-
----
-
-# ⚠️ Data Access & Privacy
-
-The project distinguishes between three categories of information.
-
-## 🟢 Public Data
-
-Examples:
-
-- published statistics
-- public-use datasets
-- public reports
-- public dashboards
-- publicly displayed opportunities
-
-These may be used subject to the relevant source's terms and attribution requirements.
-
-## 🟡 Authorized Institutional Data
-
-Examples:
-
-- authenticated APIs
-- private Kora datasets
-- individual graduate records
-- individual internship records
-- restricted LMIS datasets
-
-These are used **only if official authorization is obtained**.
-
-## 🔴 Private Data
-
-The project does not attempt to:
-
-- bypass authentication
-- access restricted databases
-- collect private personal information without authorization
-- circumvent API controls
-- expose personally identifiable information
-
-The prototype should operate using public/authorized data only.
-
----
-
-# 🏗️ Architecture
-
-The repository is organized as a monorepo.
-
-```text
-rwanda-opportunity-intelligence/
-│
-├── apps/
-│   │
-│   ├── frontend/
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── lib/
-│   │   ├── hooks/
-│   │   ├── public/
-│   │   ├── styles/
-│   │   └── ...
-│   │
-│   └── backend/
-│       ├── src/
-│       │   ├── api/
-│       │   ├── services/
-│       │   ├── analytics/
-│       │   ├── matching/
-│       │   ├── ingestion/
-│       │   ├── models/
-│       │   └── utils/
-│       └── ...
-│
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   ├── geography/
-│   └── schemas/
-│
-├── notebooks/
-│   ├── exploration/
-│   ├── cleaning/
-│   ├── analysis/
-│   └── validation/
-│
-├── docs/
-│   ├── methodology/
-│   ├── data-sources/
-│   ├── architecture/
-│   └── decisions/
-│
-├── scripts/
-│   ├── ingestion/
-│   ├── processing/
-│   └── build/
-│
-├── package.json
-├── README.md
-└── LICENSE
-```
-
----
-
-# 🎨 Frontend
-
-## Technology
-
-The frontend is designed as a responsive web application.
-
-Primary technologies:
-
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- MapLibre GL JS
-- Recharts or Apache ECharts
-
-### Frontend responsibilities
-
-The frontend handles:
-
-- user interaction
-- profile creation
-- dashboards
-- charts
-- maps
-- opportunity exploration
-- skills-gap visualization
-- career-pathway presentation
-- API communication
-- responsive mobile interface
-
----
-
-# 🖥️ Frontend Pages
-
-Potential application routes:
-
-```text
-/
-├── /dashboard
-├── /career
-├── /career/profile
-├── /career/matches
-├── /skills
-├── /opportunities
-├── /map
-├── /insights
-├── /occupation/[id]
-├── /industry/[id]
-└── /about
-```
-
----
-
-# 🗺️ Mapping
-
-The application uses **MapLibre GL JS** for interactive mapping.
-
-MapLibre:
-
-https://maplibre.org/
-
-Geographic boundaries can be stored as GeoJSON.
-
-Example:
-
-```text
-data/geography/rwanda-districts.geojson
-```
-
-The map can visualize:
-
-- employment
-- establishments
-- workers
-- opportunities
-- skill gaps
-- industry concentration
-- district-level indicators
-
-No proprietary Google Maps dependency is required.
-
----
-
-# 📈 Visualization
-
-The dashboard can contain:
-
-### Labour Supply
-
-```text
-Employment
-Unemployment
-Experience
-Education
-Occupation
-```
-
-### Labour Demand
-
-```text
-Vacancies
-Skills
-Occupations
-Experience requirements
-```
-
-### Business Structure
-
-```text
-Establishments
-Workers
-Industry
-Size
-District
-```
-
-### Opportunity
-
-```text
-Jobs
-Internships
-Training
-Career pathways
-```
-
----
-
-# ⚙️ Backend
-
-The backend provides:
-
-- data processing
-- analytical calculations
-- matching
-- filtering
-- aggregation
-- API endpoints
-- data validation
-- optional AI/NLP services
-
-The backend should be designed to work independently of the frontend.
-
----
-
-# 🔌 API Design
-
-Example endpoints:
-
-```text
-GET /api/health
-
-GET /api/districts
-
-GET /api/occupations
-
-GET /api/industries
-
-GET /api/skills
-
-GET /api/opportunities
-
-GET /api/labour-market
-
-GET /api/skills/demand
-
-GET /api/skills/gaps
-
-POST /api/match
-
-POST /api/profile/analyze
-
-GET /api/insights
-```
-
----
-
-# 🧮 Matching Engine
-
-The initial matching system is deterministic.
-
-A conceptual score may use:
-
-```text
-Match Score =
-    Education Alignment
-  + Skill Alignment
-  + Occupation Alignment
-  + Experience Alignment
-  + Location Alignment
-```
-
-Example:
-
-```text
-Education       25%
-Skills          30%
-Occupation      20%
-Experience      15%
-Location        10%
-```
-
-The exact weights must be validated experimentally rather than presented as scientifically established before testing.
-
----
-
-# 🧠 Skill Matching
-
-Skill matching can use several levels.
-
-## Level 1 — Exact matching
-
-```text
-Python == Python
-```
-
-## Level 2 — Normalized matching
-
-```text
-python
-Python
-PYTHON
-```
-
-are normalized to the same representation.
-
-## Level 3 — Synonym/ontology matching
-
-```text
-Machine Learning
-ML
-Machine-learning
-```
-
-may be mapped to a common concept.
-
-## Level 4 — Semantic matching
-
-Embeddings can be used to compare related descriptions.
-
-Example:
-
-```text
-"develop web applications"
-
-≈
-
-"web application development"
-```
-
----
-
-# 🤖 AI/NLP Layer
-
-AI is optional and modular.
-
-Possible capabilities:
-
-### Job description extraction
-
-```text
-Input:
-Job advertisement
-
-        ↓
-
-NLP
-
-        ↓
-
-Occupation
-Skills
-Education
-Experience
-Industry
-```
-
-### Natural-language explanation
-
-The analytical engine produces:
-
-```text
-Skill alignment = 68%
-Experience alignment = 40%
-```
-
-The language model may explain:
-
-> Your education is aligned with the selected occupation, while the largest difference is in the experience requirements and several technical skills.
-
-The model does **not** generate the underlying statistics.
-
----
-
-# 🧪 Data Pipeline
-
-The data pipeline follows:
-
-```text
-SOURCE
-  ↓
-INGESTION
-  ↓
-RAW DATA
-  ↓
-VALIDATION
-  ↓
-CLEANING
-  ↓
-NORMALIZATION
-  ↓
-HARMONIZATION
-  ↓
-AGGREGATION
-  ↓
-ANALYTICS
-  ↓
-OPTIMIZED DATA
-  ↓
-FRONTEND/API
-```
-
----
-
-# 🔄 Data Harmonization
-
-Different datasets use different structures.
-
-The project therefore creates common dimensions.
-
-Example:
-
-```text
-Education
-Occupation
-Industry
-District
-Province
-Experience
-Skill
-```
-
-These dimensions allow analytical comparisons where statistically appropriate.
-
-### Important methodological rule
-
-NISR Labour Force Survey records and Establishment Census records represent different statistical units.
-
-They must **not** be treated as if they describe the same individual.
-
-Instead, they can be connected through compatible aggregate dimensions such as:
-
-```text
-District
-Industry
-Occupation
-Education
-```
-
-where the source definitions support the comparison.
-
----
-
-# 📐 Gap Analysis
-
-The system can calculate indicators such as:
-
-## Skill Demand
-
-```text
-Demand(skill) =
-vacancies requiring skill
-/
-total analysed vacancies
-```
-
-## Skill Supply
-
-```text
-Supply(skill) =
-relevant observed workforce with skill
-/
-relevant workforce
-```
-
-## Relative Gap
-
-```text
-Gap =
-Demand - Supply
-```
-
-These are analytical indicators, not direct measurements of causality.
-
----
-
-# 📍 Geographic Opportunity
-
-The system can calculate geographic indicators using:
-
-```text
-District
-+
-Industry
-+
-Workers
-+
-Establishments
-+
-Opportunities
-```
-
-This enables questions such as:
-
-> Where are particular economic activities concentrated?
-
-> Where are relevant establishments located?
-
-> Where are observed opportunities concentrated?
-
----
-
-# 📊 Data Quality
-
-Every dataset should have a metadata record describing:
-
-```text
-Source
-Dataset
-Year
-Population
-Unit of analysis
-Variables
-Missing values
-Weighting
-Known limitations
-License/access conditions
-Processing steps
-```
-
-Example:
+Example eligibility body:
 
 ```json
 {
-  "source": "NISR",
-  "dataset": "Labour Force Survey 2025",
-  "year": 2025,
-  "unit": "person",
-  "public_use": true
+  "opportunityId": "roi-rwanda-public-service-data-officer-demo",
+  "profile": {
+    "age": 25,
+    "skillDisclosure": "complete",
+    "skills": [
+      {
+        "name": "Spreadsheet analysis",
+        "proficiency": "expert"
+      },
+      {
+        "name": "Report writing",
+        "proficiency": "advanced"
+      }
+    ],
+    "qualificationDisclosure": "complete",
+    "qualifications": [
+      {
+        "name": "Bachelor of Science in Data Science",
+        "level": "Bachelor",
+        "fieldOfStudy": "Data Science"
+      }
+    ]
+  }
 }
 ```
 
----
-
-# ⚖️ Statistical Integrity
-
-The platform follows several rules:
-
-1. Do not treat sample distributions as national estimates without appropriate weighting.
-2. Do not combine datasets with incompatible units of analysis.
-3. Do not infer causation from correlations.
-4. Distinguish published estimates from calculations performed by the project.
-5. Preserve source definitions.
-6. Display relevant limitations.
-7. Do not generalize programme-specific statistics to the entire population.
-8. Record the date/version of external data.
-9. Never invent unavailable variables.
-10. Preserve reproducibility of calculations.
-
----
-
-# 🔐 Security
-
-The application should:
-
-- validate all API inputs
-- sanitize user-provided text
-- rate-limit public endpoints where appropriate
-- keep secrets in environment variables
-- never expose API credentials to the frontend
-- avoid storing unnecessary personal information
-- avoid storing sensitive candidate information
-- use HTTPS in production
-
----
-
-# 🌍 Responsive Design
-
-The application is designed mobile-first.
-
-Supported layouts:
+### NISR analytics
 
 ```text
-Mobile
-  ↓
-Tablet
-  ↓
-Desktop
-  ↓
-Large dashboard
+GET /api/v1/analytics/nisr
+GET /api/v1/analytics/nisr/labour-market
+GET /api/v1/analytics/nisr/education
+GET /api/v1/analytics/nisr/establishments
 ```
 
-Important dashboards should remain usable on small screens.
+### CV
 
----
+```text
+POST /api/v1/cv/improve
+POST /api/v1/cv/docx
+```
 
-# 💰 Cost Strategy
+API documentation is available through Swagger UI at `/api-docs`.
 
-The project is designed for a **free-first deployment strategy**.
+## Current architecture
 
-## Target infrastructure
+```text
+frontend/
+  React + TypeScript
+  Vite
+  React Router
+  TanStack React Query
+  Browser geolocation
+  Browser local storage
 
-### Frontend
+backend/
+  Express + TypeScript
+  Opportunity fixture repository
+  Deterministic eligibility engine
+  Profile matching and ranking
+  NISR derived analytics
+  CV text improvement
+  DOCX generation
+  Swagger/OpenAPI documentation
+```
 
-Vercel free tier.
+The opportunity API does not accept an opportunity object supplied by the caller. It loads and validates a record from the configured canonical catalogue, preventing request-side substitution of eligibility criteria.
+
+## Setup
+
+Requirements:
+
+- Node.js
+- npm
+- Python 3 for analytics tools
 
 ### Backend
 
-Where possible:
-
-- serverless/API routes
-- static computation
-- precomputed datasets
-
-### Mapping
-
-MapLibre + open geographic data.
-
-### Analytics
-
-Python during data preparation and TypeScript/JavaScript for lightweight production calculations.
-
-### AI
-
-AI should remain optional.
-
-The platform must not depend on a paid AI API for its fundamental functionality.
-
----
-
-# 🚀 Local Development
-
-## Requirements
-
-Recommended:
-
-```text
-Node.js 20+
-npm
-Python 3.11+
-Git
-```
-
----
-
-# 📥 Installation
-
-Clone the repository:
-
 ```bash
-git clone https://github.com/YOUR_USERNAME/rwanda-opportunity-intelligence.git
-
-cd rwanda-opportunity-intelligence
-```
-
-Install dependencies:
-
-```bash
+cd bigdata-hackathon/backend
 npm install
-```
-
-Install Python dependencies:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
----
-
-# 🔑 Environment Variables
-
-Create:
-
-```text
-.env.local
-```
-
-Example:
-
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3000/api
-
-# Optional AI provider
-AI_API_KEY=
-
-# Optional authorized external integrations
-MIFOTRA_API_URL=
-MIFOTRA_CLIENT_ID=
-MIFOTRA_CLIENT_SECRET=
-```
-
-Never commit:
-
-```text
-.env
-.env.local
-*.key
-*.secret
-```
-
-to GitHub.
-
-## CV Builder backend configuration
-
-The CV Builder is available at `/create-cv`. Its optional AI enhancement and genuine Word document generation are served by the ROI backend routes `/api/v1/cv/improve` and `/api/v1/cv/docx`.
-
-Install the backend dependencies, including the `docx` document generator, from `bigdata-hackathon/backend`:
-
-```bash
-npm install
-```
-
-For AI-assisted wording improvements, configure these variables in the backend process environment or its local `.env` file:
-
-```env
-AI_API_KEY=
-AI_MODEL=gpt-4o-mini
-AI_API_URL=https://api.openai.com/v1/chat/completions
-```
-
-The AI settings are optional. Without `AI_API_KEY`, the backend keeps the user's wording unchanged and still creates a downloadable `.docx`. When configured, CV content is sent to the configured AI provider only after the user selects Generate CV. The backend does not persist CV content. Never expose or commit the AI key.
-
----
-
-# ▶️ Run Development
-
-Start the application:
-
-```bash
 npm run dev
 ```
 
-Open:
+The backend normally listens on port `5000`.
+
+### Frontend
+
+```bash
+cd bigdata-hackathon/frontend
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Configure `.env` with the backend URL:
 
 ```text
-http://localhost:3000
+VITE_API_BASE_URL=http://localhost:5000
 ```
 
----
+The frontend production environment can instead point to the deployed backend URL.
 
-# 🧪 Testing
+## Validation
 
-Run frontend/backend tests:
+Run the backend build and targeted opportunity suites:
 
 ```bash
-npm test
+cd bigdata-hackathon/backend
+npm run build
+npx tsx --test src/opportunities/matching.test.ts src/opportunities/opportunityRoutes.test.ts
 ```
 
-Run linting:
+Run the frontend build:
 
 ```bash
-npm run lint
-```
-
-Run type checking:
-
-```bash
-npm run typecheck
-```
-
-Run Python data tests:
-
-```bash
-pytest
-```
-
----
-
-# 🏭 Production Build
-
-Build:
-
-```bash
+cd bigdata-hackathon/frontend
 npm run build
 ```
 
-Run:
-
-```bash
-npm start
-```
-
----
-
-# ☁️ Deployment
-
-The intended deployment target is Vercel.
-
-Typical process:
-
-```text
-GitHub
-   ↓
-Vercel
-   ↓
-Build
-   ↓
-Deploy
-   ↓
-Public HTTPS URL
-```
-
-The application should be configured so that no development-only credentials or local filesystem dependencies are required in production.
-
----
-
-# 🗂️ Recommended Repository Structure
-
-```text
-rwanda-opportunity-intelligence/
-│
-├── apps/
-│   ├── frontend/
-│   │   ├── app/
-│   │   ├── components/
-│   │   ├── features/
-│   │   │   ├── career/
-│   │   │   ├── opportunities/
-│   │   │   ├── skills/
-│   │   │   ├── labour-market/
-│   │   │   └── map/
-│   │   ├── lib/
-│   │   └── public/
-│   │
-│   └── backend/
-│       ├── src/
-│       │   ├── api/
-│       │   ├── analytics/
-│       │   ├── matching/
-│       │   ├── services/
-│       │   ├── ingestion/
-│       │   ├── validation/
-│       │   └── models/
-│       └── tests/
-│
-├── data/
-│   ├── raw/
-│   ├── processed/
-│   ├── geography/
-│   └── schemas/
-│
-├── notebooks/
-│   ├── exploration/
-│   ├── analysis/
-│   └── validation/
-│
-├── scripts/
-│   ├── download/
-│   ├── clean/
-│   ├── transform/
-│   └── build/
-│
-├── docs/
-│   ├── architecture/
-│   ├── methodology/
-│   ├── data/
-│   └── decisions/
-│
-├── requirements.txt
-├── package.json
-├── README.md
-└── LICENSE
-```
-
----
-
-# 🔬 Reproducibility
-
-Every analytical dataset should be generated through reproducible scripts.
-
-Example:
-
-```bash
-python scripts/clean/lfs_2025.py
-
-python scripts/clean/establishment_2023.py
-
-python scripts/transform/harmonize.py
-
-python scripts/build/create_analytics.py
-```
-
-The resulting processed data should contain metadata identifying:
-
-- source
-- source year
-- processing version
-- transformation date
-- methodology
-
----
-
-# 🧩 Example End-to-End Flow
-
-```text
-                 USER
-                   │
-                   ▼
-          Create Career Profile
-                   │
-                   ▼
-        ┌──────────────────────┐
-        │ Education            │
-        │ Skills               │
-        │ Experience           │
-        │ Location             │
-        │ Target Occupation    │
-        └──────────┬───────────┘
-                   │
-                   ▼
-            MATCHING ENGINE
-                   │
-        ┌──────────┼───────────┐
-        ▼          ▼           ▼
-      NISR        LMIS       Opportunities
-        │          │           │
-        └──────────┼───────────┘
-                   ▼
-            GAP ANALYSIS
-                   │
-                   ▼
-          PATHWAY GENERATOR
-                   │
-        ┌──────────┼──────────┐
-        ▼          ▼          ▼
-     Skills     Internship   Jobs
-     Training   Experience   Opportunities
-```
-
----
-
-# 🧭 Future Extensions
-
-Potential future capabilities include:
-
-- institution dashboards
-- employer dashboards
-- advanced occupation taxonomy
-- skill ontology
-- semantic job matching
-- internship recommendation
-- training recommendation
-- regional opportunity forecasting
-- employer demand analytics
-- graduate outcome analytics
-- multilingual support
-- Kinyarwanda natural-language interface
-- authorized MIFOTRA API integration
-- authorized Kora integration
-- authorized graduate/internship data integration
-
-These features should only be implemented where data availability, authorization and methodology support them.
-
----
-
-# 🏆 Hackathon Relevance
-
-The platform is designed around the published NISR Big Data Hackathon evaluation dimensions.
-
-## Problem Understanding & Relevance
-
-The project addresses a measurable labour-market information and skills/opportunity alignment challenge using Rwanda-specific evidence.
-
-## Data Use & Methodology
-
-The system combines and harmonizes relevant official statistical and public information while preserving dataset definitions and limitations.
-
-## Technical Innovation
-
-The project combines:
-
-- data engineering
-- statistical analysis
-- explainable matching
-- geospatial visualization
-- NLP
-- optional AI
-- recommendation logic
-
-## Usability & Design
-
-A responsive web interface provides separate experiences for individuals and institutional users.
-
-## Tangible Impact
-
-The system aims to transform statistical information into practical:
-
-- career guidance
-- opportunity discovery
-- skills-gap information
-- labour-market intelligence
-
----
-
-# ⚠️ Current Project Status
-
-This repository is under active development.
-
-The final problem statement, datasets and analytical indicators will be finalized only after data validation.
-
-At this stage:
-
-```text
-✓ NISR data sources identified
-✓ NISR Labour Force data investigated
-✓ NISR Establishment Census investigated
-✓ MIFOTRA ecosystem investigated
-✓ LMIS identified
-✓ Kora identified
-✓ Graduate Tracer information identified
-✓ Professional Internship ecosystem identified
-✓ Technical architecture defined
-
-→ Data validation
-→ Problem selection
-→ Prototype implementation
-→ Evaluation
-```
-
-The project does **not** claim privileged access to MIFOTRA, Kora, LMIS, GTS or internship databases unless such access is officially granted.
-
----
-
-# 🤝 Responsible Use
-
-This platform is intended to support informed decisions, not make decisions on behalf of users.
-
-A recommendation or match score should be treated as an analytical aid rather than a guarantee of employment.
-
-Labour-market statistics describe observed patterns and should not be interpreted as deterministic predictions about an individual.
-
----
-
-# 📚 Official References
-
-### National Institute of Statistics of Rwanda
-
-https://statistics.gov.rw/
-
-### NISR Data Portals
-
-https://statistics.gov.rw/data-portals-e-gddssdds
-
-### NISR Microdata Catalog
-
-https://microdatabk.statistics.gov.rw/home
-
-### NISR Labour Force Survey
-
-https://statistics.gov.rw/data-sources/surveys/Labour-Force-Survey
-
-### NISR Establishment Census 2023
-
-https://microdatabk.statistics.gov.rw/catalog/112
-
-### Rwanda Labour Market Information System
-
-https://www.lmis.rw/
-
-### MIFOTRA
-
-https://www.mifotra.gov.rw/
-
-### Kora Job Portal
-
-https://jobportal.kora.rw/
-
-### Professional Internship Portal
-
-https://www.internship.rw/
-
-### MapLibre
-
-https://maplibre.org/
-
----
-
-# 👥 Team
-
-**Project:** Rwanda Opportunity Intelligence
-
-**Team:** Team Nexolve
-
-**Members:**
-
-- Elvis Mugisha
-- ICyeza Christal
-
-**Competition:** NISR Big Data Hackathon 2026
-
----
-
-# 📄 License
-
-This repository is developed for the NISR Big Data Hackathon.
-
-The project's source code, datasets and derived analytical outputs are subject to the licenses, terms of use and intellectual-property requirements applicable to each component and source.
-
-Where the hackathon's terms require transfer or assignment of intellectual-property rights to NISR, the team will comply with those requirements.
-
----
-
-# ⭐ Vision
-
-> **Turn Rwanda's labour-market data into understandable pathways from skills to opportunity.**
-
-The long-term vision is a data-driven ecosystem where statistical information does not remain inside reports and dashboards, but becomes actionable intelligence for people, institutions and decision-makers.
-
----
+## Roadmap
+
+- Collaborate with MIFOTRA, KORA, and verified opportunity providers.
+- Integrate officially approved job, internship, scholarship, training, and TVET APIs.
+- Add source freshness, verification status, update timestamps, and automated availability checks.
+- Expand district and workplace coordinates using source-confirmed information.
+- Improve matching evidence and skill equivalence.
+- Add stronger accessibility and localization coverage.
+- Add persistent user accounts and saved profiles if explicitly requested and secured.
+- Continue separating catalogue data, eligibility results, suitability scores, and real-world outcomes.

@@ -187,3 +187,63 @@
   .career-table-row > strong { font-size: 8px; }
   .career-result-footer { align-items: flex-start; flex-direction: column; }
 }
+
+:root[data-theme="dark"] .career-page {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .career-goal-card,
+:root[data-theme="dark"] .career-no-profile,
+:root[data-theme="dark"] .career-evidence-card,
+:root[data-theme="dark"] .career-rate-card,
+:root[data-theme="dark"] .career-learning-card,
+:root[data-theme="dark"] .career-establishment-card,
+:root[data-theme="dark"] .career-result-card,
+:root[data-theme="dark"] .career-card-icon,
+:root[data-theme="dark"] .career-no-profile > span,
+:root[data-theme="dark"] .career-next-icon,
+:root[data-theme="dark"] .career-skills-evidence {
+  border-color: var(--line);
+  background: var(--surface);
+}
+
+:root[data-theme="dark"] .career-goal-card {
+  background: #111827;
+}
+
+:root[data-theme="dark"] .career-page h1,
+:root[data-theme="dark"] .career-page h2,
+:root[data-theme="dark"] .career-page h3,
+:root[data-theme="dark"] .career-page strong,
+:root[data-theme="dark"] .career-result-title,
+:root[data-theme="dark"] .career-goal-card > label,
+:root[data-theme="dark"] .career-skills-evidence strong {
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .career-page p,
+:root[data-theme="dark"] .career-section-heading > p,
+:root[data-theme="dark"] .career-goal-card > p,
+:root[data-theme="dark"] .career-profile-needed p,
+:root[data-theme="dark"] .career-small-note,
+:root[data-theme="dark"] .career-no-profile p,
+:root[data-theme="dark"] .career-results-title > span,
+:root[data-theme="dark"] .career-result-org,
+:root[data-theme="dark"] .career-result-explanation,
+:root[data-theme="dark"] .career-result-location,
+:root[data-theme="dark"] .career-skills-evidence span,
+:root[data-theme="dark"] .career-fit-score small {
+  color: var(--muted);
+}
+
+:root[data-theme="dark"] .career-goal-card > input {
+  border-color: var(--line);
+  background: #111827;
+  color: var(--ink);
+}
+
+:root[data-theme="dark"] .career-result-footer,
+:root[data-theme="dark"] .career-table-row,
+:root[data-theme="dark"] .career-establishment-card {
+  border-color: var(--line);
+}

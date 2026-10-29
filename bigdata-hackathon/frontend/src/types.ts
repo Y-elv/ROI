@@ -17,7 +17,7 @@ export const opportunityTypes = [
 export type OpportunityType = (typeof opportunityTypes)[number];
 export type OpportunityStatus = "open" | "closed" | "rolling" | "needs_confirmation";
 export type DeadlineStatus = "confirmed" | "historical" | "not_confirmed" | "rolling";
-export type EligibilityOutcome = "eligible" | "ineligible" | "unknown";
+export type EligibilityOutcome = "eligible" | "ineligible";
 
 export interface Opportunity {
   demonstrationData?: boolean;

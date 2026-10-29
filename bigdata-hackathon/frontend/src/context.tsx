@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { getOpportunities, getUserFacingErrorMessage, type OpportunityFilters } from "./api";
 import type { ActionPlanItem, Opportunity, Recommendation, UserProfile } from "./types";
@@ -23,6 +23,8 @@ type NearbyLocationState =
 interface AppState {
   language: Language;
   setLanguage: (language: Language) => void;
+  theme: "light" | "dark";
+  toggleTheme: () => void;
   t: (key: TranslationKey, values?: Record<string, string | number>) => string;
   profile: UserProfile | undefined;
   setProfile: (profile: UserProfile) => void;
@@ -57,10 +59,21 @@ export function useAppState(): AppState {
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>("rw");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const savedTheme = window.localStorage.getItem("roi-theme");
+    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  });
   const [profile, setProfile] = useState<UserProfile>();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [plan, setPlan] = useState<ActionPlanItem[]>([]);
   const [nearbyLocation, setNearbyLocation] = useState<NearbyLocationState>({ status: "idle" });
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    window.localStorage.setItem("roi-theme", theme);
+  }, [theme]);
 
   async function findNearbyOpportunities(origin: Coordinates) {
     console.info("[nearby] Step 3/5: Loading opportunity listings.");
@@ -172,6 +185,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const value: AppState = {
     language,
     setLanguage,
+    theme,
+    toggleTheme() {
+      setTheme((current) => current === "light" ? "dark" : "light");
+    },
     t(key, values) {
       const message = translations[language][key];
       return values
