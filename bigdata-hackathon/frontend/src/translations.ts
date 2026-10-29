@@ -204,7 +204,7 @@ export const english = {
   tipFitTitle: "A fit score is not a promise",
   tipFitText: "Suitability helps you compare listings. Eligibility is assessed separately against the information you provide.",
   whatNext: "WHAT HAPPENS NEXT",
-  whatNextText: "ROI sends your profile to the opportunity matching endpoint, then shows the returned evidence and eligibility outcome.",
+  whatNextText: "ROI uses the information in your profile to match opportunities and show the supporting evidence and eligibility outcome.",
   matchesEyebrow: "YOUR MATCHES",
   matchesTitle: "Options to explore",
   noMatchesTitle: "No matches returned",

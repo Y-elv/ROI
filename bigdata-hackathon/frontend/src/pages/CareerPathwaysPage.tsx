@@ -22,7 +22,6 @@ import {
   getNisrEducation,
   getNisrEstablishments,
   getNisrLabourMarket,
-  getNisrOverview,
 } from "../api";
 import { useAppState } from "../context";
 import type {
@@ -37,7 +36,6 @@ export default function CareerPathwaysPage() {
   const [careerGoal, setCareerGoal] = useState(profile?.careerGoals?.[0] ?? "");
   const [requestedGoal, setRequestedGoal] = useState("");
 
-  const overview = useQuery({ queryKey: ["nisr", "overview"], queryFn: getNisrOverview });
   const labour = useQuery({ queryKey: ["nisr", "labour"], queryFn: getNisrLabourMarket });
   const education = useQuery({ queryKey: ["nisr", "education"], queryFn: getNisrEducation });
   const establishments = useQuery({ queryKey: ["nisr", "establishments"], queryFn: getNisrEstablishments });
@@ -113,7 +111,7 @@ export default function CareerPathwaysPage() {
             <span className="career-overline">YOUR CAREER DIRECTION</span>
             <h2>Start with a direction that matters to you.</h2>
           </div>
-          <p>Matches compare your profile with catalogue opportunities. They do not model job-to-job career progression.</p>
+          <p>Matches compare your profile with catalogue opportunities.</p>
         </div>
         <div className="career-match-layout">
           <form className="career-goal-card" onSubmit={submitGoal}>
@@ -252,7 +250,6 @@ export default function CareerPathwaysPage() {
               <div><span>Exact repeated rows retained</span><strong>{establishments.data.data.exactDuplicateRowsRetained.toLocaleString()}</strong></div>
             </div>
             {establishmentSectors && <EstablishmentEvidence groups={establishmentSectors} />}
-            {establishments.data.data.limitations.length > 0 && <details className="career-methodology"><summary>Establishment census limitations</summary><ul>{establishments.data.data.limitations.map((item) => <li key={item}>{item}</li>)}</ul></details>}
           </>
         )}
       </section>
@@ -263,13 +260,6 @@ export default function CareerPathwaysPage() {
         <Link className="career-button career-button-primary" to="/opportunities">Explore opportunities <ArrowRight size={15} /></Link>
       </section>
 
-      <div className="career-data-note">
-        <span><CircleAlert size={15} /> Important context</span>
-        <p>
-          NISR Labour Force Survey evidence is from {overview.data?.data.sources.labourForceSurvey.sourceYear ?? "the survey source"}; establishment counts are from {establishments.data?.data.sourceYear ?? "the census source"}. These sources describe different years and populations. ROI does not currently provide a validated occupation taxonomy, career-transition graph, or skills-gap forecast.
-        </p>
-        {overview.isError && <CareerError error={overview.error} onRetry={() => void overview.refetch()} compact />}
-      </div>
     </div>
   );
 }
