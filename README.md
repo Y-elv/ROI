@@ -1,8 +1,27 @@
 # Rwanda Opportunity Intelligence
 
-Rwanda Opportunity Intelligence (ROI) is a bilingual-ready web platform for exploring opportunities, comparing a user profile with catalogue requirements, visualizing skill gaps, viewing Rwanda labour-market evidence, building a CV, and tracking practical next steps.
+Rwanda Opportunity Intelligence (ROI) is a decision-support platform that helps Rwandan youth, graduates, and job seekers discover opportunities, assess their fit against published requirements, identify specific skill gaps, and plan the next step.
 
-The application is implemented with React/Vite on the frontend and Express/TypeScript on the backend.
+## Problem
+
+Many qualified or potentially qualified people miss opportunities not because they have no relevant skills, but because eligibility criteria are fragmented across portals and difficult to interpret consistently. Qualification levels, proficiencies, work experience, location, and opportunity-specific requirements are often assessed manually and may not be connected to practical next steps or labour-market evidence.
+
+## Solution
+
+ROI turns a user's profile into structured guidance. It:
+
+- compares profile information with individual opportunity requirements;
+- distinguishes satisfied, unmet, unresolved, and preferred requirements;
+- reports known skill gaps and their required proficiency levels;
+- links unmet skills to relevant learning suggestions;
+- ranks catalogue opportunities by profile suitability and evidence;
+- places opportunities near the user using approximate district-level geolocation;
+- connects career exploration with published Rwanda labour-market and establishment data;
+- helps users prepare and improve a CV and track an action plan.
+
+The platform does not replace official application procedures, eligibility decisions, or employer verification. Every assessment is clearly identified as guidance, with outcome, source, evidence, and uncertainty represented where available.
+
+ROI is implemented with React and Vite on the frontend, Express and TypeScript on the backend, and Python data tools for processing and deriving NISR analytics.
 
 ## Demo
 
@@ -77,20 +96,39 @@ The application is implemented with React/Vite on the frontend and Express/TypeS
 - Responsive desktop and mobile layouts.
 - Swagger UI/API documentation at `/api-docs`.
 
-## Dataset and demo-data notice
+## Data sources and datasets
 
-The current opportunity catalogue is temporary demo data:
+### Opportunity catalogue
 
-- `Rwanda Opportunity Intelligence`
-- Dataset version `4.0.0`
-- Catalogue fixture: `bigdata-hackathon/backend/data/fixtures/rwanda-opportunity-demo-v3.json`
-- The current fixture contains 48 opportunity records.
+The application uses the temporary `Rwanda Opportunity Intelligence` opportunity catalogue:
 
-Some fictional opportunity and training records are marked with `DEMO ONLY`. Their criteria, descriptions, organizations, application links, verification state, and learning suggestions must not be interpreted as real job vacancies, official eligibility rules, or confirmed training providers.
+- Dataset name: `Rwanda Opportunity Intelligence`
+- Dataset version: `4.0.0`
+- Catalogue file: `bigdata-hackathon/backend/data/fixtures/rwanda-opportunity-demo-v3.json`
+- Coverage: 48 opportunity records
+- Recorded source domains include MIFOTRA recruitment, KORA, Rwanda National Internship Programme, KURA, Higher Education Council, HECMIS, and Rwanda Polytechnic.
 
-The temporary data is used now for frontend, matching, eligibility, chart, suggestion, and near-me testing. We will later collaborate with official opportunity and labour-market sources, including MIFOTRA, KORA, public recruitment portals, universities, TVET providers, and other verified sources.
+The fixture contains both source-linked records and explicitly marked synthetic records used for interface and integration testing. Records marked `DEMO ONLY` must not be interpreted as real vacancies, official eligibility rules, confirmed providers, or actionable application guarantees.
 
-Future integration should use their official APIs or formally authorized data feeds, source timestamps, verification rules, and update schedules where available. This will replace or supplement temporary fixtures with reliable live information.
+The opportunity catalogue is temporary. Future releases will prioritize formally authorized APIs and data feeds from MIFOTRA, KORA, public recruitment portals, universities, TVET providers, and other verified institutions. Each integration should preserve source URLs, update timestamps, verification status, record freshness, and documented eligibility criteria.
+
+### Rwanda labour-market and establishment data
+
+The backend serves derived analytics from two NISR datasets:
+
+| Dataset | Coverage | Local source |
+| --- | --- | --- |
+| Rwanda Labour Force Survey 2025 | Labour-force status, employment, unemployment, participation, education, occupation, and youth indicators | `bigdata-hackathon/backend/data/nisr/labour_force_survey_2025/RW_LFS2025.dta` |
+| Rwanda Establishment Census 2023 | Establishment workforce, district, sector, ownership, and economic activity measures | `bigdata-hackathon/backend/data/nisr/establishment_census_2023/data-rwa-nisr-ec-2023v2.dta` |
+
+The Excel variable codebook at `bigdata-hackathon/backend/data/nisr/labour_force_survey_2025/Var_descr_RW_LFS2025.xlsx` is used to interpret Labour Force Survey variables. Source metadata, file hashes, methodology, weighted estimates, and derived outputs are retained in:
+
+- `bigdata-hackathon/backend/data/derived/nisr-analytics.json`
+- `bigdata-hackathon/backend/tools/build_nisr_analytics.py`
+
+The Python tooling uses Pandas and Pyreadstat to read Stata `.dta` data, read the Excel codebook, calculate weighted labour-market indicators, aggregate establishment workforce measures, and produce the JSON consumed by the API. Labour Force Survey estimates use the `weight2` annual weight; establishment census workforce measures are sums of the supplied census fields.
+
+The derived analytics describe populations and published aggregate patterns. They do not predict an individual's employment outcome, suitability, or likelihood of being selected for an opportunity.
 
 ## Implemented API routes
 
@@ -172,17 +210,35 @@ backend/
   CV text improvement
   DOCX generation
   Swagger/OpenAPI documentation
+
+data tooling/
+  Python 3
+  Pandas
+  Pyreadstat
+  OpenPyXL
+  Stata .dta and Excel codebook processing
+  Weighted NISR analytics generation
 ```
 
 The opportunity API does not accept an opportunity object supplied by the caller. It loads and validates a record from the configured canonical catalogue, preventing request-side substitution of eligibility criteria.
 
 ## Setup
 
+Run the following commands from the repository root.
+
 Requirements:
 
 - Node.js
 - npm
-- Python 3 for analytics tools
+- Python 3 with Pandas, Pyreadstat, and OpenPyXL for NISR analytics generation
+
+Install the Python analytics dependencies:
+
+```bash
+cd bigdata-hackathon/backend
+python -m pip install -r requirements-analytics.txt
+python tools/build_nisr_analytics.py
+```
 
 ### Backend
 
