@@ -1,6 +1,6 @@
 # Rwanda Opportunity Intelligence
 
-Rwanda Opportunity Intelligence (ROI) is a decision-support platform that helps Rwandan youth, graduates, and job seekers discover opportunities, assess their fit against published requirements, identify specific skill gaps, and plan the next step.
+Rwanda Opportunity Intelligence (ROI) is a decision-support platform that helps Rwandan youth, graduates, and job seekers discover and assess opportunities across jobs, internships, apprenticeships, scholarships, training, entrepreneurship, business support, certifications, education, industrial placements, livelihoods, study loans, and TVET. It compares profiles against published requirements, identifies specific skill gaps, and supports practical next-step planning.
 
 ## Problem
 
