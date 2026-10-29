@@ -25,7 +25,7 @@ ROI is implemented with React and Vite on the frontend, Express and TypeScript o
 
 ## Demo
 
-**Live demo:** <!-- Add the deployed frontend/demo URL here -->
+**Live demo:** https://drive.google.com/file/d/1LRBpEkjEId6XVcgxjsG2BhFO0s6Ge_NG/view?usp=sharing
 
 ## Current features
 
